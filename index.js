@@ -37,8 +37,8 @@ app.get('*', (req, res) => {
 var database;
 app.listen(8080, () => {
     MongoClient.connect(process.env.DB_CONNECTION_STRING, (err, client) => {
-        // database = client.db(process.env.DATABASE_NAME);
-        database = client.db('TestingDB');
+         database = client.db(process.env.DATABASE_NAME);
+        // database = client.db('TestingDB');
         console.log('Connected to database');
     }
     )
