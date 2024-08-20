@@ -7,10 +7,12 @@ import "dotenv/config";
 import path from "path";
 import { fileURLToPath } from "url";
 import mongoose from "mongoose";
-
+import usersRoute from "./routers/userRoute.js";
+import notesRoute from "./routers/notesRoute.js";
 const app = express();
 const port = process.env.PORT || 8080;
-
+import cors from "cors";
+app.use(cors());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -21,23 +23,23 @@ app.use(
     saveUninitialized: true,
   })
 );
-
-//Middleware to parse JSON bodies
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
+app.use(express.json());
+app.use("/api/users", usersRoute);
+app.use("/api/notes", notesRoute);
 app.get("*", (req, res) => {
   // res.send('index');
   res.sendFile(path.join(__dirname, "Frontend", "index.html"));
 });
+//Middleware to parse JSON bodies
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 mongoose
   .connect(process.env.DB_CONNECTION_STRING, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
   })
   .then(() => {
     console.log("Connected to MongoDB");
+
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
       console.log(`Click here to open the app: http://localhost:${port}`);
