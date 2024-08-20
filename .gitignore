@@ -16,3 +16,4 @@ tmp/
 .DS_Store
 !gradle-wrapper.jar
 node_modules/
+.env
