@@ -1,0 +1,108 @@
+/* Basic styling for the Sign in page */
+body {
+    font-family: Arial, sans-serif; /* Sets the font family for the page */
+    background-color: #f4f4f4; /* Light gray background color */
+    display: flex; /* Enables flexbox for centering content */
+    justify-content: center; /* Centers content horizontally */
+    align-items: center; /* Centers content vertically */
+    height: 100vh; /* Sets the height of the page to the full viewport height */
+    margin: 0; /* Removes default margin */
+}
+
+/* Styling for the form container */
+.container {
+    background-color: white; /* White background for the container */
+    padding: 20px; /* Padding inside the container */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for a lifted effect */
+    max-width: 400px; /* Maximum width of the container */
+    width: 100%; /* Full width within the parent container */
+}
+
+/* Styling for the heading */
+h1 {
+    font-size: 1.5rem; /* Larger font size for the heading */
+    margin-bottom: 10px; /* Space below the heading */
+    text-align: center; /* Center-align the text */
+}
+
+/* Styling for the paragraph text */
+p {
+    font-size: 0.9rem; /* Slightly smaller font size for paragraphs */
+    color: #666; /* Light gray color for text */
+    text-align: center; /* Center-align the text */
+    margin-bottom: 20px; /* Space below the paragraph */
+}
+
+/* Common styling for form groups */
+.form-group {
+    margin-bottom: 15px; /* Space below each form group */
+}
+
+/* Styling for form labels */
+label {
+    font-size: 0.9rem; /* Standard font size for labels */
+    margin-bottom: 5px; /* Space below the label */
+    display: block; /* Ensures label takes full width */
+    color: #333; /* Darker gray color for labels */
+}
+
+/* Styling for input fields */
+input[type="email"],
+input[type="password"] {
+    width: 100%; /* Full width of the input fields */
+    padding: 10px; /* Padding inside the input fields */
+    margin-top: 5px; /* Space above the input fields */
+    margin-bottom: 5px; /* Space below the input fields */
+    border: 1px solid #ddd; /* Light gray border */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 1rem; /* Standard font size for input text */
+}
+
+/* Styling for links */
+a {
+    font-size: 0.8rem; /* Smaller font size for links */
+    color: #007bff; /* Blue color for links */
+    text-decoration: none; /* Removes underline from links */
+    display: inline-block; /* Displays links inline but allows padding/margins */
+    margin-top: 5px; /* Space above the links */
+}
+
+/* Styling for the submit button */
+button[type="submit"] {
+    width: 100%; /* Full width of the button */
+    padding: 10px; /* Padding inside the button */
+    background-color: #333; /* Dark gray background color */
+    color: white; /* White text color */
+    border: none; /* Removes border */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 1rem; /* Standard font size for button text */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+/* Styling for the sign-up link at the bottom */
+.signup-link {
+    text-align: center; /* Center-align the text */
+    margin-top: 20px; /* Space above the sign-up link */
+}
+
+/* Styling for the sign-up link text */
+.signup-link a {
+    color: #007bff; /* Blue color for the link */
+    text-decoration: none; /* Removes underline */
+    font-size: 0.9rem; /* Slightly larger font size */
+}
+
+/* Styling for the "Remember me" section */
+.remember-me {
+    display: flex; /* Flexbox layout to align items horizontally */
+    align-items: center; /* Aligns items vertically in the center */
+    font-size: 0.9rem; /* Standard font size for the label */
+}
+
+/* Styling for the checkbox in "Remember me" */
+.remember-me input {
+    margin-right: 10px; /* Space between the checkbox and label */
+}
+
+/* Styling for the Google sign-in end */
