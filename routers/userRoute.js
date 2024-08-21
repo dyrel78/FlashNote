@@ -28,16 +28,21 @@ router.get("/username/:username", async (req, res) => {
 });
 
 // Create a new user
-router.post("/", async (req, res) => {
+// Tutorial for hashing
+// https://www.honeybadger.io/blog/node-password-hashing/ 
+
+router.post("/register", async (req, res) => {
   const { first_name, last_name, email, password, username } = req.body;
 
   try {
+    const saltRounds = 5;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
     const existingUser = await User.findOne({ username });
     if (existingUser) {
       return res.status(400).json({ message: "Username already exists" });
     }
     
-    const newUser = new User({ first_name, last_name, email, password, username });
+    const newUser = new User({ first_name, last_name, email, password:hashedPassword, username });
     await newUser.save();
     res.status(201).json(newUser);
   } catch (error) {
@@ -58,6 +63,30 @@ router.put("/username/:username", async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
+    }
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      return res.status(400).send({ message: "Invalid password" });
+    }else{
+      req.session.save(() => {
+        req.session.loggedIn = true;
+        req.session.username = username;
+        res.json({ message: "Login successful" });
+      });
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+);
+
 
 // Delete user by username
 router.delete("/username/:username", async (req, res) => {
