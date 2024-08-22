@@ -8,8 +8,18 @@
 ## Running the Frontend
 
 
-`npm install`
-`npm run serve`
+Running just the frontend
+
+* `cd frontend`
+
+* `npm install`
+
+* `npm run serve` 
+
+
+
+Building front end to match the back end
+
 `npm run build`
 
 
