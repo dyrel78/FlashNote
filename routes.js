@@ -1,17 +1,24 @@
-import Router from 'express';
-const router = Router();
-const index = require('./index.js'); 
+import express from 'express';
+import User from './models/user.js';
+import Note from './models/note.js';
+const router = express.Router();
 
 
 
-router.get('api/test', (req, res) => {
-    database.collection('testagain').find().toArray((err, result) => {
-        if (err) {
-            return console.log(err);
-        }
-        res.send(result);
-    })
-})
+
+// Example API route
+router.get('/api/test', async (req, res) => {
+    try {
+        const users = await User.find(); // Use the User model to fetch data
+        res.send(users);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error retrieving users");
+    }
+});
+router.get('/api/hello', async (req, res) => {
+    res.send("Hello, World!");
+});
 
 
 router.post('/api/login', (req, res) => {
@@ -47,6 +54,7 @@ router.post('/api/logout', (req, res) => {
 }
 )
 
+export default router;
 
 
 
