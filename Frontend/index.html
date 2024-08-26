@@ -22,7 +22,7 @@
     <title>FlashNote - AI Note Taking</title>
     <link rel="stylesheet" href="css/flashnote-styles.css">
 </head>
-<body>
+<body id="app">
     <div class="flashnote-container">
         <!-- Navbar -->
         <nav class="flashnote-navbar">
@@ -40,11 +40,11 @@
             <div class="flashnote-left-column">
                 <div class="flashnote-folders">
                     <h2>My Notes</h2>
-                    <button class="flashnote-add-folder">+</button>
+                    <button class="flashnote-add-folder" @click="addFolder">+</button>
                     <ul>
-                        <li><a href="#">INFO202</a><span class="flashnote-date">September 6, 2024</span></li>
-                        <li><a href="#">INFO310</a><span class="flashnote-date">September 8, 2024</span></li>
-                        <li><a href="#">INFO301</a><span class="flashnote-date">June 12, 2024</span></li>
+                        <li v-for="note in notes" :key="note.id">
+                            <a href="#">{{ note.title }}</a><span class="flashnote-date">{{ note.date }}</span>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -55,26 +55,29 @@
                     <h2>Advanced AI Note Creation</h2>
                     <p>Welcome to FlashNote! Easily create concise notes from your lecture slides.</p>
                     <div class="flashnote-tabs">
-                        <button>Long</button>
-                        <button>Medium</button>
-                        <button>Short</button>
-                        <button>Flashcards</button>
+                        <button @click="setTab('long')">Long</button>
+                        <button @click="setTab('medium')">Medium</button>
+                        <button @click="setTab('short')">Short</button>
+                        <button @click="setTab('flashcards')">Flashcards</button>
                     </div>
                     <div class="flashnote-content">
                         <div class="flashnote-note-input">
-                            <textarea placeholder="Paste text"></textarea>
+                            <textarea v-model="inputText" placeholder="Paste text"></textarea>
                             <button class="flashnote-upload-pdf">Upload PDF</button>
-                            <button class="flashnote-create-note">Create</button>
+                            <button class="flashnote-create-note" @click="createNote">Create</button>
                         </div>
                         <div class="flashnote-note-output">
-                            <h3>Output Loading</h3>
+                            <h3>{{ outputText }}</h3>
                             <!-- Placeholder for AI generated notes preview -->
                         </div>
                     </div>
-                    <button class="flashnote-save-note">Save</button>
+                    <button class="flashnote-save-note" @click="saveNote">Save</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <script src="https://unpkg.com/vue@latest"></script>
+    <script src="js/index.js"></script>
 </body>
 </html>
