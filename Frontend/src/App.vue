@@ -1,17 +1,17 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
   <HomePage/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import HomePage from './components/HomePage.vue';
+//import future components here
+import './assets/flashnote-styles.css';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+// Add future components here
     HomePage
   }
 }
@@ -26,4 +26,8 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+</style>
+
+<style  src="@/assets/flashnote-styles.css">
 </style>
