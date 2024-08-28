@@ -20,7 +20,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FlashNote - AI Note Taking</title>
-    <link rel="stylesheet" href="css/flashnote-styles.css">
+    <link rel="stylesheet" href="css/will-style.css">
 </head>
 <body id="app">
     <div class="flashnote-container">
@@ -63,7 +63,7 @@
                     <div class="flashnote-content">
                         <div class="flashnote-note-input">
                             <textarea v-model="inputText" placeholder="Paste text"></textarea>
-                            <button class="flashnote-upload-pdf">Upload PDF</button>
+                            <button class="flashnote-upload-pdf" @click="uploadPDF">Upload PDF</button>
                             <button class="flashnote-create-note" @click="createNote">Create</button>
                         </div>
                         <div class="flashnote-note-output">
