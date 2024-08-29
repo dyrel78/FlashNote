@@ -26,7 +26,10 @@ app.use(
     saveUninitialized: true,
   })
 );
+app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app
 app.use("/api/users", usersRoute);
 app.use("/api/notes", notesRoute);
 app.use("/api/llm", llmRoutes);
