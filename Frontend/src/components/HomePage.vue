@@ -60,6 +60,7 @@
 
 <script>
   export default {
+    name: 'HomePage',
     data() {
       return {
         notes: [
@@ -91,6 +92,7 @@
     }
   };
   </script>
+
 
 
 

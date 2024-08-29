@@ -1,19 +1,12 @@
 <template>
-  <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-  <HomePage/>
+  <div id="app">
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
-import HomePage from './components/HomePage.vue';
-//import future components here
-import './assets/flashnote-styles.css';
-
 export default {
-  name: 'App',
-  components: {
-// Add future components here
-    HomePage
-  }
+  name: 'App'
 }
 </script>
 
@@ -26,8 +19,4 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-
-</style>
-
-<style  src="@/assets/flashnote-styles.css">
 </style>
