@@ -15,7 +15,7 @@ import cors from "cors";
 app.use(cors());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-import router from "./routes.js";
+// import router from "./routes.js";
 app.use(express.static(path.join(__dirname, "frontend", "dist")));
 
 
@@ -29,7 +29,7 @@ app.use(
 app.use(express.json());
 app.use("/api/users", usersRoute);
 app.use("/api/notes", notesRoute);
-app.use("/",router)
+// app.use("/",router)
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "frontend","dist", "index.html"));
 });
