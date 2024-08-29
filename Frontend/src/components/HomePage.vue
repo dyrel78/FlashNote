@@ -59,6 +59,9 @@
 </template>
 
 <script>
+import axios from 'axios';
+
+
   export default {
     name: 'HomePage',
     data() {
@@ -93,24 +96,45 @@
         },
         
         // Placeholder function to interact with LLM
-        createNote() {
-            let prompt = '';
+        // createNote() {
+        //     let prompt = '';
 
-            // Generate different prompts based on the selected tab
-            if (this.selectedTab === 'short') {
-                prompt = `${this.inputText} + "Generate notes on key points, 4 bullet points per heading, less than 15 words per bullet point."`;
-            } else if (this.selectedTab === 'medium') {
-                prompt = `${this.inputText} + "Generate notes on key points, 5 bullet points, less than 40 words per bullet point."`;
-            } else if (this.selectedTab === 'long') {
-                prompt = `${this.inputText} + "Generate full paragraphs on key concepts."`;
-            }
+        //     // Generate different prompts based on the selected tab
+        //     if (this.selectedTab === 'short') {
+        //         prompt = `${this.inputText} + "Generate notes on key points, 4 bullet points per heading, less than 15 words per bullet point."`;
+        //     } else if (this.selectedTab === 'medium') {
+        //         prompt = `${this.inputText} + "Generate notes on key points, 5 bullet points, less than 40 words per bullet point."`;
+        //     } else if (this.selectedTab === 'long') {
+        //         prompt = `${this.inputText} + "Generate full paragraphs on key concepts."`;
+        //     }
 
-            // Placeholder for LLM API call
-            console.log('Sending prompt to LLM:', prompt);
+        //     // Placeholder for LLM API call
+        //     console.log('Sending prompt to LLM:', prompt);
             
-            // Simulated response from LLM
-            this.outputText = `Generated Note for ${this.selectedTab} tab: (LLM Response Placeholder) ${prompt}`;
-        },
+        //     // Simulated response from LLM
+        //     this.outputText = `Generated Note for ${this.selectedTab} tab: (LLM Response Placeholder) ${prompt}`;
+        // }
+        async createNote() {
+            try {
+                const endpointMap = {
+                    short: '/api/llm/short',
+                    medium: '/api/llm/medium',
+                    long: '/api/llm/long'
+                };
+                const endpoint = endpointMap[this.selectedTab];
+                const response = await axios.get(endpoint, {
+                    params: {
+                        inputText: this.inputText
+                    }
+                });
+
+                this.outputText = response.data;
+            } catch (error) {
+                console.error('Error creating note:', error);
+                this.outputText = 'An error occurred while generating the note.';
+            }
+        }
+        ,
         
         // Placeholder for saving the generated note to the database
         saveNote() {
