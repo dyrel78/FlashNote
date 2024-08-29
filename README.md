@@ -5,6 +5,8 @@
 
 `npm run dev`
 
+
+
 ## Running the Frontend
 
 
@@ -17,10 +19,14 @@ Running just the frontend
 * `npm run serve` 
 
 
+* Building front end to match the back end
 
-Building front end to match the back end
+* `npm run build`
 
-`npm run build`
+## LLM endpoints
+
+* localhost:8080/api/llm/test
+
 
 
 
