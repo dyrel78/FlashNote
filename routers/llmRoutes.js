@@ -66,11 +66,10 @@ router.get("/medium", async (req, res) => {
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         let inputText = req.query.inputText + " ";
         let prompt = `${inputText} + "Generate notes on key points, 5 bullet points, less than 40 words per bullet point."`; 
-
-
         const result = await model.generateContent(prompt);
-        console.log(result.response.text());
-        res.send(result.response.text());      
+        //  result.response.text();
+        res.send( result.response.text());
+        
         ;      
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -83,8 +82,9 @@ router.get("/long", async (req, res) => {
         const genAI = new GoogleGenerativeAI(geminiApiKey);
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         let inputText = req.query.inputText;
-        let prompt = `${this.inputText} + "Generate full paragraphs on key concepts."`;
+        let prompt = `${inputText} + "Generate full paragraphs on key concepts."`;
         const result = await model.generateContent(prompt);
+        
         console.log(result.response.text());
         res.send(result.response.text());      
     } catch (error) {
