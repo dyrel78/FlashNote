@@ -7,7 +7,7 @@
                 <li><a href="#">Home</a></li>
                 <li><a href="#">History</a></li>
                 <li><a href="#">Notes</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="/create-account    ">Create Account</a></li>
             </ul>
         </nav>
 
