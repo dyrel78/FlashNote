@@ -1,9 +1,9 @@
-## Running the Express API
+## Using the app / Express API
 
-
-`npm install`
+  `npm install`
 
 `npm run dev`
+
 
 
 

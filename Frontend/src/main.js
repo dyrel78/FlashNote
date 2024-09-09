@@ -6,8 +6,10 @@ import SignIn from './components/SignIn.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 // import "/css/flashnote-styles.css"
-import "./assets/flashnote-styles.css"
+// import "./assets/flashnote-styles.css"
 import "./assets/noteable-styles.css"
+import "./assets/will-style.css"
+// import "./assets/zara-style.css"
 
 const routes = [
     {pathe: '/', component: HomePage},
