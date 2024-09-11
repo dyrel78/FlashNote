@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1>Create Account</h1>
-    <link rel="stylesheet" href="../assets/noteable-styles.css" />
 
     <!-- Form Container -->
     <form @submit.prevent="createAccount">
@@ -117,7 +116,13 @@ export default {
 };
 </script>
 
+
 <style>
+@import '../assets/brooke-style.css';
+</style>
+
+<!-- PREVIOUS CSS
+  <style>
 body,
 html {
   margin: 0;
@@ -254,4 +259,5 @@ html {
 .noteable-save-note {
   align-self: flex-end;
 }
-</style>
+
+</style> -->
