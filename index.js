@@ -52,3 +52,5 @@ mongoose
     });
   })
   .catch((err) => console.error("Failed to connect to MongoDB", err));
+
+export default app;
