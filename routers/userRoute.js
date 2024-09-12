@@ -13,7 +13,31 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+// GET user by email and check password
+router.get("/emailmail/:email", async (req, res) => {
+  try {
+    // Find user by email
+    const user = await User.findOne({ email: req.params.email });
 
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if the provided password matches
+    const isPasswordCorrect = await bcrypt.compare(
+      req.query.password,
+      user.password
+    );
+    if (!isPasswordCorrect) {
+      return res.status(401).json({ message: "Incorrect password" });
+    }
+
+    // If the password is correct, return success
+    return res.status(200).json({ message: "Login successful", user: user });
+  } catch (err) {
+    return res.status(500).json({ message: "Server error", error: err });
+  }
+});
 // Get user by username
 router.get("/username/:username", async (req, res) => {
   try {
