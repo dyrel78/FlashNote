@@ -8,6 +8,7 @@
           <li><a href="#">History</a></li>
           <li><a href="#">Notes</a></li>
           <li><a href="/create-account">Create Account</a></li>
+          <li><a href="/sign-in">Sign In</a></li>
         </ul>
       </nav>
 
@@ -25,12 +26,27 @@
               </li>
             </ul>
           </div>
+
+          <div v-if="userExists">
+            <h2>Welcome, {{ userObject.first_name }}!</h2>
+          </div>
         </div>
 
         <!-- Right Column for Note Input/Display -->
         <div class="flashnote-right-column">
           <div class="flashnote-note-area">
+            <!-- use sessions storage to access users name -->
+             <div>
+
+            </div>  
+            <!-- <h2 >
+              {{ userExists ? `Welcome, ${userObject.first_name}!` : "Welcome!" }}
+            </h2> -->
+            <div v-if="userExists">
+            <h2>Welcome, {{ userObject.first_name }}!</h2>
+          </div>
             <h2>Advanced AI Note Creation</h2>
+
             <p>
               Welcome to FlashNote! Easily create concise notes from your
               lecture slides.
@@ -98,20 +114,34 @@ export default {
       outputText: "",
       selectedTab: "long",
       userExists: false,
+      userObject: ""
     };
   },
   mounted() {
     // Check if user is in session storage when the component mounts
     this.checkUserInSession();
+    this.created();
   },
   methods: {
-    checkUserInSession() {
+    async created(){
+      if(sessionStorage.getItem("user")){
+        console.log("TESTING CREATEDUser exists in session storage:", this.user);
+        this.userExists = true;
+        this.userObject = JSON.parse(sessionStorage.getItem("user"));
+      }else{
+        console.log("TESTING CREATEDUser does not exist in session storage:", this.user);
+        this.userExists = false;
+      }
+    },
+    async checkUserInSession() {
       var user = sessionStorage.getItem("user");
       this.userExists = !!user; // Converts to a boolean: true if user exists, false otherwise
       console.log("User exists in session storage:", this.userExists);
       user = JSON.parse(user);
       console.log(user);
     },
+
+
     // Placeholder for adding a new folder to the database
     addFolder() {
       const newId = this.notes.length + 1;
