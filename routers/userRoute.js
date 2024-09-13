@@ -13,29 +13,36 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-// GET user by email and check password
-router.get("/emailmail/:email", async (req, res) => {
+
+// POST route for user login
+// Login route
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
   try {
     // Find user by email
-    const user = await User.findOne({ email: req.params.email });
+    const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Check if the provided password matches
-    const isPasswordCorrect = await bcrypt.compare(
-      req.query.password,
-      user.password
-    );
+    // Compare the provided password with the hashed password
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    console.log(password);
+    console.log(user.password);
+    console.log(isPasswordCorrect);
     if (!isPasswordCorrect) {
       return res.status(401).json({ message: "Incorrect password" });
     }
 
     // If the password is correct, return success
     return res.status(200).json({ message: "Login successful", user: user });
-  } catch (err) {
-    return res.status(500).json({ message: "Server error", error: err });
+  } catch (error) {
+    console.error("Error during login:", error.message);
+    return res
+      .status(500)
+      .json({ message: "Internal server error. Please try again." });
   }
 });
 // Get user by username
@@ -67,7 +74,7 @@ router.post("/register", async (req, res) => {
     }
 
     // Hash the password
-    const saltRounds = 5;
+    const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     // Create the new user

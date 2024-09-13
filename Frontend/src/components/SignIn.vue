@@ -57,15 +57,20 @@ export default {
     async signInUser() {
       try {
         // Call backend API to authenticate user
-        const response = await axios.get(
-          `http://localhost:8080/emailmail/${this.email}`,
+        // Change the method to POST and send the email/password in the body
+        console.log(this.password);
+        const response = await axios.post(
+          `http://localhost:8080/api/users/login`,
           {
-            params: { password: this.password },
+            email: this.email,
+            password: this.password,
           }
         );
+
         if (response.status === 200) {
           alert("Login successful");
-          sessionStorage.setItem("user", JSON.stringify(response.data));
+          console.log(response.data);
+          sessionStorage.setItem("user", JSON.stringify(response.data.user));
         }
       } catch (error) {
         if (error.response && error.response.status === 401) {
