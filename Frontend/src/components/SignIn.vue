@@ -72,6 +72,8 @@ export default {
           alert("Login successful");
           console.log(response.data);
           sessionStorage.setItem("user", JSON.stringify(response.data.user));
+          // Redirect to the home page
+          this.$router.push("/");
         }else{
           alert("Login failed");
         }
