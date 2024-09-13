@@ -19,6 +19,8 @@ router.get("/", async (req, res) => {
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
+
+console.log(email + " " + password);
   try {
     // Find user by email
     const user = await User.findOne({ email });
@@ -26,12 +28,10 @@ router.post("/login", async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
+    const hashPass = /^\$2y\$/.test(user.password) ? '$2a$' + user.password.slice(4) : user.password;
     // Compare the provided password with the hashed password
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    console.log(password);
-    console.log(user.password);
-    console.log(isPasswordCorrect);
+    const isPasswordCorrect = await bcrypt.compare(password, hashPass);
+
     if (!isPasswordCorrect) {
       return res.status(401).json({ message: "Incorrect password" });
     }
@@ -39,7 +39,6 @@ router.post("/login", async (req, res) => {
     // If the password is correct, return success
     return res.status(200).json({ message: "Login successful", user: user });
   } catch (error) {
-    console.error("Error during login:", error.message);
     return res
       .status(500)
       .json({ message: "Internal server error. Please try again." });
@@ -75,7 +74,11 @@ router.post("/register", async (req, res) => {
 
     // Hash the password
     const saltRounds = 10;
+    
     const hashedPassword = await bcrypt.hash(password, saltRounds);
+    console.log("Create Account, plaintext:" +password);
+    console.log("Hashed password "+hashedPassword);
+    console.log("Registration - Hash prefix:", hashedPassword.substring(0, 7));
 
     // Create the new user
     const newUser = new User({
@@ -112,28 +115,6 @@ router.put("/username/:username", async (req, res) => {
       res.json(user);
     } else {
       res.status(404).json({ message: "User not found" });
-    }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
-
-router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-  try {
-    const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(404).send({ message: "User not found" });
-    }
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) {
-      return res.status(400).send({ message: "Invalid password" });
-    } else {
-      req.session.save(() => {
-        req.session.loggedIn = true;
-        req.session.username = username;
-        res.json({ message: "Login successful" });
-      });
     }
   } catch (error) {
     res.status(400).json({ error: error.message });

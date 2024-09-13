@@ -58,19 +58,22 @@ export default {
       try {
         // Call backend API to authenticate user
         // Change the method to POST and send the email/password in the body
-        console.log(this.password);
-        const response = await axios.post(
-          `http://localhost:8080/api/users/login`,
-          {
+        // console.log("Test");
+
+        const endpoint = 'http://localhost:8080/api/users/login';
+        const response = await axios.post(endpoint, {
             email: this.email,
-            password: this.password,
-          }
-        );
+            password: this.password,          
+        });
+
+
 
         if (response.status === 200) {
           alert("Login successful");
           console.log(response.data);
           sessionStorage.setItem("user", JSON.stringify(response.data.user));
+        }else{
+          alert("Login failed");
         }
       } catch (error) {
         if (error.response && error.response.status === 401) {
@@ -78,9 +81,15 @@ export default {
         } else if (error.response && error.response.status === 404) {
           alert("User not found");
         } else {
-          alert("An error occurred. Please try again.");
+          alert("An error occurred. Please try again." + error);
         }
       }
+    },
+    resetForm() {
+
+      this.email = "";
+      this.password = "";
+
     },
   },
 };
