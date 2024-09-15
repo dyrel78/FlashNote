@@ -17,6 +17,7 @@ const routes = [
     { path: '/home', component: HomePage },
     { path: '/create-account', component: CreateAccount },
     {path:'/sign-in', component: SignIn},
+    {path:'/view-notes-preview', component: ViewNotesPreview}
 ];
 
 const router = createRouter({
