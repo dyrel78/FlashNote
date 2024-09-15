@@ -110,11 +110,13 @@
             user: user.id,
           };
   
-          const response = await axios.post("http://localhost:8080/api/notes", newNote);
-          alert("Note saved successfully!");
-        } catch (error) {
-          alert("Error saving note: " + error.message);
-        }
+          const response = await axios.post("localhost:8080/api/notes/", newNote);
+        console.log("Note saved successfully:", response.data);
+        alert("Note saved successfully!");
+      } catch (error) {
+        console.error("Error saving note:", error);
+        alert("An error occurred while saving the note.");
+      }
       },
     },
   };
