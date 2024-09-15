@@ -7,7 +7,7 @@
             <ul>
               <li><a href="#">Home</a></li>
               <li><a href="#">Notes Folders</a></li>
-              <li><a href="#">Notes</a></li>
+              <li><a href="/view-notes-preview">Notes</a></li>
               <li><a href="#">Profile</a></li>
               <li><a href="#">Sign Out</a></li>
               <li v-if="userExists">
