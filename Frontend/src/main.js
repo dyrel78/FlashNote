@@ -3,6 +3,7 @@ import App from './App.vue'
 import HomePage from './components/HomePage.vue'
 import CreateAccount from './components/CreateAccount.vue'
 import SignIn from './components/SignIn.vue'
+import ViewNotesPreview from './components/ViewNotesPreview.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 // import "/css/flashnote-styles.css"
