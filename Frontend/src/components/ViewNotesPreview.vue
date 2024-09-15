@@ -6,8 +6,10 @@
           <nav class="flashnote-navbar">
             <ul>
               <li><a href="#">Home</a></li>
-              <li><a href="#">History</a></li>
+              <li><a href="#">Notes Folders</a></li>
               <li><a href="#">Notes</a></li>
+              <li><a href="#">Profile</a></li>
+              <li><a href="#">Sign Out</a></li>
               <li v-if="userExists">
                 <a @click="handleSignInOut">Sign Out</a>
               </li>
