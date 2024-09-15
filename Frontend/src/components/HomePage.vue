@@ -8,7 +8,12 @@
           <li><a href="#">History</a></li>
           <li><a href="#">Notes</a></li>
           <li><a href="/create-account">Create Account</a></li>
-          <li><a href="/sign-in">Sign In</a></li>
+          <li v-if="userExists">
+            <a @click="handleSignInOut">Sign Out</a>
+          </li>
+          <li v-else>
+            <a href="/sign-in">Sign In</a>
+          </li>
         </ul>
       </nav>
 
@@ -137,6 +142,18 @@ export default {
         this.userExists = false;
       }
     },
+    handleSignInOut() {
+      if (this.userExists) {
+        // User is logged in, so sign out
+        sessionStorage.removeItem("user");
+        this.userExists = false;
+        this.userObject = {};
+        this.signInLabel = "Sign In"; // Update label to "Sign In"
+      } else {
+        // User is not logged in, so redirect to sign-in page
+        window.location.href = "/sign-in";
+      }
+    },
     async checkUserInSession() {
       var user = sessionStorage.getItem("user");
       this.userExists = !!user; // Converts to a boolean: true if user exists, false otherwise
@@ -222,7 +239,7 @@ export default {
           user: user.id, // Replace with actual user ID
         };
 
-        const response = await axios.post("/api/notes", newNote);
+        const response = await axios.post("localhost:8080/api/notes/", newNote);
         console.log("Note saved successfully:", response.data);
         alert("Note saved successfully!");
       } catch (error) {
