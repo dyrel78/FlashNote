@@ -36,15 +36,13 @@
         <div class="flashnote-right-column">
           <div class="flashnote-note-area">
             <!-- use sessions storage to access users name -->
-             <div>
-
-            </div>  
+            <div></div>
             <!-- <h2 >
               {{ userExists ? `Welcome, ${userObject.first_name}!` : "Welcome!" }}
             </h2> -->
             <div v-if="userExists">
-            <h2>Welcome, {{ userObject.first_name }}!</h2>
-          </div>
+              <h2>Welcome, {{ userObject.first_name }}!</h2>
+            </div>
             <h2>Advanced AI Note Creation</h2>
 
             <p>
@@ -85,9 +83,9 @@
               </div>
             </div>
             <button
+              v-if="userExists"
               class="flashnote-save-note"
               @click="saveNote"
-              :disabled="!userExists"
             >
               Save
             </button>
@@ -114,7 +112,7 @@ export default {
       outputText: "",
       selectedTab: "long",
       userExists: false,
-      userObject: ""
+      userObject: "",
     };
   },
   mounted() {
@@ -123,13 +121,19 @@ export default {
     this.created();
   },
   methods: {
-    async created(){
-      if(sessionStorage.getItem("user")){
-        console.log("TESTING CREATEDUser exists in session storage:", this.user);
+    async created() {
+      if (sessionStorage.getItem("user")) {
+        console.log(
+          "TESTING CREATEDUser exists in session storage:",
+          this.user
+        );
         this.userExists = true;
         this.userObject = JSON.parse(sessionStorage.getItem("user"));
-      }else{
-        console.log("TESTING CREATEDUser does not exist in session storage:", this.user);
+      } else {
+        console.log(
+          "TESTING CREATEDUser does not exist in session storage:",
+          this.user
+        );
         this.userExists = false;
       }
     },
@@ -140,7 +144,6 @@ export default {
       user = JSON.parse(user);
       console.log(user);
     },
-
 
     // Placeholder for adding a new folder to the database
     addFolder() {
