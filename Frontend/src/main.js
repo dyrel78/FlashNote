@@ -11,6 +11,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 // import "./assets/flashnote-styles.css"
 import "./assets/noteable-styles.css"
 import "./assets/will-style.css"
+// import "./assets/brooke-style.css"
 // import "./assets/zara-style.css"
 
 const routes = [
