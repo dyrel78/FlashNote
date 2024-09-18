@@ -247,7 +247,7 @@ export default {
           note_content: this.outputText,
           note_format: this.selectedTab,
           folder: folderName,
-          user: user._id, // Replace with actual user ID
+          user: user,
         };
         console.log("Saving note:", newNote);
         const response = await axios.post(
