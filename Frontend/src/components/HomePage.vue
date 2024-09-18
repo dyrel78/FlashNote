@@ -68,6 +68,29 @@
                   placeholder="Paste text"
                 ></textarea>
                 <button class="flashnote-upload-pdf">Upload PDF</button>
+                <div v-if="userExists">
+                  <label for="folderSelect">Select Folder:</label>
+                  <select v-model="selectedFolder" @change="handleFolderChange">
+                    <option value="" disabled>Select a folder</option>
+                    <option
+                      v-for="folder in folders"
+                      :key="folder"
+                      :value="folder"
+                    >
+                      {{ folder }}
+                    </option>
+                    <option value="new">Create New Folder</option>
+                  </select>
+
+                  <!-- Input for new folder name (only shown when "Create New Folder" is selected) -->
+                  <div v-if="isNewFolder">
+                    <input
+                      type="text"
+                      v-model="newFolderName"
+                      placeholder="Enter new folder name"
+                    />
+                  </div>
+                </div>
                 <button class="flashnote-create-note" @click="createNote">
                   Create
                 </button>
@@ -104,7 +127,7 @@
 
 <script>
 import axios from "axios";
-
+import Swal from "sweetalert2";
 export default {
   name: "HomePage",
   data() {
@@ -114,6 +137,9 @@ export default {
         { id: 2, title: "INFO310", date: "September 8, 2024" },
         { id: 3, title: "INFO301", date: "June 12, 2024" },
       ],
+      folders: [],
+      selectedFolder: "", // For selected folder
+      newFolderName: "",
       inputText: "",
       outputText: "",
       selectedTab: "long",
@@ -125,6 +151,7 @@ export default {
     // Check if user is in session storage when the component mounts
     this.checkUserInSession();
     this.created();
+    this.fetchFolders();
   },
   methods: {
     async created() {
@@ -224,23 +251,56 @@ export default {
       }
     },
 
+    async fetchFolders() {
+      try {
+        const user = JSON.parse(sessionStorage.getItem("user"));
+        const response = await axios.get(
+          `http://localhost:8080/api/notes/folders/${user._id}`
+        );
+        this.folders = response.data;
+      } catch (error) {
+        console.error("Error fetching folders:", error);
+        this.folders = []; // Ensure folders is at least an empty array if an error occurs
+      }
+    },
+
+    handleFolderChange() {
+      // Toggle the visibility of the new folder input based on selection
+      this.isNewFolder = this.selectedFolder === "new";
+    },
+
     async saveNote() {
       try {
         const user = JSON.parse(sessionStorage.getItem("user"));
+        let folderName = this.selectedFolder;
 
-        // Prompt the user for the note name and folder name
+        // Use the new folder name if the user has selected to create a new one
+        if (this.isNewFolder) {
+          folderName = this.newFolderName;
+        }
+
+        if (!folderName) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops!",
+            text: "Please select or create a folder.",
+          });
+          return;
+        }
+
         const noteName = window.prompt(
           "Enter a name for your note:",
           `Note_${new Date().toISOString()}`
         );
-        const folderName = window.prompt(
-          "Enter a folder name for your note:",
-          "default"
-        );
 
-        if (!noteName || !folderName) {
-          alert("Note name and folder name are required.");
-          return; // Exit if the user cancels or leaves inputs blank
+        if (!noteName) {
+          // Error alert for missing note name
+          Swal.fire({
+            icon: "error",
+            title: "Oops!",
+            text: "Note name is required.",
+          });
+          return;
         }
 
         const newNote = {
@@ -250,16 +310,26 @@ export default {
           folder: folderName,
           user: user,
         };
-        console.log("Saving note:", newNote);
+
         const response = await axios.post(
           "http://localhost:8080/api/notes/",
           newNote
         );
         console.log("Note saved successfully:", response.data);
-        alert("Note saved successfully!");
+        // Success alert for note saving
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Note saved successfully!",
+        });
       } catch (error) {
         console.error("Error saving note:", error);
-        alert("An error occurred while saving the note.");
+        // Success alert for note saving
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Note saved successfully!",
+        });
       }
     },
     // Placeholder for showing a PDF upload popup
