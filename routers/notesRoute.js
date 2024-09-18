@@ -53,6 +53,23 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// Route to get all notes for a specific user filtered by folder
+router.get("/:userId/folder/:folderName", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const folderName = req.params.folderName;
+
+    // Find all notes for the user in the specified folder
+    const notes = await Note.find({ user: userId, folder: folderName });
+
+    // Respond with the notes found in the folder
+    res.status(200).json(notes);
+  } catch (error) {
+    console.error("Error fetching notes by folder:", error);
+    res.status(500).json({ error: "An error occurred while fetching notes." });
+  }
+});
 // Get all notes by a specific user (using user ID)
 router.get("/user/:userId", async (req, res) => {
   try {
