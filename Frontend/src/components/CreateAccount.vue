@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import Swal from "sweetalert2"; // Import SweetAlert
+
 export default {
   name: "CreateAccount",
   data() {
@@ -64,7 +66,11 @@ export default {
     async createAccount() {
       // Validate if passwords match
       if (this.password !== this.confirm_password) {
-        alert("Passwords do not match");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Passwords do not match",
+        });
         return;
       }
 
@@ -94,14 +100,26 @@ export default {
         // Handle the response
         if (!response.ok) {
           const errorData = await response.json();
-          alert(`Error: ${errorData.message || "Failed to create account"}`);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: errorData.message || "Failed to create account",
+          });
         } else {
-          alert("Account created successfully");
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Account created successfully",
+          });
           // Optionally, you can clear the form or redirect to a login page
           this.resetForm();
         }
       } catch (error) {
-        alert(`Error: ${error.message}`);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: error.message,
+        });
       }
     },
     resetForm() {
@@ -116,9 +134,6 @@ export default {
 };
 </script>
 
-
 <style>
-@import '../assets/brooke-style.css';
+@import "../assets/brooke-style.css";
 </style>
-
-
