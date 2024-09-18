@@ -222,24 +222,38 @@ export default {
         this.outputText = "An error occurred while generating the note.";
       }
     },
-    // Placeholder for saving the generated note to the database
-    // saveNote() {
-    //     console.log('Saving note to the database:', this.outputText);
-    //     alert('Note saved successfully!');
-    //     // Placeholder for actual database saving logic
-    // },
+
     async saveNote() {
       try {
         const user = JSON.parse(sessionStorage.getItem("user"));
+
+        // Prompt the user for the note name and folder name
+        const noteName = window.prompt(
+          "Enter a name for your note:",
+          `Note_${new Date().toISOString()}`
+        );
+        const folderName = window.prompt(
+          "Enter a folder name for your note:",
+          "default"
+        );
+
+        if (!noteName || !folderName) {
+          alert("Note name and folder name are required.");
+          return; // Exit if the user cancels or leaves inputs blank
+        }
+
         const newNote = {
-          note_name: `Note_${new Date().toISOString()}`, // Example note name, customize as needed
+          note_name: noteName,
           note_content: this.outputText,
           note_format: this.selectedTab,
-          folder: "default", // Example folder name, customize as needed
-          user: user.id, // Replace with actual user ID
+          folder: folderName,
+          user: user._id, // Replace with actual user ID
         };
-
-        const response = await axios.post("localhost:8080/api/notes/", newNote);
+        console.log("Saving note:", newNote);
+        const response = await axios.post(
+          "http://localhost:8080/api/notes/",
+          newNote
+        );
         console.log("Note saved successfully:", response.data);
         alert("Note saved successfully!");
       } catch (error) {

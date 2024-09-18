@@ -9,12 +9,7 @@ const router = express.Router();
 router.post("/", async (req, res) => {
   try {
     const { folder, note_content, note_format, note_name, user } = req.body;
-
-    // Check if the user exists
-    const existingUser = await User.findById(user);
-    if (!existingUser) {
-      return res.status(404).json({ error: "User not found" });
-    }
+    console.log(req.body);
 
     const newNote = new Note({
       folder,
