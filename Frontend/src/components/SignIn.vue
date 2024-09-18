@@ -44,6 +44,7 @@
 
 <script>
 import axios from "axios";
+import Swal from "sweetalert2"; // Import SweetAlert
 
 export default {
   name: "SignIn",
@@ -56,42 +57,54 @@ export default {
   methods: {
     async signInUser() {
       try {
-        // Call backend API to authenticate user
-        // Change the method to POST and send the email/password in the body
-        // console.log("Test");
-
-        const endpoint = 'http://localhost:8080/api/users/login';
+        const endpoint = "http://localhost:8080/api/users/login";
         const response = await axios.post(endpoint, {
-            email: this.email,
-            password: this.password,          
+          email: this.email,
+          password: this.password,
         });
 
-
-
         if (response.status === 200) {
-          alert("Login successful");
+          Swal.fire({
+            icon: "success",
+            title: "Login Successful",
+            text: "You have logged in successfully!",
+          });
           console.log(response.data);
           sessionStorage.setItem("user", JSON.stringify(response.data.user));
           // Redirect to the home page
           this.$router.push("/");
-        }else{
-          alert("Login failed");
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Login Failed",
+            text: "Login failed. Please try again.",
+          });
         }
       } catch (error) {
         if (error.response && error.response.status === 401) {
-          alert("Incorrect password");
+          Swal.fire({
+            icon: "error",
+            title: "Incorrect Password",
+            text: "The password you entered is incorrect.",
+          });
         } else if (error.response && error.response.status === 404) {
-          alert("User not found");
+          Swal.fire({
+            icon: "error",
+            title: "User Not Found",
+            text: "No account found with this email address.",
+          });
         } else {
-          alert("An error occurred. Please try again." + error);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "An error occurred. Please try again. " + error.message,
+          });
         }
       }
     },
     resetForm() {
-
       this.email = "";
       this.password = "";
-
     },
   },
 };
