@@ -14,6 +14,17 @@
             <!-- User info to be added-->
         </div>
         
+          <!--
+          Loop through folders to create navigation items 
+          <li v-for="folder in folders" :key="folder">
+            <a href="#">
+                <i class="bx bx-folder"></i>
+                <span class="nav-item">{{ folder }}</span>
+            </a>
+            <span class="tooltip">{{ folder }}</span>
+          </li>
+          -->
+
         <ul>
             <li>
                 <a href="#">
