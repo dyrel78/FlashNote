@@ -140,6 +140,12 @@
     padding: 1rem;
 }
 
+.flashnote-navbar ul a:hover {
+    border-radius: 0.4rem;
+    background-color: white;
+    color:  #6798c0;
+}
+
 .flashnote-navbar ul {
     list-style-type: none;
     margin: 0;
