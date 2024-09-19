@@ -113,6 +113,8 @@ export default {
           });
           // Optionally, you can clear the form or redirect to a login page
           this.resetForm();
+          this.$router.push("/sign-in");
+
         }
       } catch (error) {
         Swal.fire({
