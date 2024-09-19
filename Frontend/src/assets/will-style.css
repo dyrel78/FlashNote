@@ -261,7 +261,7 @@
         flex-direction: column;
     }
     
-    .flashnote-left-column, .flashnote-right-column {
+     .flashnote-right-column {
         width: 100%;
         padding: 1rem;
     }

@@ -72,23 +72,6 @@
 
       <!-- Main content -->
       <div class="flashnote-main-content">
-        <!-- Left Column for Folders -->
-        <div class="flashnote-left-column">
-          <!-- <div class="flashnote-folders">
-            <h2>My Notes</h2>
-            <button class="flashnote-add-folder" @click="addFolder">+</button>
-            <ul>
-              <li v-for="note in notes" :key="note.id">
-                <a href="#">{{ note.title }}</a
-                ><span class="flashnote-date">{{ note.date }}</span>
-              </li>
-            </ul>
-          </div> -->
-
-          <div v-if="userExists">
-            <h2>Welcome, {{ userObject.first_name }}!</h2>
-          </div>
-        </div>
 
         <!-- Right Column for Note Input/Display -->
         <div class="flashnote-right-column">
