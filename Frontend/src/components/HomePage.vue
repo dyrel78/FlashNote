@@ -75,7 +75,7 @@
           </div> -->
 
           <div v-if="userExists">
-            <h2>Welcomeffff, {{ userObject.first_name }}!</h2>
+            <h2>Welcome, {{ userObject.first_name }}!</h2>
           </div>
         </div>
 
@@ -111,7 +111,7 @@
                 <button class="flashnote-upload-pdf">Upload PDF</button>
                 <div v-if="userExists">
                   <label for="folderSelect">Select Folder:</label>
-                  <select v-model="selectedFolder" @change="handleFolderChange">
+                  <select  id="folderSelect" @change="handleFolderChange" v-model="selectedFolder">
                     <option value="" disabled>Select a folder</option>
                     <option
                       v-for="folder in folders"
@@ -124,7 +124,7 @@
                   </select>
 
                   <!-- Input for new folder name (only shown when "Create New Folder" is selected) -->
-                  <div v-if="isNewFolder">
+                  <div class= "enterNewFolder" v-if="isNewFolder">
                     <input
                       type="text"
                       v-model="newFolderName"
@@ -295,7 +295,7 @@ export default {
       }
     },
 
-    handleFolderChange() {
+    async handleFolderChange() {
       // Toggle the visibility of the new folder input based on selection
       this.isNewFolder = this.selectedFolder === "new";
     },
@@ -378,4 +378,15 @@ export default {
 @import url(../assets/will-style.css);
 @import url(   "https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" 
 );
+</style>
+
+<style>
+select {
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+}
+
 </style>
