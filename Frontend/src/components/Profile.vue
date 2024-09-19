@@ -1,10 +1,10 @@
 <template>
     <div class="profile-container">
       <h1>My Profile</h1>
+      <br>
   
       <!-- Profile Picture Section -->
       <div class="profile-picture-section">
-        <h2>Profile Picture</h2>
         <div class="profile-picture">
           <img :src="profilePicture" alt="Profile Picture" />
         </div>
