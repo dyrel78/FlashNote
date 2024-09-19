@@ -23,8 +23,11 @@
               <div class="flashnote-folders">
                 <h2>My Notes</h2>
                 <ul>
-                  <li v-for="folderTitle in folders" :key="folderTitle.note_name">
-                    <a href="#">{{ folderTitle }}</a>
+                  <li v-for="note in notes" :key="note.note_name">
+                    <button @click="navigateToNote(note._id)">{{ note.note_name }}</button>
+                    
+                     <!-- <a href="/view-notes-preview/{{ note._id }}">{{ note.note_name }}</a> -->
+                    <!-- <a href="/frontend/src/components/ViewNotesPreview/note._id">{{ note.note_name }}</a> -->
                     <!-- <span class="flashnote-date">{{ note.date }}</span> -->
                   </li>
                 </ul>
@@ -38,18 +41,20 @@
                 <h2>Note Output</h2>
                 <p>Your expanded notes are shown below.</p>
   
-                <div class="flashnote-content">
-                  <div class="flashnote-note-output">
-                    <div style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%; overflow-x: auto;">
+                <div id ="flashnote-content" class="flashnote-content">
+                  <div id="flashnote-note-output" class="flashnote-note-output">
+                    <div style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%; 
+                    overflow-x: auto;">
                       <pre class="preformatted">{{ outputText }}</pre>
                     </div>
                   </div>
+                  <button v-if="userExists" class="flashnote-save-note" @click="saveNote">
+                  Save
+                </button>
                 </div>
   
                 <!-- Save Button at the bottom -->
-                <button v-if="userExists" class="flashnote-save-note" @click="saveNote">
-                  Save
-                </button>
+
               </div>
             </div>
           </div>
@@ -67,9 +72,22 @@
   
   export default {
     name: "ViewNotesPreview",
+    props:['id'],
+    watch:{
+      id:{
+       immediate:true,
+        handler(newId){
+         {
+          if(newId){
+          this.fetchNote(newId);
+          }
+         }
+        }
+      }
+    },
     data() {
       return {
-        notes: [ ],
+        notes: null,
         folders: [],
         outputText: "", // Assume this is passed from the previous page or loaded dynamically
         userExists: false,
@@ -80,7 +98,7 @@
     mounted() {
       this.checkUserInSession();
       this.getFolders();  
-      this.getNotes();
+      this.getAllNotes();
     },
     methods: {
       async checkUserInSession() {
@@ -105,23 +123,46 @@
         try {
           const response = await axios.get("//localhost:8080/api/notes/folders/" + this.userObject._id);
           this.folders = response.data;
+          console.log("Folders retrieved successfully:", this.folders);
         } catch (error) {
           console.error("Error retrieving folders:", error);
           alert("An error occurred while retrieving folders.");
         }
       },
-      async getNotes() {
+      async getAllNotes() {
         try {
-          console.log("ID:",this.userObject._id);
-
-          const response = await axios.get("//localhost:8080/api/notes/user/" + this.userObject._id);
-          this.notes = response.data;
+          const response2 = await axios.get("//localhost:8080/api/notes/user/" + this.userObject._id);
+          this.notes = response2.data;
           console.log("Notes retrieved successfully:", this.notes);
         } catch (error) {
           console.error("Error retrieving notes:", error);
           console.log("User ID:", this.userObject.id);
           alert("An error occurred while retrieving notes.");
         }
+      },
+      async fetchNote(noteId = null) {
+
+        try {
+          const idToFetch = noteId || this.id;
+          if(idToFetch){
+            const response = await axios.get(`//localhost:8080/api/notes/${idToFetch}`);
+            this.note = response.data;
+            this.outputText = this.note.note_content;
+            console.log("Notes retrieved successfully:", this.note);
+          }else{
+
+            this.outputText = "Please select a note to view";
+          }
+
+        } catch (error) {
+          console.error("Error retrieving notes:", error);
+          // console.log("User ID:", this.userObject.id);
+          alert("An error occurred while retrieving notes.");
+        }
+      },
+      navigateToNote(noteID){
+        this.$router.push({ name: 'ViewNotesPreview', params: { id:noteID } });
+        this.fetchNote(noteID);
       },
       async saveNote() {
         try {
@@ -154,10 +195,19 @@
     overflow-x: auto; /* Adds horizontal scroll if content overflows */
   }
   
+  button{
+    background-color: #6798c0; /* Button background color (dark blue) */
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 1rem;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+  }
   body,
   html {
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
     font-family: Arial, sans-serif;
     background-color: #fffdf7; /* Background color from your palette */
   }
@@ -222,8 +272,9 @@
     padding: 1rem;
     background-color: #f0f0f0; /* Very light grey background for input/output areas */
     border-radius: 4px;
+
   }
-  
+
   .flashnote-save-note {
     padding: 0.5rem 1rem;
     background-color: #6798c0; /* Button background color (dark blue) */
@@ -238,4 +289,29 @@
     background-color: #5a7ba5; /* Hover effect for buttons, slightly darker blue */
   }
   </style>
+
+
+
+<!-- Dyrels addition -->
+<style>
+.flashnote-content {
+  display: flex;
+  flex-direction: column; /* Stack child divs vertically */
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  height: 100%; /* Ensure it takes up full height of the container */
+}
+
+.flashnote-note-output,
+.flashnote-save-note {
+  width: 100%; /* Adjust this as necessary for the desired width */
+  max-width: 600px; /* Optional: Limit max width of note output */
+  margin-bottom: 1rem; /* Adds space between stacked elements */
+}
+
+button.flashnote-save-note {
+  /* display: inline-block; */
+}
+
+</style>
   
