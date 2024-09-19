@@ -1,9 +1,7 @@
 <template>
   <body id="app">
-    <div class="flashnote-container">
-
-      <!-- Sidebar -->
-      <div class="sidebar">
+    <!-- Sidebar -->
+    <div class="sidebar">
         <div class="top">
             <div class="logo">
                 <i class="bx bx-edit"></i>
@@ -40,6 +38,10 @@
             </li>
         </ul>
     </div>
+
+    <div class="flashnote-container main-content">
+
+
       <!-- Navbar -->
       <nav class="flashnote-navbar">
         <ul>
