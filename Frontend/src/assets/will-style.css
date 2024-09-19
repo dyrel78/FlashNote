@@ -10,8 +10,9 @@
 .sidebar {
     position: absolute;
     left: 0;
-    top: 75px;
-    height: 100vh;
+    top: 0;
+    bottom: 0;
+    height: 110vh;
     width: 80px;
     background: #12171e;
     padding: .4rem .8rem;
@@ -19,8 +20,8 @@
 }
 
 .sidebar.active ~ .main-content { 
-    left: 250px;               
-    width: calc(100% - 250px);
+    left: 225px;               
+    width: calc(100% - 200px);
 }
 
 .sidebar.active {
@@ -113,6 +114,7 @@
 }
 
 .sidebar ul li:hover .tooltip {
+    background-color: #fff;
     opacity: 1;
 }
 
@@ -123,11 +125,11 @@
 .main-content {
     position: relative;
     background-color: #eee;
-    min-height: 100vh;
-    top: 0;
-    left: 80px;
+    min-height: 110vh;
+    top: -30px;
+    left: 55px;
     transition: all 0.5s ease;
-    width: calc(100% - 80px);
+    width: calc(100% - 30px);
     padding: 1rem;
 }
 
@@ -169,6 +171,7 @@
 }
 
 .flashnote-tabs {
+    margin-top: 1rem;
     display: flex;
     justify-content: space-around;
     margin-bottom: 1rem;
@@ -178,10 +181,11 @@
     flex: 1;
     padding: 0.5rem;
     background-color: #fdd85d;
-    border: 1px solid #fdc920;
+    border: 1px solid #dbaf1c;
     cursor: pointer;
     color: #333;
     border-radius: 4px;
+    margin-left: 2px;
 }
 
 .flashnote-tabs button:hover {
