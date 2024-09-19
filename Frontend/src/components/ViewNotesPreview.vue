@@ -23,9 +23,9 @@
               <div class="flashnote-folders">
                 <h2>My Notes</h2>
                 <ul>
-                  <li v-for="note in notes" :key="note.id">
-                    <a href="#">{{ note.title }}</a>
-                    <span class="flashnote-date">{{ note.date }}</span>
+                  <li v-for="folderTitle in folders" :key="folderTitle.note_name">
+                    <a href="#">{{ folderTitle }}</a>
+                    <!-- <span class="flashnote-date">{{ note.date }}</span> -->
                   </li>
                 </ul>
               </div>
@@ -63,26 +63,27 @@
   
   <script>
   import axios from "axios";
+// import { get } from "core-js/core/dict";
   
   export default {
     name: "ViewNotesPreview",
     data() {
       return {
-        notes: [
-          { id: 1, title: "INFO202", date: "September 6, 2024" },
-          { id: 2, title: "INFO310", date: "September 8, 2024" },
-          { id: 3, title: "INFO301", date: "June 12, 2024" },
-        ],
+        notes: [ ],
+        folders: [],
         outputText: "", // Assume this is passed from the previous page or loaded dynamically
         userExists: false,
         userObject: {},
+
       };
     },
     mounted() {
       this.checkUserInSession();
+      this.getFolders();  
+      this.getNotes();
     },
     methods: {
-      checkUserInSession() {
+      async checkUserInSession() {
         const user = sessionStorage.getItem("user");
         if (!user) {
           // If the user does not exist, redirect to sign-in page
@@ -90,6 +91,7 @@
         } else {
           this.userExists = true;
           this.userObject = JSON.parse(user);
+          console.log("User exists in session storage:", this.userObject);
         }
       },
       handleSignInOut() {
@@ -97,6 +99,28 @@
           sessionStorage.removeItem("user");
           this.userExists = false;
           window.location.href = "/sign-in"; // Redirect to login after sign out
+        }
+      },
+      async getFolders() {
+        try {
+          const response = await axios.get("//localhost:8080/api/notes/folders/" + this.userObject._id);
+          this.folders = response.data;
+        } catch (error) {
+          console.error("Error retrieving folders:", error);
+          alert("An error occurred while retrieving folders.");
+        }
+      },
+      async getNotes() {
+        try {
+          console.log("ID:",this.userObject._id);
+
+          const response = await axios.get("//localhost:8080/api/notes/user/" + this.userObject._id);
+          this.notes = response.data;
+          console.log("Notes retrieved successfully:", this.notes);
+        } catch (error) {
+          console.error("Error retrieving notes:", error);
+          console.log("User ID:", this.userObject.id);
+          alert("An error occurred while retrieving notes.");
         }
       },
       async saveNote() {

@@ -233,9 +233,9 @@ export default {
     async createNote() {
       try {
         const endpointMap = {
-          short: "/api/llm/short",
-          medium: "/api/llm/medium",
-          long: "/api/llm/long",
+          short: "http://localhost:8080/api/llm/short",
+          medium: "http://localhost:8080/api/llm/medium",
+          long: "http://localhost:8080/api/llm/long",
         };
         const endpoint = endpointMap[this.selectedTab];
         const response = await axios.get(endpoint, {
