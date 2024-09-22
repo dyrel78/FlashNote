@@ -6,6 +6,12 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.container {
+    display: grid;
+
+
+
+}
 /* Sidebar styles */
 .sidebar {
     position: absolute;
@@ -17,6 +23,7 @@
     background: #12171e;
     padding: .4rem .8rem;
     transition: all 0.5s ease;
+    z-index: 1000;
 }
 
 .sidebar.active ~ .main-content { 
@@ -126,13 +133,17 @@
     position: relative;
     background-color: #eee;
     min-height: 110vh;
-    top: -30px;
-    left: 55px;
+    /* top: -30px; */
+    left: 5rem;
     transition: all 0.5s ease;
     width: calc(100% - 30px);
-    padding: 1rem;
+    /* padding: 1rem; */
 }
 
+
+.flashnote-container.main-content{
+color: black;
+}
 /* FlashNote specific styles */
 .flashnote-navbar {
     background-color: #6798c0;
