@@ -1,6 +1,9 @@
 <template>
   <body id="app">
     <!-- Sidebar -->
+     <div class="container" > 
+
+    
     <div class="sidebar">
         <div class="top">
             <div class="logo">
@@ -10,9 +13,7 @@
             <i class="bx bx-menu" id="btn"></i>
         </div>
         
-        <div class="user">
-            <!-- User info to be added-->
-        </div>
+    
         
           <!--
           Loop through folders to create navigation items 
@@ -156,7 +157,10 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> 
+     <!-- End of Flashnote Main Content -->
+
+  </div> <!-- End of Container-->
   </body>
 </template>
 
@@ -368,10 +372,9 @@ export default {
 
 </script>
 
-<style scoped> 
+<style > 
 @import url(../assets/will-style.css);
-@import url(   "https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" 
-);
+@import url(   "https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" );
 </style>
 
 <style>
