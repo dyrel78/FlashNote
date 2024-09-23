@@ -26,7 +26,7 @@ jobs:
       working-directory: ./backend
 
     - name: Frontend dependencies
-      run: cd ../Frontend # Install project dependencies
+      run: cd Frontend # Install project dependencies
       
     - name: Install dependencies For Frontend
       run: npm install  # Install project dependencies
@@ -34,7 +34,7 @@ jobs:
 
     
     - name: Frontend dependencies
-      run: cd ../backend # Install project dependencies
+      run: cd backend # Install project dependencies
 
     - name: Run tests
       run: npm test  # Run tests using npm test script
