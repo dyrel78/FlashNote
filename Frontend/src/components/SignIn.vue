@@ -37,7 +37,7 @@
     </form>
     <!-- link to Create Account Page -->
     <div class="signup-link">
-      <p>Don't have an account? <a href="#">Sign up here</a></p>
+      <p>Don't have an account? <a href="create-account">Sign up here</a></p>
     </div>
   </div>
 </template>
