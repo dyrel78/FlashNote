@@ -1,8 +1,8 @@
-## Using the app / Express API
+## Using the app / Launching the backend 
 
   `npm install`
 
-`npm run dev`
+`npm run start`
 
 
 
@@ -26,16 +26,3 @@ Running just the frontend
 ## LLM endpoints
 
 * localhost:8080/api/llm/test
-
-
-
-
-
-
-
-
-
-
-
-
-
