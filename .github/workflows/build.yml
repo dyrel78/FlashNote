@@ -43,3 +43,8 @@ jobs:
     - name: Build Frontend
       run: npm run build:client  # Build the project using npm run build script
       working-directory: ./backend
+
+    - name: Build Backend
+      run: npm run start  # Build the project using npm run build script
+      working-directory: ./backend
+      
