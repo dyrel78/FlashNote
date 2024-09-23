@@ -179,15 +179,20 @@ color: black;
 }
 
 .flashnote-right-column {
-    flex: 1;
-    background-color: white;
+    /* flex: 1; */
+    background-color: #f4f4f4;
+    /* background-color: red; */
     padding: 2rem;
     border-left: 1px solid #fdd85d;
+
+    margin-right: 3rem;
 }
 
 .flashnote-note-area {
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
+    flex-direction: row;
+
 }
 
 .flashnote-tabs {
@@ -213,14 +218,6 @@ color: black;
     color: white;
 }
 
-.flashnote-content {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-
-}
 
 
 

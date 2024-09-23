@@ -98,7 +98,12 @@
                 <button @click="setTab('short')">Short</button>
                 <button @click="setTab('flashcards')">Flashcards</button>
               </div>
-              <div class="flashnote-content">
+              <div class="flashnote-content" style =  "display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    height: 100%;
+    flex-wrap: wrap;">
 
 
                 <div class="flashnote-note-input">
