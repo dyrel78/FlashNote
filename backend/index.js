@@ -34,7 +34,7 @@ app.use("/api/users", usersRoute);
 app.use("/api/notes", notesRoute);
 app.use("/api/llm", llmRoutes);
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend","dist", "index.html"));
+  res.sendFile(path.join(__dirname, "Frontend","dist", "index.html"));
 });
 //Middleware to parse JSON bodies
 app.use(bodyParser.urlencoded({ extended: true }));
