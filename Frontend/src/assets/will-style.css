@@ -6,6 +6,13 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     
 }
+
+.user-img{
+    width: 50px;
+    border-radius: 100%;
+    border: 1px solid #eee;
+}
+
 .body {
    
     background-color: #f0f0f0;
@@ -69,7 +76,32 @@
 
 .top .logo i {
     font-size: 2rem;
-    margin-right: 5px;                                 
+    margin-right: 5px;
+}
+
+
+.user{
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.user p{
+    color: #fff;
+    opacity: 1;
+    margin-left: 1rem;
+}
+
+.bold{
+    font-weight: 600;
+}
+
+.sidebar p{
+    opacity: 0;
+}
+
+.sidebar.active p{
+    opacity: 1;
 }
 
 .sidebar ul li {
@@ -179,20 +211,15 @@ color: black;
 }
 
 .flashnote-right-column {
-    /* flex: 1; */
-    background-color: #f4f4f4;
-    /* background-color: red; */
+    flex: 1;
+    background-color: white;
     padding: 2rem;
     border-left: 1px solid #fdd85d;
-
-    margin-right: 3rem;
 }
 
 .flashnote-note-area {
     display: flex;
-    /* flex-direction: column; */
-    flex-direction: row;
-
+    flex-direction: column;
 }
 
 .flashnote-tabs {
@@ -218,6 +245,14 @@ color: black;
     color: white;
 }
 
+.flashnote-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+}
 
 
 
@@ -331,4 +366,3 @@ color: black;
         margin-bottom: 0.5rem;
     }
 }
-
