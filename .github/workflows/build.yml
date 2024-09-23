@@ -28,3 +28,7 @@ jobs:
     - name: Run tests
       run: npm test  # Run tests using npm test script
       working-directory: ./backend
+
+    - name: Build Frontend
+      run: npm run build:client  # Build the project using npm run build script
+      working-directory: ./backend
