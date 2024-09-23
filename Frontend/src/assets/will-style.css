@@ -4,14 +4,17 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
+}
+.body {
+   
+    background-color: #f0f0f0;
+    color: #333;
+    font-size: 1rem;
+    line-height: 1.6;
 }
 
-.container {
-    display: grid;
 
-
-
-}
 /* Sidebar styles */
 .sidebar {
     position: absolute;
@@ -212,8 +215,14 @@ color: black;
 
 .flashnote-content {
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
 }
+
+
 
 .flashnote-note-input, .flashnote-note-output {
     width: 48%;
@@ -238,8 +247,37 @@ color: black;
     outline: none; /* Remove the default outline */
 }
 
+.outputText{
+
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 100%;
+    overflow-x: auto;
+
+    padding: 1rem;
+    resize: none;
+
+
+    /* Comment to add scrolling  */
+    /* height: 200px; */
+    border: none;
+    padding: 2rem;
+    resize: none;
+    background-color: #f0f0f0;
+    color: #333;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    outline: none; 
+    /* Remove the default outline */
+    
+    
+}
+
 /* Button styles */
-.flashnote-upload-pdf, .flashnote-create-note, .flashnote-save-note {
+.flashnote-upload-pdf, .flashnote-create-note, .flashnote-save-note,.flashnote-copy-button,.flashnote-clear-button
+
+{
     padding: 0.5rem 1rem;
     background-color: #6798c0;
     color: white;
@@ -257,6 +295,11 @@ color: black;
 
 .flashnote-save-note {
     align-self: flex-end;
+}
+
+.flashnote-copy-button {
+    padding: 0.5rem 1rem;
+    right:  1rem;
 }
 
 /* Output section */

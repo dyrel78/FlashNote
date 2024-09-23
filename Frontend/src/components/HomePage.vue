@@ -1,21 +1,22 @@
 <template>
+
   <body id="app">
     <!-- Sidebar -->
-     <div class="container" > 
+    <div class="container">
 
-    
-    <div class="sidebar">
+
+      <div class="sidebar">
         <div class="top">
-            <div class="logo">
-                <i class="bx bx-edit"></i>
-                <span>All Notes</span>
-            </div>
-            <i class="bx bx-menu" id="btn"></i>
+          <div class="logo">
+            <i class="bx bx-edit"></i>
+            <span>All Notes</span>
+          </div>
+          <i class="bx bx-menu" id="btn"></i>
         </div>
-        
-    
-        
-          <!--
+
+
+
+        <!--
           Loop through folders to create navigation items 
           <li v-for="folder in folders" :key="folder">
             <a href="#">
@@ -27,140 +28,133 @@
           -->
 
         <ul>
-            <li>
-                <a href="#">
-                    <i class="bx bx-folder"></i>
-                    <span class="nav-item"> INFO301</span>
-                </a>
-                <span class="tooltip">INFO301</span>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="bx bx-folder"></i>
-                    <span class="nav-item"> INFO302</span>
-                </a>
-                <span class="tooltip">INFO302</span>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="bx bx-folder"></i>
-                    <span class="nav-item"> COMP244</span>
-                </a>
-                <span class="tooltip"> COMP244</span>
-            </li>
-        </ul>
-    </div>
-
-    <div class="flashnote-container main-content">
-
-
-      <!-- Navbar -->
-      <nav class="flashnote-navbar">
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Notes Folders</a></li>
-          <li><a href="/view-notes-preview">Notes</a></li>
-          <li><a href="/profile">Profile</a></li>
-          <li><a href="/create-account">Create Account</a></li>
-          <li v-if="userExists">
-            <a @click="handleSignInOut">Sign Out</a>
+          <li>
+            <a href="#">
+              <i class="bx bx-folder"></i>
+              <span class="nav-item"> INFO301</span>
+            </a>
+            <span class="tooltip">INFO301</span>
           </li>
-          <li v-else>
-            <a href="/sign-in">Sign In</a>
+          <li>
+            <a href="#">
+              <i class="bx bx-folder"></i>
+              <span class="nav-item"> INFO302</span>
+            </a>
+            <span class="tooltip">INFO302</span>
+          </li>
+          <li>
+            <a href="#">
+              <i class="bx bx-folder"></i>
+              <span class="nav-item"> COMP244</span>
+            </a>
+            <span class="tooltip"> COMP244</span>
           </li>
         </ul>
-      </nav>
+      </div>
 
-      <!-- Main content -->
-      <div class="flashnote-main-content">
+      <div class="flashnote-container main-content">
 
-        <!-- Right Column for Note Input/Display -->
-        <div class="flashnote-right-column">
-          <div class="flashnote-note-area">
-            <!-- use sessions storage to access users name -->
-            <div></div>
-            <!-- <h2 >
+
+        <!-- Navbar -->
+        <nav class="flashnote-navbar">
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Notes Folders</a></li>
+            <li><a href="/view-notes-preview">Notes</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/create-account">Create Account</a></li>
+            <li v-if="userExists">
+              <a @click="handleSignInOut">Sign Out</a>
+            </li>
+            <li v-else>
+              <a href="/sign-in">Sign In</a>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Main content -->
+        <div class="flashnote-main-content">
+
+          <!-- Right Column for Note Input/Display -->
+          <div class="flashnote-right-column">
+            <div class="flashnote-note-area">
+              <!-- use sessions storage to access users name -->
+              <div></div>
+              <!-- <h2 >
               {{ userExists ? `Welcome, ${userObject.first_name}!` : "Welcome!" }}
             </h2> -->
-            <div v-if="userExists">
-              <h2>Welcome, {{ userObject.first_name }}!</h2>
-            </div>
-            <h2>Advanced AI Note Creation</h2>
+              <div v-if="userExists">
+                <h2>Welcome, {{ userObject.first_name }}!</h2>
+              </div>
+              <h2>Advanced AI Note Creation</h2>
 
-            <p>
-              Welcome to FlashNote! Easily create concise notes from your
-              lecture slides.
-            </p>
-            <div class="flashnote-tabs">
-              <button @click="setTab('long')">Long</button>
-              <button @click="setTab('medium')">Medium</button>
-              <button @click="setTab('short')">Short</button>
-              <button @click="setTab('flashcards')">Flashcards</button>
-            </div>
-            <div class="flashnote-content">
-              <div class="flashnote-note-input">
-                <textarea
-                  v-model="inputText"
-                  placeholder="Paste text"
-                ></textarea>
-                <button class="flashnote-upload-pdf">Upload PDF</button>
-                <div v-if="userExists">
-                  <label for="folderSelect">Select Folder:</label>
-                  <select  id="folderSelect" @change="handleFolderChange" v-model="selectedFolder">
-                    <option value="" disabled>Select a folder</option>
-                    <option
-                      v-for="folder in folders"
-                      :key="folder"
-                      :value="folder"
-                    >
-                      {{ folder }}
-                    </option>
-                    <option value="new">Create New Folder</option>
-                  </select>
+              <p>
+                Welcome to FlashNote! Easily create concise notes from your
+                lecture slides.
+              </p>
+              <div class="flashnote-tabs">
+                <button @click="setTab('long')">Long</button>
+                <button @click="setTab('medium')">Medium</button>
+                <button @click="setTab('short')">Short</button>
+                <button @click="setTab('flashcards')">Flashcards</button>
+              </div>
+              <div class="flashnote-content">
 
-                  <!-- Input for new folder name (only shown when "Create New Folder" is selected) -->
-                  <div class= "enterNewFolder" v-if="isNewFolder">
-                    <input
-                      type="text"
-                      v-model="newFolderName"
-                      placeholder="Enter new folder name"
-                    />
+
+                <div class="flashnote-note-input">
+                  <textarea v-model="inputText" placeholder="Paste text"></textarea>
+                  <button class="flashnote-upload-pdf">Upload PDF</button>
+                  <div v-if="userExists">
+                    <label for="folderSelect">Select Folder:</label>
+                    <select id="folderSelect" @change="handleFolderChange" v-model="selectedFolder">
+                      <option value="" disabled>Select a folder</option>
+                      <option v-for="folder in folders" :key="folder" :value="folder">
+                        {{ folder }}
+                      </option>
+                      <option value="new">Create New Folder</option>
+                    </select>
+
+                    <!-- Input for new folder name (only shown when "Create New Folder" is selected) -->
+                    <div class="enterNewFolder" v-if="isNewFolder">
+                      <input type="text" v-model="newFolderName" placeholder="Enter new folder name" />
+                    </div>
                   </div>
+                  <button class="flashnote-create-note" @click="createNote">
+                    Create
+                  </button>
                 </div>
-                <button class="flashnote-create-note" @click="createNote">
-                  Create
-                </button>
-              </div>
-              <div class="flashnote-note-output">
-                <!-- <h3>{{ outputText }}</h3> -->
-                <!-- <pre> <>{{ outputText }}  </h3></pre> -->
-                <div
-                  style="
-                    white-space: pre-wrap;
-                    word-wrap: break-word;
-                    max-width: 100%;
-                    overflow-x: auto;
-                  "
-                >
-                  <pre class="preformatted">{{ outputText }}</pre>
+
+
+                <div class="flashnote-note-output">
+                  <!-- <h3>{{ outputText }}</h3> -->
+                  <!-- <pre> <>{{ outputText }}  </h3></pre> -->
+                  <div class="outputText">
+                    <pre class="preformatted">{{ outputText }}</pre>
+                  </div>
+                  <!-- Placeholder for AI generated notes preview -->
+
+                  <button class="flashnote-clear-button" v-if=userExists @click="clearOutput">
+                    Clear
+                  </button>
+                  <button class="flashnote-copy-button">
+                    Copy
+                  </button>
                 </div>
-                <!-- Placeholder for AI generated notes preview -->
+
+
               </div>
+
+              <button v-if="userExists" class="flashnote-save-note" @click="saveNote">
+                Save
+              </button>
             </div>
-            <button
-              v-if="userExists"
-              class="flashnote-save-note"
-              @click="saveNote"
-            >
-              Save
-            </button>
           </div>
+
         </div>
       </div>
-    </div> 
-     <!-- End of Flashnote Main Content -->
+      <!-- End of Flashnote Main Content -->
 
-  </div> <!-- End of Container-->
+    </div> <!-- End of Container-->
   </body>
 </template>
 
@@ -212,11 +206,11 @@ export default {
     },
     async sideBarMethods() {
       let btn = document.querySelector("#btn");
-    let sidebar = document.querySelector(".sidebar");
+      let sidebar = document.querySelector(".sidebar");
 
-    btn.onclick = function(){
+      btn.onclick = function () {
         sidebar.classList.toggle("active");
-    }
+      }
     },
     handleSignInOut() {
       if (this.userExists) {
@@ -297,6 +291,9 @@ export default {
       // Toggle the visibility of the new folder input based on selection
       this.isNewFolder = this.selectedFolder === "new";
     },
+    async clearOutput() {
+      this.outputText = "";
+    },
 
     async saveNote() {
       try {
@@ -372,9 +369,9 @@ export default {
 
 </script>
 
-<style > 
+<style>
 @import url(../assets/will-style.css);
-@import url(   "https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" );
+@import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
 </style>
 
 <style>
