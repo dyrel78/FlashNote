@@ -10,6 +10,7 @@ import mongoose from "mongoose";
 import usersRoute from "./routers/userRoute.js";
 import notesRoute from "./routers/notesRoute.js";
 import llmRoutes from "./routers/llmRoutes.js";
+//import pdfRoutes from "./routers/pdfRoutes.js";
 const app = express();
 const port = process.env.PORT || 8080;
 import cors from "cors";
@@ -33,6 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/users", usersRoute);
 app.use("/api/notes", notesRoute);
 app.use("/api/llm", llmRoutes);
+
 app.get("*", (req, res) => {
   // res.sendFile(path.join(__dirname, "Frontend","dist", "index.html"));
   res.sendFile(path.join(__dirname, "../Frontend/dist", "index.html"));
