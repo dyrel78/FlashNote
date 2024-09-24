@@ -11,7 +11,6 @@ router.post("/extract_text", async (req, res) => {
   }
 
   const pdfFile = req.files.pdfFile; // Access the file using the correct key
-  console.log(req.files.pdfFile);
   pdf_parse.default(pdfFile) // Pass the file buffer data to pdf-parse
     .then((result) => {
       res.send(result.text);
