@@ -9,7 +9,6 @@
     "build:client": "npm run build --prefix '../Frontend/'",
     "dev": "concurrently \"npm run start:server\" \"npm run start:client\"",
     "start": "concurrently \"npm run start:server\" \"npm run build:client\""
-
   },
   "type": "module",
   "keywords": [],
@@ -23,10 +22,12 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-fileupload": "^1.5.1",
     "express-session": "^1.18.0",
     "mongodb": "^6.8.0",
     "mongoose": "^8.5.3",
     "multer": "^1.4.5-lts.1",
+    "pdf-parse": "^1.1.1",
     "vue-router": "^4.4.3"
   },
   "devDependencies": {

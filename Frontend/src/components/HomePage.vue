@@ -81,7 +81,10 @@
                     v-model="inputText"
                     placeholder="Paste text"
                   ></textarea>
-                  <button class="flashnote-upload-pdf">Upload PDF</button>
+                  <input type="file" id="inpfile" @change="handleFileUpload" />
+                  <button class="flashnote-upload-pdf" @click="uploadPDF">
+                    Upload PDF
+                  </button>
                   <div v-if="userExists">
                     <label for="folderSelect">Select Folder:</label>
                     <select
@@ -170,6 +173,7 @@ export default {
       selectedTab: "long",
       userExists: false,
       userObject: "",
+      selectedFile: null,
     };
   },
   mounted() {
@@ -195,6 +199,11 @@ export default {
         );
         this.userExists = false;
       }
+    },
+
+    handleFileUpload(event) {
+      this.selectedFile = event.target.files[0];
+      console.log(this.selectedFile);
     },
     async sideBarMethods() {
       let btn = document.querySelector("#btn");
@@ -267,8 +276,14 @@ export default {
     },
 
     async fetchFolders() {
+      const user = JSON.parse(sessionStorage.getItem("user"));
+      if (!user) {
+        console.error("No user found in session.");
+        this.folders = []; // Ensure folders is at least an empty array if no user is found
+        return;
+      }
+
       try {
-        const user = JSON.parse(sessionStorage.getItem("user"));
         const response = await axios.get(
           `http://localhost:8080/api/notes/folders/${user._id}`
         );
@@ -352,9 +367,26 @@ export default {
     },
     // Placeholder for showing a PDF upload popup
     uploadPDF() {
-      console.log("Triggered PDF upload popup");
-      // Placeholder for actual PDF upload and text scraping functionality
-      alert("PDF Upload Popup (Functionality not yet implemented)");
+      if (this.selectedFile) {
+        console.log("uploading pdf");
+        const formData = new FormData();
+        formData.append("pdfFile", this.selectedFile);
+        axios
+          .post("http://localhost:8080/api/pdf/extract_text", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((response) => {
+            console.log(response);
+            this.inputText = response.data;
+          })
+          .catch((error) => {
+            console.error("Error uploading PDF:", error);
+          });
+      } else {
+        console.log("No file selected");
+      }
     },
   },
 };
