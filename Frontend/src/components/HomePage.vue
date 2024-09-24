@@ -23,23 +23,17 @@
       </div>
 
       <div class="flashnote-container main-content">
-        <!-- Navbar -->
-        <nav class="flashnote-navbar">
-          <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Notes Folders</a></li>
-            <li><a href="/view-notes-preview">Notes</a></li>
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="/create-account">Create Account</a></li>
-            <li v-if="userExists">
-              <a @click="handleSignInOut">Sign Out</a>
-            </li>
-            <li v-else>
-              <a href="/sign-in">Sign In</a>
-            </li>
-          </ul>
-        </nav>
+        
+      <!-- Navbar -->
+      <FlashnoteNavbar 
+        :userExists="userExists" 
+        :userObject="userObject" 
+        @update:userExists="userExists = $event" 
+        @update:userObject="userObject = $event" 
+      />
 
+        
+ 
         <!-- Main content -->
         <div class="flashnote-main-content">
           <!-- Right Column for Note Input/Display -->
@@ -153,8 +147,12 @@
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
+import FlashnoteNavbar from './Navbar.vue';
 export default {
   name: "HomePage",
+  components: {
+    FlashnoteNavbar  // Register FlashnoteNavbar component here
+  },
   data() {
     return {
       notes: [
@@ -358,11 +356,16 @@ export default {
     },
   },
 };
+
+
+ 
 </script>
 
 <style>
 @import url(../assets/will-style.css);
 @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
+
+
 </style>
 
 <style>
