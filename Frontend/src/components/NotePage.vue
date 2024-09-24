@@ -2,20 +2,14 @@
   <template>
     <div v-if="userExists">
       <body id="view-notes-preview">
-        <div class="flashnote-container">
+        <!-- <div class="flashnote-container"></div> -->
           <!-- Navbar -->
-          <nav class="flashnote-navbar">
-            <ul>
-              <li><a href="/home">Home</a></li>
-              <li><a href="#">Notes Folders</a></li>
-              <li><a href="/view-notes-preview">Notes</a></li>
-              <li><a href="/profile">Profile</a></li>
-              <li><a href="#">Sign Out</a></li>
-              <li v-if="userExists">
-                <a @click="handleSignInOut">Sign Out</a>
-              </li>
-            </ul>
-          </nav>
+      <FlashnoteNavbar 
+        :userExists="userExists" 
+        :userObject="userObject" 
+        @update:userExists="userExists = $event" 
+        @update:userObject="userObject = $event" 
+      />
   
           <!-- Main content -->
           <div class="flashnote-main-content">
@@ -77,9 +71,13 @@
   </template>
   <script>
   import axios from 'axios';
+  import FlashnoteNavbar from './Navbar.vue';
   
   export default {
     name: 'NotePage',
+    components: {
+    FlashnoteNavbar  // Register FlashnoteNavbar component here
+  },
     data() {
       return {
         noteObject: null,

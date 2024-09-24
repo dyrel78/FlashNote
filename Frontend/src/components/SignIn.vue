@@ -1,5 +1,15 @@
 <template>
   <div class="container">
+
+<!-- Navbar -->
+<FlashnoteNavbar 
+        :userExists="userExists" 
+        :userObject="userObject" 
+        @update:userExists="userExists = $event" 
+        @update:userObject="userObject = $event" 
+      />
+
+
     <h1>Sign in</h1>
     <p>Log in by entering your email address and password.</p>
     <form @submit.prevent="signInUser">
@@ -45,9 +55,13 @@
 <script>
 import axios from "axios";
 import Swal from "sweetalert2"; // Import SweetAlert
+import FlashnoteNavbar from './Navbar.vue';
 
 export default {
   name: "SignIn",
+  components: {
+    FlashnoteNavbar  // Register FlashnoteNavbar component here
+  },
   data() {
     return {
       email: "",

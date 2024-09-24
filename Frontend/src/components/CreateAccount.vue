@@ -1,6 +1,14 @@
 <template>
   <div>
+     <!-- Navbar -->
+     <FlashnoteNavbar 
+        :userExists="userExists" 
+        :userObject="userObject" 
+        @update:userExists="userExists = $event" 
+        @update:userObject="userObject = $event" 
+      />
     <h1>Create Account</h1>
+    <p>Enter your details to create an account.</p>
 
     <!-- Form Container -->
     <form @submit.prevent="createAccount">
@@ -49,9 +57,14 @@
 
 <script>
 import Swal from "sweetalert2"; // Import SweetAlert
+import FlashnoteNavbar from './Navbar.vue';
 
 export default {
   name: "CreateAccount",
+  components: {
+    
+    FlashnoteNavbar  // Register FlashnoteNavbar component here
+  },
   data() {
     return {
       username: "",
