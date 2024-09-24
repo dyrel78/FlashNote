@@ -92,6 +92,21 @@ router.get("/long", async (req, res) => {
     }
 });
 
+router.get("/flashcards", async (req, res) => {
+    try {
+        const genAI = new GoogleGenerativeAI(geminiApiKey);
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        let inputText = req.query.inputText;
+        let prompt = `"Generate flashcards on key concepts in the following text. After each flashcard, include the answer
+     to the flashcard. After each pair of question and answer, include the character '|' to separate the flashcards." ${inputText} `;
+        const result = await model.generateContent(prompt);
+        console.log(result.response.text());
+        res.send(result.response.text());
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 
 
 

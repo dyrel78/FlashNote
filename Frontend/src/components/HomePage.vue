@@ -117,6 +117,7 @@
       </div>
       <!-- End of Flashnote Main Content -->
 
+
     </div>
   
     <!-- End of Container-->
@@ -128,6 +129,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import FlashnoteNavbar from './Navbar.vue';
 import FormatNoteText from '../markdownScript.js'
+import FormatFlashcards from '../flashcardScript.js'
 export default {
   name: "HomePage",
   components: {
@@ -235,6 +237,7 @@ export default {
           short: "http://localhost:8080/api/llm/short",
           medium: "http://localhost:8080/api/llm/medium",
           long: "http://localhost:8080/api/llm/long",
+          flashcards: "http://localhost:8080/api/llm/flashcards",
         };
         const endpoint = endpointMap[this.selectedTab];
         const response = await axios.get(endpoint, {
@@ -245,6 +248,15 @@ export default {
 
         this.outputText = FormatNoteText(response.data);
         // this.outputText = response.data;
+        if (this.selectedTab === "flashcards") {
+         const flashCardObjects = FormatFlashcards(response.data);
+
+         flashCardObjects.forEach(flashcard => {
+          this.outputText += flashcard.question + " " + flashcard.answer + "\n";
+
+        });
+
+        }
       } catch (error) {
         console.error("Error creating note:", error);
         this.outputText = "An error occurred while generating the note.";
