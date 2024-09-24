@@ -323,6 +323,7 @@ color: black;
     margin-right: 0.5rem;
     border-radius: 4px;
     transition: background-color 0.3s ease;
+    
 }
 
 .flashnote-upload-pdf:hover, .flashnote-create-note:hover, .flashnote-save-note:hover 

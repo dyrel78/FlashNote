@@ -66,7 +66,7 @@
                 ">
                 <div class="flashnote-note-input">
                   <textarea v-model="inputText" placeholder="Paste text"></textarea>
-                  <input type="file" id="inpfile" @change="handleFileUpload" />
+                  <input class="choose-file-input" type="file" id="inpfile" @change="handleFileUpload" />
                   <button class="flashnote-upload-pdf" @click="uploadPDF">
                     Upload PDF
                   </button>
@@ -352,6 +352,7 @@ export default {
             headers: {
               "Content-Type": "multipart/form-data",
             },
+            timeout: 60000,
           })
           .then((response) => {
             console.log(response);
