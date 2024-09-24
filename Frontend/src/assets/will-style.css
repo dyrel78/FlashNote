@@ -284,15 +284,15 @@ color: black;
 
 .outputText{
 
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 100%;
+    /* white-space: pre-wrap; */
+    /* word-wrap: break-word; */
+   
     overflow-x: auto;
 
     padding: 1rem;
-    resize: none;
+    resize:vertical;
 
-    height:200px;
+    height:320px;
 
     /* Comment to add scrolling  */
     /* height: 200px; */

@@ -1,4 +1,5 @@
 <template>
+
   <body id="app">
     <!-- Sidebar -->
     <div class="container">
@@ -23,17 +24,13 @@
       </div>
 
       <div class="flashnote-container main-content">
-        
-      <!-- Navbar -->
-      <FlashnoteNavbar 
-        :userExists="userExists" 
-        :userObject="userObject" 
-        @update:userExists="userExists = $event" 
-        @update:userObject="userObject = $event" 
-      />
 
-        
- 
+        <!-- Navbar -->
+        <FlashnoteNavbar :userExists="userExists" :userObject="userObject" @update:userExists="userExists = $event"
+          @update:userObject="userObject = $event" />
+
+
+
         <!-- Main content -->
         <div class="flashnote-main-content">
           <!-- Right Column for Note Input/Display -->
@@ -59,39 +56,25 @@
                 <button @click="setTab('short')">Short</button>
                 <button @click="setTab('flashcards')">Flashcards</button>
               </div>
-              <div
-                class="flashnote-content"
-                style="
+              <div class="flashnote-content" style="
                   display: flex;
                   flex-direction: row;
                   justify-content: space-evenly;
                   align-items: flex-start;
                   height: 100%;
                   flex-wrap: wrap;
-                "
-              >
+                ">
                 <div class="flashnote-note-input">
-                  <textarea
-                    v-model="inputText"
-                    placeholder="Paste text"
-                  ></textarea>
+                  <textarea v-model="inputText" placeholder="Paste text"></textarea>
                   <input type="file" id="inpfile" @change="handleFileUpload" />
                   <button class="flashnote-upload-pdf" @click="uploadPDF">
                     Upload PDF
                   </button>
                   <div v-if="userExists">
                     <label for="folderSelect">Select Folder:</label>
-                    <select
-                      id="folderSelect"
-                      @change="handleFolderChange"
-                      v-model="selectedFolder"
-                    >
+                    <select id="folderSelect" @change="handleFolderChange" v-model="selectedFolder">
                       <option value="" disabled>Select a folder</option>
-                      <option
-                        v-for="folder in folders"
-                        :key="folder"
-                        :value="folder"
-                      >
+                      <option v-for="folder in folders" :key="folder" :value="folder">
                         {{ folder }}
                       </option>
                       <option value="new">Create New Folder</option>
@@ -99,11 +82,7 @@
 
                     <!-- Input for new folder name (only shown when "Create New Folder" is selected) -->
                     <div class="enterNewFolder" v-if="isNewFolder">
-                      <input
-                        type="text"
-                        v-model="newFolderName"
-                        placeholder="Enter new folder name"
-                      />
+                      <input type="text" v-model="newFolderName" placeholder="Enter new folder name" />
                     </div>
                   </div>
                   <button class="flashnote-create-note" @click="createNote">
@@ -115,26 +94,21 @@
                   <!-- <h3>{{ outputText }}</h3> -->
                   <!-- <pre> <>{{ outputText }}  </h3></pre> -->
                   <div class="outputText">
-                    <pre class="preformatted">{{ outputText }}</pre>
+                    <pre class="preformatted">
+                        <!-- {{ outputText }} -->
+                        <p v-html="outputText"></p>
+                      </pre>
                   </div>
                   <!-- Placeholder for AI generated notes preview -->
 
-                  <button
-                    class="flashnote-clear-button"
-                    v-if="userExists"
-                    @click="clearOutput"
-                  >
+                  <button class="flashnote-clear-button" v-if="userExists" @click="clearOutput">
                     Clear
                   </button>
                   <button class="flashnote-copy-button">Copy</button>
                 </div>
               </div>
 
-              <button
-                v-if="userExists"
-                class="flashnote-save-note"
-                @click="saveNote"
-              >
+              <button v-if="userExists" class="flashnote-save-note" @click="saveNote">
                 Save
               </button>
             </div>
@@ -142,7 +116,9 @@
         </div>
       </div>
       <!-- End of Flashnote Main Content -->
+
     </div>
+  
     <!-- End of Container-->
   </body>
 </template>
@@ -151,6 +127,7 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import FlashnoteNavbar from './Navbar.vue';
+import FormatNoteText from '../markdownScript.js'
 export default {
   name: "HomePage",
   components: {
@@ -266,7 +243,8 @@ export default {
           },
         });
 
-        this.outputText = response.data;
+        this.outputText = FormatNoteText(response.data);
+        // this.outputText = response.data;
       } catch (error) {
         console.error("Error creating note:", error);
         this.outputText = "An error occurred while generating the note.";
@@ -390,14 +368,12 @@ export default {
 };
 
 
- 
+
 </script>
 
 <style>
 @import url(../assets/will-style.css);
 @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
-
-
 </style>
 
 <style>
