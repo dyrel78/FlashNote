@@ -5,7 +5,7 @@ import CreateAccount from './components/CreateAccount.vue'
 import SignIn from './components/SignIn.vue'
 import ViewNotesPreview from './components/ViewNotesPreview.vue'
 import Profile from './components/Profile.vue'
-//import Test from './components/Test.vue'
+import NotFoundPage from './components/404.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 // import "/css/flashnote-styles.css"
@@ -27,8 +27,8 @@ const routes = [
         component: ViewNotesPreview,
         props: true
     },
-    {path: '/profile', component: Profile}//,
-   // {path: '/test', component: Test}
+    {path: '/profile', component: Profile},//,
+    { path: '/:pathMatch(.*)*', component: NotFoundPage }
 ];
 
 const router = createRouter({

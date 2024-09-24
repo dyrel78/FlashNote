@@ -8,7 +8,7 @@
     "start:client": "npm run serve --prefix '../Frontend/'",
     "build:client": "npm run build --prefix '../Frontend/'",
     "dev": "concurrently \"npm run start:server\" \"npm run start:client\"",
-    "start": "concurrently \"npm run start:server\" \"npm run build:client\""
+    "start": "concurrently \"npm run build:client\" \"npm run start:server\""
 
   },
   "type": "module",

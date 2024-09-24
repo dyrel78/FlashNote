@@ -215,6 +215,7 @@ color: black;
     background-color: white;
     padding: 2rem;
     border-left: 1px solid #fdd85d;
+    margin-right: 0.5rem;
 }
 
 .flashnote-note-area {
@@ -228,6 +229,8 @@ color: black;
     justify-content: space-around;
     margin-bottom: 1rem;
 }
+
+
 
 .flashnote-tabs button {
     flex: 1;
@@ -289,6 +292,7 @@ color: black;
     padding: 1rem;
     resize: none;
 
+    height:200px;
 
     /* Comment to add scrolling  */
     /* height: 200px; */
@@ -321,7 +325,10 @@ color: black;
     transition: background-color 0.3s ease;
 }
 
-.flashnote-upload-pdf:hover, .flashnote-create-note:hover, .flashnote-save-note:hover {
+.flashnote-upload-pdf:hover, .flashnote-create-note:hover, .flashnote-save-note:hover 
+, .flashnote-copy-button:hover, .flashnote-clear-button:hover
+{
+
     background-color: #5a7ba5;
 }
 
