@@ -41,7 +41,6 @@
             <div class="flashnote-note-area">
               <h1>View Notes Preview</h1>
               <!-- Page title added -->
-              <h2>Note Output</h2>
               <p>Your expanded notes are shown below.</p>
 
               <div id="flashnote-content" class="flashnote-content">
@@ -57,6 +56,10 @@
                     <pre class="preformatted">{{ outputText }}</pre>
                   </div>
                 </div>
+                <div id="copy-btn-viewnotespreview">
+                  <button class="flashnote-copy-button">Copy</button>
+                </div>
+                <div id="save-btn-viewnotespreview">
                 <button
                   v-if="userExists"
                   class="flashnote-save-note"
@@ -64,6 +67,7 @@
                 >
                   Save
                 </button>
+                </div>
               </div>
 
               <!-- Save Button at the bottom -->
@@ -212,6 +216,31 @@ export default {
   },
 };
 </script>
+
+<style>
+/* trial*/
+
+/* Align Save Button to Right of Text Area */
+.save-btn-viewnotespreview .copy-btn-viewnotespreview{
+  background-color: #6798c0;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  position: left;
+  right: 0; /* Align to the right */
+  top: 50%; /* Align vertically to the middle */
+  transform: translateY(-50%); /* Center it vertically */
+}
+
+
+/* Adjust Save Button Hover Effect */
+.save-btn-viewnotespreview:hover .copy-btn-viewnotespreview{
+  background-color: #5a7ba5;
+}
+
+</style>
 
 <style>
   .preformatted {
