@@ -8,6 +8,7 @@
         @update:userObject="userObject = $event" 
       />
     <h1>Create Account</h1>
+    <p>Enter your details to create an account.</p>
 
     <!-- Form Container -->
     <form @submit.prevent="createAccount">
