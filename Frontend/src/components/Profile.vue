@@ -1,5 +1,13 @@
 <template>
     <div class="profile-container">
+
+       <!-- Navbar -->
+       <FlashnoteNavbar 
+        :userExists="userExists" 
+        :userObject="userObject" 
+        @update:userExists="userExists = $event" 
+        @update:userObject="userObject = $event" 
+      />
       <h1>My Profile</h1>
       <br>
   
@@ -42,8 +50,12 @@
   </template>
 
 <script>
+  import FlashnoteNavbar from './Navbar.vue';
 export default {
   name: "ProfilePage",
+  components: {
+    FlashnoteNavbar  // Register FlashnoteNavbar component here
+  },
   data() {
     return {
       username: "",
