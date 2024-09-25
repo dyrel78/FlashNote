@@ -126,8 +126,31 @@ router.put("/:id", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-// Get all notes by a specific user (using username)
+// Get all notes where format is "flashcards", user ID matches, and folder matches
+router.get("/flashcards/:userId/:folder", async (req, res) => {
+  const { userId, folder } = req.params;
 
+  try {
+    const notes = await Note.find({
+      format: "flashcards",
+      user: userId,
+      folder: folder,
+    });
+
+    if (notes.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "No flashcards found for the specified criteria" });
+    }
+
+    res.status(200).json(notes);
+  } catch (error) {
+    console.error("Error fetching flashcards:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching flashcards." });
+  }
+});
 // Delete a note by ID
 router.delete("/:id", async (req, res) => {
   try {
@@ -140,6 +163,5 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
 
 export default router;
