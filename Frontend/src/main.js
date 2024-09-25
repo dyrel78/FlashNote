@@ -5,6 +5,7 @@ import CreateAccount from './components/CreateAccount.vue'
 import SignIn from './components/SignIn.vue'
 import ViewNotesPreview from './components/ViewNotesPreview.vue'
 import Profile from './components/Profile.vue'
+import Flashcards from './components/Flashcards.vue' 
 import NotFoundPage from './components/404.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -16,28 +17,31 @@ import { createRouter, createWebHistory } from 'vue-router'
 // import "./assets/zara-style.css"
 
 const routes = [
-    {path: '/', component: HomePage},
+    { path: '/', component: HomePage },
     { path: '/home', component: HomePage },
     { path: '/create-account', component: CreateAccount },
-    {path:'/sign-in', component: SignIn},
-    {path : '/view-notes-preview', component: ViewNotesPreview},
+    { path: '/sign-in', component: SignIn },
+    { path: '/view-notes-preview', component: ViewNotesPreview },
     {
         path: '/view-notes-preview/:id?',
         name: 'ViewNotesPreview',
         component: ViewNotesPreview,
         props: true
     },
-    {path: '/profile', component: Profile},//,
-    { path: '/:pathMatch(.*)*', component: NotFoundPage }
+    { path: '/profile', component: Profile },
+    { path: '/flashcards', component: Flashcards }, 
+    { path: '/:pathMatch(.*)*', component: NotFoundPage } 
 ];
 
 const router = createRouter({
     history: createWebHistory(),
     routes
 });
+
 const app = createApp(App)
 app.use(router)
 app.mount('#app')
 // createApp(App).mount('#app')
+
 
 
