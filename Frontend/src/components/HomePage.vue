@@ -118,6 +118,8 @@
       <!-- End of Flashnote Main Content -->
 
 
+
+      
     </div>
   
     <!-- End of Container-->
@@ -250,7 +252,7 @@ export default {
         // this.outputText = response.data;
         if (this.selectedTab === "flashcards") {
          const flashCardObjects = FormatFlashcards(response.data);
-
+          this.outputText = "";
          flashCardObjects.forEach(flashcard => {
           this.outputText += flashcard.question + " " + flashcard.answer + "\n";
 
