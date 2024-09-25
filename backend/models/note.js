@@ -6,7 +6,6 @@ const noteSchema = new mongoose.Schema({
   note_format: { type: String, required: true },
   note_name: { type: String, required: true },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "users", required: true },
-  type: { type: String, required: true, enum: ["note", "flashcard"] },
   question: { type: String },
   answer: { type: String },
   status: { type: String },

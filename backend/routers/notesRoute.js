@@ -8,7 +8,16 @@ const router = express.Router();
 // Create a new note or flashcard
 router.post("/", async (req, res) => {
   try {
-    const { folder, note_content, note_format, note_name, user, type, question, answer, status } = req.body;
+    const {
+      folder,
+      note_content,
+      note_format,
+      note_name,
+      user,
+      question,
+      answer,
+      status,
+    } = req.body;
     console.log(req.body);
 
     const newNote = new Note({
@@ -17,14 +26,15 @@ router.post("/", async (req, res) => {
       note_format,
       note_name,
       user,
-      type,
       question,
       answer,
       status,
     });
 
     await newNote.save();
-    res.status(201).json({ message: "Note created successfully", note: newNote });
+    res
+      .status(201)
+      .json({ message: "Note created successfully", note: newNote });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
