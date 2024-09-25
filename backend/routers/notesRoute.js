@@ -2,9 +2,37 @@ import express from "express";
 import mongoose from "mongoose";
 import Note from "../models/note.js";
 import User from "../models/user.js";
-
+import Flashcards from "../models/flashcards.js";
 const router = express.Router();
 
+// Create a new flashcard
+router.post("/flashcards", async (req, res) => {
+  try {
+    const { folder, question, answer, note_name, format, status, user } =
+      req.body;
+    console.log(req.body);
+
+    const newFlashcard = new Flashcard({
+      folder,
+      question,
+      answer,
+      note_name,
+      format,
+      status,
+      user,
+    });
+
+    await newFlashcard.save();
+    res
+      .status(201)
+      .json({
+        message: "Flashcard created successfully",
+        flashcard: newFlashcard,
+      });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 // Create a new note
 router.post("/", async (req, res) => {
   try {
