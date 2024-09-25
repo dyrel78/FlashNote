@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Flip Card</title>
+    <link rel="stylesheet" href="C:\Users\Ray\Desktop\School\Info\INFO301\Team_D_Github\FlashNote\Frontend\css\flashcards.css"> <!-- Link to the external CSS file -->
+</head>
+<body>
+
+<div class="maincontainer" id="cardContainer">
+    <div class="thecard">
+        <div class="thefront">Front of Card</div>
+        <div class="theback">Back of Card</div>
+    </div>
+</div>
+
+<script>
+    const cardContainer = document.getElementById('cardContainer');
+
+    cardContainer.addEventListener('click', function() {
+        cardContainer.classList.toggle('flip');
+    });
+</script>
+
+</body>
+</html>
