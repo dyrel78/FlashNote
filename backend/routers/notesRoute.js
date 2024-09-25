@@ -144,7 +144,7 @@ router.get("/flashcards/:userId/:folder", async (req, res) => {
 
   try {
     const notes = await Note.find({
-      format: "flashcards",
+      note_format: "flashcards",
       user: userId,
       folder: folder,
     });
