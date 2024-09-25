@@ -2,41 +2,13 @@ import express from "express";
 import mongoose from "mongoose";
 import Note from "../models/note.js";
 import User from "../models/user.js";
-import Flashcards from "../models/flashcards.js";
 const router = express.Router();
 
 // Create a new flashcard
-router.post("/flashcards", async (req, res) => {
-  try {
-    const { folder, question, answer, note_name, format, status, user } =
-      req.body;
-    console.log(req.body);
-
-    const newFlashcard = new Flashcard({
-      folder,
-      question,
-      answer,
-      note_name,
-      format,
-      status,
-      user,
-    });
-
-    await newFlashcard.save();
-    res
-      .status(201)
-      .json({
-        message: "Flashcard created successfully",
-        flashcard: newFlashcard,
-      });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-// Create a new note
+// Create a new note or flashcard
 router.post("/", async (req, res) => {
   try {
-    const { folder, note_content, note_format, note_name, user } = req.body;
+    const { folder, note_content, note_format, note_name, user, type, question, answer, status } = req.body;
     console.log(req.body);
 
     const newNote = new Note({
@@ -45,12 +17,14 @@ router.post("/", async (req, res) => {
       note_format,
       note_name,
       user,
+      type,
+      question,
+      answer,
+      status,
     });
 
     await newNote.save();
-    res
-      .status(201)
-      .json({ message: "Note created successfully", note: newNote });
+    res.status(201).json({ message: "Note created successfully", note: newNote });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
