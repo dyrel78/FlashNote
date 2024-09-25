@@ -9,11 +9,6 @@ const FormatFlashcards = (text) => {
         const answer = parts[i+1];
         flashcards.push({ question, answer });
         // formattedText += `Q: ${question}\nA: ${answer}\n\n`;
-       
-
-
-
-
     }
     // return flashcards.join('');
     return flashcards;

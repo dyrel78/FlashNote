@@ -251,7 +251,7 @@ export default {
         this.outputText = FormatNoteText(response.data);
         // this.outputText = response.data;
         if (this.selectedTab === "flashcards") {
-         const flashCardObjects = FormatFlashcards(response.data);
+          const flashCardObjects = FormatFlashcards(this.outputText);
           this.outputText = "";
          flashCardObjects.forEach(flashcard => {
           this.outputText += flashcard.question + " " + flashcard.answer + "\n";

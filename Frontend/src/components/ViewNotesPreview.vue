@@ -1,5 +1,4 @@
 <template>
-  <div v-if="userExists">
     <!--body id="view-notes-preview"-->
     <div id="view-notes-preview">
       <!-- Sidebar -->
@@ -76,10 +75,8 @@
         </div>
       </div>
     </div>
-  </div>
-  <div v-else>
-    <p>Redirecting to login...</p>
-  </div>
+ 
+
 </template>
 
 <script>
@@ -119,15 +116,25 @@ export default {
     this.getFolders();
     this.getAllNotes();
     // Add the sidebar toggle functionality
-    let btn = document.querySelector("#btn");
-    let sidebar = document.querySelector(".sidebar");
+    // let btn = document.querySelector("#btn");
+    // let sidebar = document.querySelector(".sidebar");
 
-    btn.onclick = function () {
-      sidebar.classList.toggle("active");
-    };
+    // btn.onclick = function () {
+    //   sidebar.classList.toggle("active");
+    // };
+    this.sideBarMethods();
   },
 
   methods: {
+
+    async sideBarMethods() {
+      let btn = document.querySelector("#btn");
+      let sidebar = document.querySelector(".sidebar");
+
+      btn.onclick = function () {
+        sidebar.classList.toggle("active");
+      };
+    },
     async checkUserInSession() {
       const user = sessionStorage.getItem("user");
       if (!user) {
