@@ -156,6 +156,7 @@ export default {
       userExists: false,
       userObject: "",
       selectedFile: null,
+      flashCardObjects: [],
     };
   },
   mounted() {
@@ -254,11 +255,13 @@ export default {
         this.outputText = FormatNoteText(response.data);
         // this.outputText = response.data;
         if (this.selectedTab === "flashcards") {
-          const flashCardObjects = FormatFlashcards(this.outputText);
+          this.flashCardObjects = FormatFlashcards(this.outputText);
           this.outputText = "";
-         flashCardObjects.forEach(flashcard => {
-          this.outputText += flashcard.question + " " + flashcard.answer + "\n";
 
+          // THIS FLASHCARD OBJECTS IS IMPORTANT WHEN SAVING THE FLASHCARDS
+
+         this.flashCardObjects.forEach(flashcard => {
+          this.outputText += flashcard.question + " " + flashcard.answer + "\n";
         });
 
         }
