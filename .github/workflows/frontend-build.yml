@@ -1,0 +1,44 @@
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main  # Adjust branch name as needed
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest  # Use an appropriate runner (e.g., ubuntu-latest, windows-latest, macos-latest)
+
+    steps:
+    - uses: actions/checkout@v3  # Check out your repository's code
+
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'  # Specify the Node.js version
+
+
+    - name: Frontend dependencies
+      run: cd Frontend # Navigate to the frontend directory
+      
+    - name: Install dependencies For Frontend
+      run: npm install  # Install project dependencies
+      working-directory: ./Frontend
+
+    - name: Lint the Vue App and save the output to a file
+      run: npm run lint > lint-output.txt
+      working-directory: ./Frontend
+
+    - name: Build the Vue App
+      run: npm run build
+      working-directory: ./Frontend
+
+    - name: Upload lint-output.txt file
+      uses: actions/upload-artifact@v3
+      with:
+        name: lint-output
+        path: lint-output.txt
+
+
+      
