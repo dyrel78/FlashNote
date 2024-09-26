@@ -28,7 +28,6 @@ jobs:
       working-directory: ./backend
 
 
-    - name: Lint the Vue App and save the output to a file
 
 
       
