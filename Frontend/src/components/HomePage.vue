@@ -88,6 +88,9 @@
                   <button class="flashnote-create-note" @click="createNote">
                     Create
                   </button>
+                  <!--<button class="flashnote-clear-button" v-if="userExists" @click="clearInput">
+                    Clear
+                  </button>-->
                 </div>
 
                 <div class="flashnote-note-output">
