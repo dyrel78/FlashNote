@@ -3,24 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Flip Card</title>
-    <link rel="stylesheet" href="C:\Users\Ray\Desktop\School\Info\INFO301\Team_D_Github\FlashNote\Frontend\css\flashcards.css"> <!-- Link to the external CSS file -->
+    <title>Flashcard Carousel</title>
+    <link rel="stylesheet" href="C:\Users\Ray\Desktop\School\Info\INFO301\Team_D_Github\FlashNote\Frontend\css\flashcards.css"> <!-- Link to external CSS file -->
 </head>
 <body>
 
-<div class="maincontainer" id="cardContainer">
-    <div class="thecard">
-        <div class="thefront">Front of Card</div>
-        <div class="theback">Back of Card</div>
+<div class="card-container" id="cardContainer">
+    <div class="maincontainer" id="card1">
+        <div class="thecard">
+            <div class="thefront">Question 1: What is 2 + 2?</div>
+            <div class="theback">Answer: 4</div>
+        </div>
+    </div>
+    <div class="maincontainer" id="card2" style="display: none;">
+        <div class="thecard">
+            <div class="thefront">Question 2: What is the capital of France?</div>
+            <div class="theback">Answer: Paris</div>
+        </div>
+    </div>
+    <div class="maincontainer" id="card3" style="display: none;">
+        <div class="thecard">
+            <div class="thefront">Question 3: What is the boiling point of water?</div>
+            <div class="theback">Answer: 100°C</div>
+        </div>
     </div>
 </div>
 
-<script>
-    const cardContainer = document.getElementById('cardContainer');
+<!-- Navigation buttons -->
+<div class="navigation">
+    <button id="prevBtn">Previous</button>
+    <span id="cardIndicator">1 / 3</span>
+    <button id="nextBtn">Next</button>
+</div>
 
-    cardContainer.addEventListener('click', function() {
-        cardContainer.classList.toggle('flip');
+<script>
+    let currentCard = 1;
+    const totalCards = 3;
+
+    const updateCardDisplay = () => {
+        for (let i = 1; i <= totalCards; i++) {
+            const card = document.getElementById('card' + i);
+            if (i === currentCard) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        }
+        document.getElementById('cardIndicator').innerText = `${currentCard} / ${totalCards}`;
+    };
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+        currentCard = currentCard < totalCards ? currentCard + 1 : 1;
+        updateCardDisplay();
     });
+
+    document.getElementById('prevBtn').addEventListener('click', () => {
+        currentCard = currentCard > 1 ? currentCard - 1 : totalCards;
+        updateCardDisplay();
+    });
+
+    // Flip the card when clicked
+    document.querySelectorAll('.maincontainer').forEach(container => {
+        container.addEventListener('click', function () {
+            this.querySelector('.thecard').classList.toggle('flip');
+        });
+    });
+
+    updateCardDisplay();
 </script>
 
 </body>

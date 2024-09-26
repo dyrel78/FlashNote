@@ -1,8 +1,25 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    margin: 0;
+}
+
+.card-container {
+    position: relative;
+    width: 250px;
+    height: 320px;
+    perspective: 1000px;
+    margin-bottom: 20px; /* Ensure some space below the card for buttons */
+}
+
 .maincontainer {
     position: relative;
     width: 250px;
     height: 320px;
-    perspective: 1000px; /* Needed for 3D flip effect */
+    perspective: 1000px;
 }
 
 .thecard {
@@ -21,8 +38,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 24px;
+    font-size: 20px;
     font-family: Arial, sans-serif;
+    text-align: center;
 }
 
 .thefront {
@@ -37,6 +55,34 @@
 }
 
 /* Flip the card when clicked */
-.maincontainer.flip .thecard {
+.flip {
     transform: rotateY(180deg);
+}
+
+/* Ensure the navigation is placed below the card */
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    width: 250px;
+    font-family: Arial, sans-serif;
+    margin-top: 20px; /* Add some space above the buttons */
+}
+
+button {
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#cardIndicator {
+    display: flex;
+    align-items: center;
 }
