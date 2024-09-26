@@ -88,9 +88,9 @@
                   <button class="flashnote-create-note" @click="createNote">
                     Create
                   </button>
-                  <!--<button class="flashnote-clear-button" v-if="userExists" @click="clearInput">
+                  <button class="flashnote-clear-button" v-if="userExists" @click="clearInput">
                     Clear
-                  </button>-->
+                  </button>
                 </div>
 
                 <div class="flashnote-note-output">
@@ -293,6 +293,9 @@ export default {
     },
     async clearOutput() {
       this.outputText = "";
+    },
+    async clearInput() {
+      this.inputText = "";
     },
 
     async saveNote() {
