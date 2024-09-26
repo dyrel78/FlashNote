@@ -1,6 +1,7 @@
-[![Frontend Build](https://github.com/dyrel78/FlashNote/actions/workflows/build.yml/badge.svg)](https://github.com/dyrel78/FlashNote/actions/workflows/build.yml)
+[![Overall Build](https://github.com/dyrel78/FlashNote/actions/workflows/build.yml/badge.svg)](https://github.com/dyrel78/FlashNote/actions/workflows/build.yml)
 
-[![Frontend Build](https://github.com/dyrel78/FlashNote/actions/workflows/backend-build.yml/badge.svg)](https://github.com/dyrel78/FlashNote/actions/workflows/backend-build.yml)
+[![Backend Build and Test](https://github.com/dyrel78/FlashNote/actions/workflows/backend-build.yml/badge.svg?branch=main)](https://github.com/dyrel78/FlashNote/actions/workflows/backend-build.yml)
+
 [![Frontend Build](https://github.com/dyrel78/FlashNote/actions/workflows/frontend-build.yml/badge.svg)](https://github.com/dyrel78/FlashNote/actions/workflows/frontend-build.yml)
 
 
