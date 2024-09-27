@@ -7,8 +7,15 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - frontend:
+      frontend:
         condition: service_healthy
+
+    environment:
+      - PORT=8080
+      - DB_CONNECTION_STRING=mongodb+srv://admin:igWy4W1pewP0isnH@cluster0.fip3e.mongodb.net/INFO301?retryWrites=true&w=majority&appName=Cluster0
+      - MONGO_URI= mongodb+srv://admin:igWy4W1pewP0isnH@cluster0.fip3e.mongodb.net/INFO301
+      - GEMINI_API_KEY = 'AIzaSyBL5Gs9Lb_Ey5YORKVTke55VmFG1xvI5w4'
+
 
     volumes:
       - ./backend:/usr/src/app
@@ -23,10 +30,10 @@ services:
 
     volumes:
       - ./frontend:/usr/src/app
-      - /usr/src/app/node_modules
+      - /usr/src/Frontend/node_modules
 
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
       interval: 30s
       timeout: 10s
       retries: 5
