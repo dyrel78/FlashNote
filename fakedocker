@@ -1,0 +1,26 @@
+# Use an official Node.js runtime as the base image
+FROM node:20
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json for both frontend and backend
+COPY Frontend/package*.json ./frontend/
+COPY backend/package*.json ./backend/
+
+# Install dependencies for both frontend and backend
+RUN cd frontend && npm install
+RUN cd backend && npm install
+
+# Copy the rest of the application code
+COPY Frontend ./frontend
+COPY backend ./backend
+
+# Build the frontend
+RUN cd frontend && npm run build
+
+# Expose the port the backend app runs on
+EXPOSE 8080
+
+# Start the backend server
+CMD ["node", "backend/server.js"]

@@ -12,3 +12,12 @@ https://www.cyrusstoller.com/2018/02/17/building-a-basic-flashcard-game-using-vu
 
 ### README Template
 https://github.com/othneildrew/Best-README-Template/tree/main
+
+
+### Deployment
+
+Digital Ocean
+
+Reverse Proxy Script
+
+Name.come
