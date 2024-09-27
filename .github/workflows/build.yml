@@ -26,11 +26,11 @@ jobs:
       working-directory: ./backend
 
     - name: Frontend dependencies
-      run: cd Frontend # Install project dependencies
+      run: cd frontend # Install project dependencies
       
     - name: Install dependencies For Frontend
       run: npm install  # Install project dependencies
-      working-directory: ./Frontend
+      working-directory: ./frontend
 
     
     - name: Frontend dependencies

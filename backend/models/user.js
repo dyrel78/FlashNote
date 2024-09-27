@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 
 const userSchema = new mongoose.Schema({
   first_name: { type: String, required: true },
@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.comparePassword = async function (password) {
   try {
-    return await bcrypt.compare(password, this.password);
+    return await bcryptjs.compare(password, this.password);
   } catch (error) {
     throw new Error(error);
   }

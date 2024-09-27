@@ -5,8 +5,8 @@
   "scripts": {
     "test": "node --experimental-vm-modules ./node_modules/.bin/jest",
     "start:server": "nodemon index.js --ignore '../client/'",
-    "start:client": "npm run serve --prefix '../Frontend/'",
-    "build:client": "npm run build --prefix '../Frontend/'",
+    "start:client": "npm run serve --prefix '../frontend/'",
+    "build:client": "npm run build --prefix '../frontend/'",
     "dev": "concurrently \"npm run start:server\" \"npm run start:client\"",
     "start": "concurrently \"npm run start:server\" \"npm run build:client\""
   },

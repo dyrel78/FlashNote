@@ -30,10 +30,14 @@ services:
 
     volumes:
       - ./frontend:/usr/src/app
-      - /usr/src/Frontend/node_modules
+      - /usr/src/frontend/node_modules
+      - frontend_build:/usr/src/frontend/dist
 
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080"]
       interval: 30s
       timeout: 10s
       retries: 5
+
+volumes:
+  frontend_build:

@@ -21,3 +21,5 @@ https://cli.vuejs.org/guide/deployment.html#amazon-s3
 
 
 
+    "baseUrl": "./",
+    "baseUrl": "",

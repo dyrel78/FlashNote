@@ -20,19 +20,19 @@ jobs:
 
 
     - name: Frontend dependencies
-      run: cd Frontend # Navigate to the frontend directory
+      run: cd frontend # Navigate to the frontend directory
       
     - name: Install dependencies For Frontend
       run: npm install  # Install project dependencies
-      working-directory: ./Frontend
+      working-directory: ./frontend
 
     - name: Lint the Vue App and save the output to a file
       run: npm run lint > lint-output.txt
-      working-directory: ./Frontend
+      working-directory: ./frontend
 
     - name: Build the Vue App
       run: npm run build
-      working-directory: ./Frontend
+      working-directory: ./frontend
 
     - name: Upload lint-output.txt file
       uses: actions/upload-artifact@v3
