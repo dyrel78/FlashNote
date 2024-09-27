@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as the base image
-FROM node:20
+FROM node:22
 
 WORKDIR /usr/src/app
 
@@ -10,4 +10,4 @@ RUN npm install
 COPY . .
 
 EXPOSE 8080
-CMD [ "npm", "run","start" ]
+CMD [ "npm","run", "start:server" ]
