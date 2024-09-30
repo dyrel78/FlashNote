@@ -75,7 +75,7 @@ This project is built using the **MEVN Stack**:
 
 Other technologies:
 - **Docker**: To containerize the application for easier deployment.
-- **OpenAI**: For integrating AI language models to generate notes.
+- **Gemini**: For integrating AI language models to generate notes.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -83,12 +83,14 @@ Other technologies:
 
 Follow these instructions to set up and run the FlashNote application on your local machine.
 
+
 ### Prerequisites
 
 Before starting, ensure you have the following installed:
 - **Node.js** (v16 or later)
 - **npm** (v7 or later)
-- **MongoDB** (you can run a local instance or use a cloud-hosted one)
+- **MongoDB** (MongoDB API key )
+- **Gemini**  (Gemini API key)
 - **Docker** (optional for containerized deployment)
 
 ### Installation
@@ -96,7 +98,17 @@ Before starting, ensure you have the following installed:
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/dyrel78/Best-README.git
-   cd Best-README
+
+2. **build the frontend**
+   cd frontend
+   npm install
+   npm run build
+
+3. **start the application**
+   cd backend 
+   npm install
+   npm run serve
+
 
 
 [Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
