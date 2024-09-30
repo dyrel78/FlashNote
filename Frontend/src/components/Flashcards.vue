@@ -146,16 +146,18 @@ export default {
 
 .flashcard-container {
   position: relative;
-  width: 250px;
-  height: 320px;
+  width: 70%; /* Increased width */
+  height: 70%; /* Increased height */
+  max-width: 900px;
+  max-height: 650px;
   perspective: 1000px;
   margin-bottom: 20px; /* Ensure some space below the card for buttons */
 }
 
 .flashcard-maincontainer {
   position: relative;
-  width: 250px;
-  height: 320px;
+  width: 100%;
+  height: 100%;
   perspective: 1000px;
 }
 
@@ -171,22 +173,24 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  backface-visibility: hidden;
+  backface-visibility: hidden; /* Ensure that the back side isn't visible when it flips */
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 20px;
-  font-family: Arial, sans-serif;
+  font-size: 32px; /* Increased font size */
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   text-align: center;
+  padding: 20px; /* Added padding for better text layout */
+  border-radius: 20px; /* Apply rounded corners to both sides */
 }
 
 .flashcard-thefront {
-  background-color: #ffc728;
+  background-color: #c3d3f0;
   color: #333;
 }
 
 .flashcard-theback {
-  background-color: #fafafa;
+  background-color: #fff5ba;
   color: #333;
   transform: rotateY(180deg);
 }
@@ -200,14 +204,15 @@ export default {
 .flashcard-navigation {
   display: flex;
   justify-content: space-between;
-  width: 250px;
+  width: 70%; /* Match the width of the card */
+  max-width: 500px; /* Match the width of the card */
   font-family: Arial, sans-serif;
   margin-top: 20px; /* Add some space above the buttons */
 }
 
 .flashcard-navigation button {
-  padding: 10px 15px;
-  font-size: 14px;
+  padding: 10px 20px;
+  font-size: 16px; /* Adjusted button font size */
   cursor: pointer;
   background-color: #007bff;
   color: white;
@@ -222,5 +227,7 @@ export default {
 .flashcard-indicator {
   display: flex;
   align-items: center;
+  font-size: 16px; /* Increased indicator font size */
 }
+
 </style>
