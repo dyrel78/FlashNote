@@ -100,11 +100,13 @@ Before starting, ensure you have the following installed:
    git clone https://github.com/dyrel78/Best-README.git
 
 2. **build the frontend**
+  ```bash
    cd frontend
    npm install
    npm run build
 
 3. **start the application**
+  ```bash
    cd backend 
    npm install
    npm run serve
