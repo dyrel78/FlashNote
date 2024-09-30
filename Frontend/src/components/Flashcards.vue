@@ -21,8 +21,8 @@
       </ul>
     </div>
 
-    <!-- Main content -->
-    <div class="flashnote-container main-content">
+    <!-- Main content section -->
+    <div class="main-content flashnote-container">
       <!-- Navbar -->
       <FlashnoteNavbar
         :userExists="userExists"
@@ -34,20 +34,20 @@
       <!-- Flashcards Section -->
       <div class="flashcard-page-body">
         <div class="flashcard-container" id="cardContainer">
-          <div class="flashcard-maincontainer" id="card1">
-            <div class="flashcard-thecard">
+          <div class="flashcard-maincontainer" id="card1" @click="flipCard(1)">
+            <div :class="['flashcard-thecard', { 'flashcard-flip': flippedCards.includes(1) }]">
               <div class="flashcard-thefront">Question 1: What is 2 + 2?</div>
               <div class="flashcard-theback">Answer: 4</div>
             </div>
           </div>
-          <div class="flashcard-maincontainer" id="card2" style="display: none;">
-            <div class="flashcard-thecard">
+          <div class="flashcard-maincontainer" id="card2" style="display: none;" @click="flipCard(2)">
+            <div :class="['flashcard-thecard', { 'flashcard-flip': flippedCards.includes(2) }]">
               <div class="flashcard-thefront">Question 2: What is the capital of France?</div>
               <div class="flashcard-theback">Answer: Paris</div>
             </div>
           </div>
-          <div class="flashcard-maincontainer" id="card3" style="display: none;">
-            <div class="flashcard-thecard">
+          <div class="flashcard-maincontainer" id="card3" style="display: none;" @click="flipCard(3)">
+            <div :class="['flashcard-thecard', { 'flashcard-flip': flippedCards.includes(3) }]">
               <div class="flashcard-thefront">Question 3: What is the boiling point of water?</div>
               <div class="flashcard-theback">Answer: 100°C</div>
             </div>
@@ -56,9 +56,9 @@
 
         <!-- Navigation buttons -->
         <div class="flashcard-navigation">
-          <button id="prevBtn">Previous</button>
-          <span id="cardIndicator">1 / 3</span>
-          <button id="nextBtn">Next</button>
+          <button id="prevBtn" @click="previousCard">Previous</button>
+          <span id="cardIndicator">{{ currentCard }} / {{ totalCards }}</span>
+          <button id="nextBtn" @click="nextCard">Next</button>
         </div>
       </div>
     </div>
@@ -80,12 +80,13 @@ export default {
       folders: ['Folder 1', 'Folder 2', 'Folder 3'], // Sample folders
       currentCard: 1,
       totalCards: 3,
+      flippedCards: [],
     };
   },
   mounted() {
     this.checkUserInSession();
     this.updateCardDisplay();
-    this.setupNavigation();
+    this.setupSidebarToggle();
   },
   methods: {
     checkUserInSession() {
@@ -100,23 +101,31 @@ export default {
     updateCardDisplay() {
       for (let i = 1; i <= this.totalCards; i++) {
         const card = document.getElementById('card' + i);
-        if (i === this.currentCard) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
+        card.style.display = i === this.currentCard ? 'block' : 'none';
       }
       document.getElementById('cardIndicator').innerText = `${this.currentCard} / ${this.totalCards}`;
     },
-    setupNavigation() {
-      document.getElementById('nextBtn').addEventListener('click', () => {
-        this.currentCard = this.currentCard < this.totalCards ? this.currentCard + 1 : 1;
-        this.updateCardDisplay();
-      });
-      document.getElementById('prevBtn').addEventListener('click', () => {
-        this.currentCard = this.currentCard > 1 ? this.currentCard - 1 : this.totalCards;
-        this.updateCardDisplay();
-      });
+    nextCard() {
+      this.currentCard = this.currentCard < this.totalCards ? this.currentCard + 1 : 1;
+      this.updateCardDisplay();
+    },
+    previousCard() {
+      this.currentCard = this.currentCard > 1 ? this.currentCard - 1 : this.totalCards;
+      this.updateCardDisplay();
+    },
+    flipCard(cardNumber) {
+      if (this.flippedCards.includes(cardNumber)) {
+        this.flippedCards = this.flippedCards.filter((num) => num !== cardNumber);
+      } else {
+        this.flippedCards.push(cardNumber);
+      }
+    },
+    setupSidebarToggle() {
+      const btn = document.getElementById('btn');
+      const sidebar = document.querySelector('.sidebar');
+      btn.onclick = function () {
+        sidebar.classList.toggle('active');
+      };
     },
   },
 };
