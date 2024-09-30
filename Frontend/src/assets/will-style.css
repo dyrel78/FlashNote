@@ -249,6 +249,12 @@ color: black;
     color: white;
 }
 
+/* Selected state (same as hover) */
+.flashnote-tabs button:focus {
+    background-color: #fdc920;
+    color: white;
+}
+
 .flashnote-content {
     display: flex;
     flex-direction: row;
