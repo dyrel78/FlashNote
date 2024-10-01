@@ -1,153 +1,144 @@
 <template>
-  <div>
-    <!-- Navigation bar imported from existing components -->
-    <Navbar />
-    <div class="folder-page-container">
-      <!-- Sidebar directly added here as part of FolderPage -->
-      <div class="sidebar">
-        <ul>
-          <li
-            v-for="folder in folders"
-            :key="folder.id"
-            @click="navigateToFolder(folder.id)"
-          >
-            <span>{{ folder.name }}</span>
-          </li>
-        </ul>
-      </div>
-
-      <div class="folder-content">
-        <h1>{{ folderName }}</h1>
-        <div v-if="files.length > 0" class="file-list">
-          <div v-for="file in files" :key="file._id" class="file-item">
-            <span @click="viewFile(file)">{{ file.name }}</span>
-            <button @click="removeFile(file._id)">Remove</button>
-          </div>
+    <div>
+      <!-- Navigation bar imported from the homepage -->
+      <Navbar />
+  
+      <div class="container">
+        <!-- Sidebar like in the homepage -->
+        <div class="sidebar">
+          <ul>
+            <li v-for="folder in folders" :key="folder">
+              <router-link :to="{ name: 'FolderPage', params: { id: folder } }">
+                <i class="bx bx-folder"></i>
+                <span class="nav-item">{{ folder }}</span>
+              </router-link>
+              <span class="tooltip">{{ folder }}</span>
+            </li>
+          </ul>
         </div>
-        <div v-else>
-          <p>No files in this folder.</p>
+  
+        <!-- Main content area where the folder name and notes are displayed -->
+        <div class="content">
+          <h1>Folder: {{ folderName }}</h1>
+  
+          <!-- List of notes by their name -->
+          <div v-if="notes.length > 0">
+            <ul class="notes-list">
+              <li v-for="note in notes" :key="note._id">
+                <!-- Clicking on the Note Name navigates to the ViewNotesPreview page -->
+                <router-link :to="{ name: 'ViewNotesPreview', params: { id: note._id } }">
+                  {{ note.note_name }} <!-- Displaying the saved note name -->
+                </router-link>
+              </li>
+            </ul>
+          </div>
+          <div v-else>
+            <p>No notes available in this folder.</p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</template>
-
-<script>
-import Navbar from "./Navbar.vue";
-
-export default {
-  name: "FolderPage",
-  components: {
-    Navbar,
-  },
-  data() {
-    return {
-      folderName: "", // Can fetch this dynamically
-      files: [], // Files in the folder
-      folders: [], // List of folders for the sidebar
-    };
-  },
-  methods: {
-    viewFile(file) {
-      // Navigate to the preview component
-      this.$router.push({ name: "ViewNotesPreview", params: { id: file._id } });
+  </template>
+  
+  <script>
+  import Navbar from './Navbar.vue';
+  import axios from 'axios';
+  
+  export default {
+    name: 'FolderPage',
+    components: {
+      Navbar
     },
-    async removeFile(fileId) {
-      // Remove file by calling an API
-      try {
-        await this.$http.delete(`/api/notes/${fileId}`);
-        this.files = this.files.filter((file) => file._id !== fileId);
-      } catch (error) {
-        console.error("Failed to remove file", error);
+    props: ['id'], // Accept the folder name or ID as a prop
+    data() {
+      return {
+        folderName: this.id, // Initialize folderName from the route parameter
+        notes: [], // Array to hold notes
+        folders: [] // To populate the sidebar with folders
+      };
+    },
+    created() {
+      this.fetchNotes(); // Fetch notes when the component is created
+      this.fetchFolders(); // Fetch folders for the sidebar
+    },
+    methods: {
+      async fetchNotes() {
+        try {
+          // Get the current user's ID from the session or store
+          const user = JSON.parse(sessionStorage.getItem("user"));
+          const userId = user._id;
+  
+          // Replace with your actual backend API endpoint to fetch notes by folder and user
+          const response = await axios.get(`http://localhost:8080/api/notes/${userId}/folder/${this.folderName}`);
+          this.notes = response.data; // Assuming the API returns an array of notes
+        } catch (error) {
+          console.error("Error fetching notes:", error);
+        }
+      },
+      async fetchFolders() {
+        // Fetch folders to populate the sidebar
+        const user = JSON.parse(sessionStorage.getItem("user"));
+        try {
+          const response = await axios.get(`http://localhost:8080/api/notes/folders/${user._id}`);
+          this.folders = response.data;
+        } catch (error) {
+          console.error("Error fetching folders:", error);
+          this.folders = [];
+        }
       }
-    },
-    async fetchFiles() {
-      // Fetch files via API call
-      try {
-        const folderId = this.$route.params.id;
-        const response = await this.$http.get(`/api/notes/folder/${folderId}`);
-        this.files = response.data;
-      } catch (error) {
-        console.error("Error fetching files", error);
-      }
-    },
-    async fetchFolders() {
-      // Fetch folders for the sidebar
-      try {
-        const userId = this.$store.state.user.id;
-        const response = await this.$http.get(`/api/notes/folders/${userId}`);
-        this.folders = response.data;
-      } catch (error) {
-        console.error("Error fetching folders", error);
-      }
-    },
-    navigateToFolder(folderId) {
-      // Navigate to another folder
-      this.$router.push({ path: `/folder/${folderId}` });
-    },
-  },
-  created() {
-    // Check if user is logged in before fetching
-    if (!this.$store.getters.isAuthenticated) {
-      this.$router.push({ path: "/sign-in" });
-    } else {
-      this.fetchFiles();
-      this.fetchFolders(); // Load folders for sidebar
     }
-  },
-};
-</script>
-
-<style scoped>
-.folder-page-container {
-  display: flex;
-}
-
-.sidebar {
-  width: 250px;
-  background-color: #f4f4f4;
-  padding: 20px;
-}
-
-.sidebar ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.sidebar ul li {
-  margin-bottom: 10px;
-  cursor: pointer;
-}
-
-.sidebar ul li:hover {
-  background-color: #ddd;
-}
-
-.folder-content {
-  flex-grow: 1;
-  padding: 20px;
-}
-
-.file-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.file-item {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-button {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  cursor: pointer;
-  padding: 5px 10px;
-}
-
-button:hover {
-  background-color: #d32f2f;
-}
-</style>
+  };
+  </script>
+  
+  <style scoped>
+  .container {
+    display: flex;
+  }
+  
+  /* Sidebar styles like the homepage */
+  .sidebar {
+    width: 250px;
+    background-color: #f4f4f4;
+    padding: 20px;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  .sidebar ul li:hover {
+    background-color: #ddd;
+  }
+  
+  .content {
+    flex-grow: 1;
+    padding: 20px;
+  }
+  
+  .notes-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .notes-list li {
+    padding: 10px;
+    background-color: #f9f9f9;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  
+  h1 {
+    margin-bottom: 20px;
+  }
+  
+  p {
+    color: #666;
+  }
+  </style>
+  
