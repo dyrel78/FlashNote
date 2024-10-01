@@ -20,7 +20,7 @@
   <p align="center">
 FlashNote is an AI-powered study tool designed to help students create various types of notes, from concise summaries to detailed paragraphs and flashcards. With FlashNote, users can easily copy and paste lecture slides or upload PDFs directly into the platform. By selecting the desired note format, FlashNote’s advanced AI generates the perfect study material in just a few clicks. Users can then make any adjustments as needed or save the note for future reference.
     <br />
-    <a href="https://github.com/dyrel78/Best-README"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/dyrel78/FlashNote/DevDocs.md"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/dyrel78/Best-README">View Demo</a>
