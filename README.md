@@ -112,6 +112,19 @@ Before starting, ensure you have the following installed:
    npm run serve
 
 
+### License
+
+
+
+### contact
+Leon - [chele691@student.otago.ac.nz](mailto:chele691@student.otago.ac.nz)
+
+
+
+
+
+
+
 
 [Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
 [Vue-url]: https://vuejs.org/
