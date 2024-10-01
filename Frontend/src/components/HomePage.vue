@@ -65,22 +65,14 @@
                   align-items: flex-start;
                   height: 100%;
                   flex-wrap: wrap;
-                "
-              >
+                ">
                 <div class="flashnote-note-input">
-                  <textarea
-                    v-model="inputText"
-                    placeholder="Paste text"
-                  ></textarea>
-                  <input
-                    class="choose-file-input"
-                    type="file"
-                    id="inpfile"
-                    @change="handleFileUpload"
-                  />
+                  <textarea v-model="inputText" placeholder="Paste text"></textarea>
+                  <input class="choose-file-input" type="file" id="inpfile" @change="handleFileUpload" />
                   <button class="flashnote-upload-pdf" @click="uploadPDF">
-                    Upload PDF
-                  </button>
+                    Upload PDF</button>
+
+
                   <div v-if="userExists">
                     <label for="folderSelect">Select Folder:</label>
                     <select
@@ -108,8 +100,10 @@
                       />
                     </div>
                   </div>
-                  <button class="flashnote-create-note" @click="createNote">
-                    Create
+
+
+                    <button class="flashnote-create-note" @click="createNote" :disabled="isLoading">
+                      Create
                   </button>
                   <button
                     class="flashnote-clear-button"
@@ -128,6 +122,11 @@
                         <!-- {{ outputText }} -->
                         <p v-html="outputText"></p>
                       </pre>
+                    
+                      <div v-if="isLoading" class="loading-spinner">
+                        <i class="bx bx-loader-alt bx-spin"></i>
+                      </div>
+
                   </div>
                   <!-- Placeholder for AI generated notes preview -->
 
@@ -188,6 +187,7 @@ export default {
       userObject: "",
       selectedFile: null,
       flashCardObjects: [],
+      isLoading: false,
     };
   },
   mounted() {
@@ -270,6 +270,8 @@ export default {
 
     async createNote() {
       try {
+        this.isLoading = true;
+        this.outputText = "";
         const endpointMap = {
           short: "http://localhost:8080/api/llm/short",
           medium: "http://localhost:8080/api/llm/medium",
@@ -299,6 +301,8 @@ export default {
       } catch (error) {
         console.error("Error creating note:", error);
         this.outputText = "An error occurred while generating the note.";
+      } finally {
+        this.isLoading = false;
       }
     },
 

@@ -168,10 +168,11 @@
     position: relative;
     background-color: #eee;
     min-height: 110vh;
-    /* top: -30px; */
+   /* top: -30px; */
     left: 5rem;
     transition: all 0.5s ease;
-    width: calc(100% - 30px);
+    /* width: calc(100% - 30px); */
+    width: 95%;
     /* padding: 1rem; */
 }
 
@@ -215,7 +216,7 @@ color: black;
     background-color: white;
     padding: 2rem;
     border-left: 1px solid #fdd85d;
-    margin-right: 0.5rem;
+    margin-right: 0rem;
 }
 
 .flashnote-note-area {
@@ -244,6 +245,12 @@ color: black;
 }
 
 .flashnote-tabs button:hover {
+    background-color: #fdc920;
+    color: white;
+}
+
+/* Selected state (same as hover) */
+.flashnote-tabs button:focus {
     background-color: #fdc920;
     color: white;
 }
@@ -348,6 +355,21 @@ color: black;
     color: #333;
     margin: 0;
 }
+
+.loading-spinner {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 50px;
+  }
+  
+  .bx-spin {
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 
 /* Responsive design adjustments */
 @media (max-width: 768px) {
