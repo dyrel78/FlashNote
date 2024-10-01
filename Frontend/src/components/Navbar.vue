@@ -3,7 +3,6 @@
       <ul>
         <li><a href="home">Home</a></li>
         <li><a href="#">Flashcards</a></li>
-        <li><a href="/view-notes-preview">Notes</a></li>
         <li><a href="/profile">Profile</a></li>
         <li><a href="/create-account">Create Account</a></li>
         <li v-if="userExists">
