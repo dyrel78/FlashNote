@@ -52,7 +52,7 @@
                       overflow-x: auto;
                     "
                   >
-                    <pre class="preformatted">{{ outputText }}</pre>
+                    <pre v-html ="outputText" class="preformatted"></pre>
                   </div>
                 </div>
                 <div id="copy-btn-viewnotespreview">
@@ -186,7 +186,13 @@ export default {
             `//localhost:8080/api/notes/${idToFetch}`
           );
           this.note = response.data;
-          this.outputText = this.note.note_content;
+          if (this.note.note_format === "flashcards") {
+
+            this.outputText = this.note.question + "\n" + this.note.answer;
+
+          } else {
+            this.outputText = this.note.note_content;
+          }
           console.log("Notes retrieved successfully:", this.note);
         } else {
           this.outputText = "Please select a note to view";
