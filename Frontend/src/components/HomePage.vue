@@ -65,29 +65,10 @@
                   align-items: flex-start;
                   height: 100%;
                   flex-wrap: wrap;
-                "
-              >
+                ">
                 <div class="flashnote-note-input">
-                  <div v-if="userExists">
-                    <textarea
-                      v-model="inputText"
-                      placeholder="Paste text"
-                    ></textarea>
-                  </div>
-                  <div v-else>
-                    <textarea
-                      style="height: 320px"
-                      v-model="inputText"
-                      placeholder="Paste text"
-                    ></textarea>
-                  </div>
-
-                  <input
-                    class="choose-file-input"
-                    type="file"
-                    id="inpfile"
-                    @change="handleFileUpload"
-                  />
+                  <textarea v-model="inputText" placeholder="Paste text"></textarea>
+                  <input class="choose-file-input" type="file" id="inpfile" @change="handleFileUpload" />
                   <button class="flashnote-upload-pdf" @click="uploadPDF">
                     Upload PDF
                   </button>
@@ -391,32 +372,74 @@ export default {
           return;
         }
 
-        const newNote = {
-          note_name: noteName,
-          note_content: this.outputText,
-          note_format: this.selectedTab,
-          folder: folderName,
-          user: user,
-        };
+        if (this.selectedTab === "flashcards") {
+          let counter = 1; // Initialize counter
 
-        const response = await axios.post(
-          "http://localhost:8080/api/notes/",
-          newNote
-        );
-        console.log("Note saved successfully:", response.data);
-        // Success alert for note saving
-        Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Note saved successfully!",
-        });
+          for (const flashCard of this.flashCardObjects) {
+            if (flashCard.question.startsWith("\n")) {
+              flashCard.question = flashCard.question.substring(1);
+            }
+            if (flashCard.question.startsWith("\n")) {
+              flashCard.question = flashCard.question.substring(1);
+            }
+            if (flashCard.question.trim() === "") {
+              // Skip flashcards with invalid questions
+              continue;
+            }
+
+            const newFlashcard = {
+              note_name: `${noteName}_${counter}`, // Append counter to note_name
+              note_format: "flashcards",
+              folder: folderName,
+              user: user,
+              question: flashCard.question,
+              answer: flashCard.answer,
+              status: flashCard.status,
+            };
+
+            const response = await axios.post(
+              "http://localhost:8080/api/notes/",
+              newFlashcard
+            );
+            console.log("Flashcard saved successfully:", response.data);
+
+            counter++; // Increment counter
+          }
+
+          // Success alert for flashcards saving
+          Swal.fire({
+            icon: "success",
+            title: "Success!",
+            text: "Flashcards saved successfully!",
+          });
+        } else {
+          const newNote = {
+            note_name: noteName,
+            note_content: this.outputText,
+            note_format: this.selectedTab,
+            folder: folderName,
+            user: user,
+          };
+
+          const response = await axios.post(
+            "http://localhost:8080/api/notes/",
+            newNote
+          );
+          console.log("Note saved successfully:", response.data);
+          // Success alert for note saving
+          Swal.fire({
+            icon: "success",
+            title: "Success!",
+            text: "Note saved successfully!",
+          });
+        }
       } catch (error) {
         console.error("Error saving note:", error);
-        // Success alert for note saving
+        // Error alert for note saving
         Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Note saved successfully!",
+          icon: "error",
+          title: "Error!",
+          text: "There was an error saving the note.",
         });
       }
     },
