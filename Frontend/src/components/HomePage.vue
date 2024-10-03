@@ -346,6 +346,9 @@ export default {
         // Use the new folder name if the user has selected to create a new one
         if (this.isNewFolder) {
           folderName = this.newFolderName;
+          if (!this.folders.includes(folderName)) {
+            this.folders.push(folderName);
+          }
         }
 
         if (!folderName) {
@@ -426,6 +429,8 @@ export default {
             newNote
           );
           console.log("Note saved successfully:", response.data);
+          await this.fetchFolders();
+
           // Success alert for note saving
           Swal.fire({
             icon: "success",
