@@ -122,11 +122,18 @@ router.get("/folders/:userId", async (req, res) => {
 });
 // Update a note by ID
 router.put("/:id", async (req, res) => {
+  console.log(req.body);
+  const id = req.params.id;
   try {
-    const updatedNote = await Note.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    }).populate("user", "username");
+    const updatedNote = await Note.findByIdAndUpdate(
+      id,
+      {
+        note_content: req.body.note_content,
+      },
+      {
+        runValidators: true,
+      }
+    );
 
     if (!updatedNote) {
       return res.status(404).json({ error: "Note not found" });

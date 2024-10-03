@@ -1,27 +1,27 @@
 <template>
     <!--body id="view-notes-preview"-->
-    <div id="view-notes-preview">
+    <div id="app">
       <!-- Sidebar -->
       <div class="container">
         <div class="sidebar">
-          <div class="top">
-            <div class="logo">
-              <i class="bx bx-edit"></i>
-              <span>All Notes</span>
-            </div>
-            <i class="bx bx-menu" id="btn"></i>
+        <div class="top">
+          <div class="logo">
+            <i class="bx bx-edit"></i>
+            <span>All Notes</span>
           </div>
-
-          <ul>
-            <li v-for="folder in folders" :key="folder">
-              <a href="#">
-                <i class="bx bx-folder"></i>
-                <span class="nav-item">{{ folder }}</span>
-              </a>
-              <span class="tooltip">{{ folder }}</span>
-            </li>
-          </ul>
+          <i class="bx bx-menu" id="btn"></i>
         </div>
+
+        <ul>
+          <li v-for="folder in folders" :key="folder">
+            <router-link :to="{ name: 'FolderPage', params: { id: folder } }">
+              <i class="bx bx-folder"></i>
+              <span class="nav-item">{{ folder }}</span>
+            </router-link>
+            <span class="tooltip">{{ folder }}</span>
+          </li>
+        </ul>
+      </div>
       </div>
 
       <div class="flashnote-container main-content">
@@ -43,7 +43,7 @@
               <p>Your expanded notes are shown below.</p>
 
               <div id="flashnote-content" class="flashnote-content">
-                <div id="flashnote-note-output" class="flashnote-note-output">
+                <div  id="flashnote-note-output" class="flashnote-note-output">
                   <div
                     style="
                       white-space: pre-wrap;
@@ -52,7 +52,7 @@
                       overflow-x: auto;
                     "
                   >
-                    <pre class="preformatted">{{ outputText }}</pre>
+                    <pre   contenteditable="true"  @input="updateOutputText" v-html ="outputText" class="preformatted" ></pre>
                   </div>
                 </div>
                 <div id="copy-btn-viewnotespreview">
@@ -62,9 +62,18 @@
                   <button
                     v-if="userExists"
                     class="flashnote-save-note"
-                    @click="saveNote"
+                    @click="updateNote"
                   >
                     Save
+                  </button>
+                </div>
+                <div id="delete-btn-viewnotespreview">
+                  <button
+                    v-if="userExists"
+                    class="flashnote-delete-note"
+                    @click="deleteNote"
+                  >
+                    Delete
                   </button>
                 </div>
               </div>
@@ -81,6 +90,8 @@
 
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
+
 import FlashnoteNavbar from "./Navbar.vue";
 // import { get } from "core-js/core/dict";
 
@@ -113,7 +124,8 @@ export default {
   },
   mounted() {
     this.checkUserInSession();
-    this.getFolders();
+    // this.getFolders();
+    this.fetchFolders();
     this.getAllNotes();
     // Add the sidebar toggle functionality
     // let btn = document.querySelector("#btn");
@@ -127,6 +139,9 @@ export default {
 
   methods: {
 
+    updateOutputText(event) {
+      this.outputText = event.target.innerHTML;
+    },
     async sideBarMethods() {
       let btn = document.querySelector("#btn");
       let sidebar = document.querySelector(".sidebar");
@@ -186,7 +201,13 @@ export default {
             `//localhost:8080/api/notes/${idToFetch}`
           );
           this.note = response.data;
-          this.outputText = this.note.note_content;
+          if (this.note.note_format === "flashcards") {
+
+            this.outputText = this.note.question + "\n" + this.note.answer;
+
+          } else {
+            this.outputText = this.note.note_content;
+          }
           console.log("Notes retrieved successfully:", this.note);
         } else {
           this.outputText = "Please select a note to view";
@@ -201,29 +222,79 @@ export default {
       this.$router.push({ name: "ViewNotesPreview", params: { id: noteID } });
       this.fetchNote(noteID);
     },
-    async saveNote() {
+    async updateNote() {
       try {
-        const user = JSON.parse(sessionStorage.getItem("user"));
-        const newNote = {
-          note_name: `Note_${new Date().toISOString()}`,
-          note_content: this.outputText,
-          note_format: "expanded",
-          folder: "default",
-          user: user.id,
-        };
 
-        const response = await axios.post("localhost:8080/api/notes/", newNote);
-        console.log("Note saved successfully:", response.data);
-        alert("Note saved successfully!");
+        const response = await axios.put(`http://localhost:8080/api/notes/${this.id}`, {
+          note_name: this.note.note_name,
+          note_format: this.note.note_format,
+          folder: this.note.folder,
+          user: this.note.user,
+          _id: this.note._id,
+          note_content: this.outputText
+        });
+        console.log("Note Updates successfully:", response.data);
+        this.fetchNote(this.id);
+        Swal.fire({
+          title: 'Note Updated',
+          text: 'Your note has been updated successfully.',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+        // this.fetchNote(this.id);
       } catch (error) {
         console.error("Error saving note:", error);
         alert("An error occurred while saving the note.");
+      }
+    },    
+    async fetchFolders() {
+      const user = JSON.parse(sessionStorage.getItem("user"));
+      if (!user) {
+        console.error("No user found in session.");
+        this.folders = []; // Ensure folders is at least an empty array if no user is found
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/notes/folders/${user._id}`
+        );
+        this.folders = response.data;
+      } catch (error) {
+        console.error("Error fetching folders:", error);
+        this.folders = []; // Ensure folders is at least an empty array if an error occurs
+      }
+    },
+
+    async deleteNote() {
+      try {
+        const response = await axios.delete(`http://localhost:8080/api/notes/${this.id}`);
+        console.log("Note deleted successfully:", response.data);
+        Swal.fire({
+          title: 'Note Deleted',
+          text: 'Your note has been deleted successfully.',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+        // Pause 0.2 seconds
+        // Go back a page
+          this.$router.go(-1);
+
+        // await new Promise((resolve) => setTimeout(resolve, 400));
+        // window.location.href = "/home";
+      } catch (error) {
+        console.error("Error deleting note:", error);
+        alert("An error occurred while deleting the note.");
       }
     },
   },
 };
 </script>
 
+
+<style>
+@import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
+</style>
 <style>
 /* trial*/
 
@@ -245,6 +316,7 @@ export default {
 .save-btn-viewnotespreview:hover .copy-btn-viewnotespreview {
   background-color: #5a7ba5;
 }
+
 </style>
 
 <style>
@@ -253,6 +325,8 @@ export default {
   word-wrap: break-word; /* Breaks long words to avoid overflow */
   max-width: 100%; /* Ensures it doesn’t exceed the container width */
   overflow-x: auto; /* Adds horizontal scroll if content overflows */
+
+  
 }
 
 button {

@@ -13,10 +13,10 @@
 
         <ul>
           <li v-for="folder in folders" :key="folder">
-            <a href="#">
+            <router-link :to="{ name: 'FolderPage', params: { id: folder } }">
               <i class="bx bx-folder"></i>
               <span class="nav-item">{{ folder }}</span>
-            </a>
+            </router-link>
             <span class="tooltip">{{ folder }}</span>
           </li>
         </ul>
@@ -70,8 +70,8 @@
                   <textarea v-model="inputText" placeholder="Paste text"></textarea>
                   <input class="choose-file-input" type="file" id="inpfile" @change="handleFileUpload" />
                   <button class="flashnote-upload-pdf" @click="uploadPDF">
-                    Upload PDF</button>
-
+                    Upload PDF
+                  </button>
 
                   <div v-if="userExists">
                     <label for="folderSelect">Select Folder:</label>
@@ -101,9 +101,12 @@
                     </div>
                   </div>
 
-
-                    <button class="flashnote-create-note" @click="createNote" :disabled="isLoading">
-                      Create
+                  <button
+                    class="flashnote-create-note"
+                    @click="createNote"
+                    :disabled="isLoading"
+                  >
+                    Create
                   </button>
                   <button
                     class="flashnote-clear-button"
@@ -122,11 +125,10 @@
                         <!-- {{ outputText }} -->
                         <p v-html="outputText"></p>
                       </pre>
-                    
-                      <div v-if="isLoading" class="loading-spinner">
-                        <i class="bx bx-loader-alt bx-spin"></i>
-                      </div>
 
+                    <div v-if="isLoading" class="loading-spinner">
+                      <i class="bx bx-loader-alt bx-spin"></i>
+                    </div>
                   </div>
                   <!-- Placeholder for AI generated notes preview -->
 
@@ -344,6 +346,9 @@ export default {
         // Use the new folder name if the user has selected to create a new one
         if (this.isNewFolder) {
           folderName = this.newFolderName;
+          if (!this.folders.includes(folderName)) {
+            this.folders.push(folderName);
+          }
         }
 
         if (!folderName) {
@@ -424,6 +429,8 @@ export default {
             newNote
           );
           console.log("Note saved successfully:", response.data);
+          await this.fetchFolders();
+
           // Success alert for note saving
           Swal.fire({
             icon: "success",
