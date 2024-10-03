@@ -1,27 +1,27 @@
 <template>
     <!--body id="view-notes-preview"-->
-    <div id="view-notes-preview">
+    <div id="app">
       <!-- Sidebar -->
       <div class="container">
         <div class="sidebar">
-          <div class="top">
-            <div class="logo">
-              <i class="bx bx-edit"></i>
-              <span>All Notes</span>
-            </div>
-            <i class="bx bx-menu" id="btn"></i>
+        <div class="top">
+          <div class="logo">
+            <i class="bx bx-edit"></i>
+            <span>All Notes</span>
           </div>
-
-          <ul>
-            <li v-for="folder in folders" :key="folder">
-              <a href="#">
-                <i class="bx bx-folder"></i>
-                <span class="nav-item">{{ folder }}</span>
-              </a>
-              <span class="tooltip">{{ folder }}</span>
-            </li>
-          </ul>
+          <i class="bx bx-menu" id="btn"></i>
         </div>
+
+        <ul>
+          <li v-for="folder in folders" :key="folder">
+            <router-link :to="{ name: 'FolderPage', params: { id: folder } }">
+              <i class="bx bx-folder"></i>
+              <span class="nav-item">{{ folder }}</span>
+            </router-link>
+            <span class="tooltip">{{ folder }}</span>
+          </li>
+        </ul>
+      </div>
       </div>
 
       <div class="flashnote-container main-content">
@@ -124,7 +124,8 @@ export default {
   },
   mounted() {
     this.checkUserInSession();
-    this.getFolders();
+    // this.getFolders();
+    this.fetchFolders();
     this.getAllNotes();
     // Add the sidebar toggle functionality
     // let btn = document.querySelector("#btn");
@@ -137,6 +138,7 @@ export default {
   },
 
   methods: {
+
     updateOutputText(event) {
       this.outputText = event.target.innerHTML;
     },
@@ -244,6 +246,24 @@ export default {
         console.error("Error saving note:", error);
         alert("An error occurred while saving the note.");
       }
+    },    
+    async fetchFolders() {
+      const user = JSON.parse(sessionStorage.getItem("user"));
+      if (!user) {
+        console.error("No user found in session.");
+        this.folders = []; // Ensure folders is at least an empty array if no user is found
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/notes/folders/${user._id}`
+        );
+        this.folders = response.data;
+      } catch (error) {
+        console.error("Error fetching folders:", error);
+        this.folders = []; // Ensure folders is at least an empty array if an error occurs
+      }
     },
 
     async deleteNote() {
@@ -271,6 +291,10 @@ export default {
 };
 </script>
 
+
+<style>
+@import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
+</style>
 <style>
 /* trial*/
 
@@ -292,6 +316,7 @@ export default {
 .save-btn-viewnotespreview:hover .copy-btn-viewnotespreview {
   background-color: #5a7ba5;
 }
+
 </style>
 
 <style>
