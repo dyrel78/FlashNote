@@ -65,10 +65,19 @@
                   align-items: flex-start;
                   height: 100%;
                   flex-wrap: wrap;
-                ">
+                "
+              >
                 <div class="flashnote-note-input">
-                  <textarea v-model="inputText" placeholder="Paste text"></textarea>
-                  <input class="choose-file-input" type="file" id="inpfile" @change="handleFileUpload" />
+                  <textarea
+                    v-model="inputText"
+                    placeholder="Paste text"
+                  ></textarea>
+                  <input
+                    class="choose-file-input"
+                    type="file"
+                    id="inpfile"
+                    @change="handleFileUpload"
+                  />
                   <button class="flashnote-upload-pdf" @click="uploadPDF">
                     Upload PDF
                   </button>
@@ -139,7 +148,7 @@
                   >
                     Clear
                   </button>
-                  <button class="flashnote-copy-button">Copy</button>
+                  <button class="flashnote-copy-button" @click="copyText">Copy</button>
                 </div>
               </div>
 
@@ -268,6 +277,33 @@ export default {
     setTab(tab) {
       this.selectedTab = tab;
       console.log("Selected tab:", this.selectedTab);
+    },
+
+    // copyText method
+    copyText() {
+      const textToCopy = this.outputText; // Get the text to copy
+      const textArea = document.createElement("textarea");
+
+      // Set the textarea's value to the plain text (use innerText for plain text)
+      textArea.value = textToCopy.replace(/<\/?[^>]+(>|$)/g, ""); // Removes HTML tags
+
+      // Append the textarea temporarily to the body
+      document.body.appendChild(textArea);
+
+      // Select the text and copy
+      textArea.select();
+      document.execCommand("copy");
+
+      // Remove the textarea after copying
+      document.body.removeChild(textArea);
+
+      // Show a nice SweetAlert2 message
+      Swal.fire({
+        title: "Copied!",
+        text: "Note content copied as plain text.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
     },
 
     async createNote() {

@@ -62,10 +62,11 @@
               </div>
               <!-- Button group container for alignment -->
               <div class="flashnote-button-group">
-
                 <!--Copy Button-->
-                <button class="flashnote-copy-button">Copy</button>
-                
+                <button class="flashnote-copy-button" @click="copyText">
+                  Copy
+                </button>
+
                 <!--Save Button-->
                 <button
                   v-if="userExists"
@@ -74,7 +75,7 @@
                 >
                   Save
                 </button>
-                
+
                 <!--Delete Button-->
                 <button
                   v-if="userExists"
@@ -145,6 +146,28 @@ export default {
     updateOutputText(event) {
       this.outputText = event.target.innerHTML;
     },
+    // Copy functionality
+    copyText() {
+      const textToCopy = this.outputText; // Grab the note content to copy
+      const textArea = document.createElement("textarea");
+
+      textArea.value = textToCopy.replace(/<\/?[^>]+(>|$)/g, ""); // This ensures we remove HTML tags; // Set the content to the textarea
+      document.body.appendChild(textArea); // Temporarily add the textarea to the body
+
+      textArea.select(); // Select the content
+      document.execCommand("copy"); // Execute the copy command
+
+      document.body.removeChild(textArea); // Remove the temporary textarea
+      // Show a nice SweetAlert2 message
+      Swal.fire({
+        title: "Copied!",
+        text: "Note content copied as plain text.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+    },
+
+    //side bar
     async sideBarMethods() {
       let btn = document.querySelector("#btn");
       let sidebar = document.querySelector(".sidebar");
