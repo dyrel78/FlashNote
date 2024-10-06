@@ -55,7 +55,13 @@
                     <pre   contenteditable="true"  @input="updateOutputText" v-html ="outputText" class="preformatted" ></pre>
                   </div>
                 </div>
-                <div id="copy-btn-viewnotespreview">
+<!-- Button group container for alignment -->
+                <div class="flashnote-button-group">
+                  <button class="flashnote-copy-button">Copy</button>
+                  <button v-if="userExists" class="flashnote-save-note" @click="updateNote">Save</button>
+                  <button v-if="userExists" class="flashnote-delete-note" @click="deleteNote">Delete</button>
+                </div>
+                <!--<div id="copy-btn-viewnotespreview">
                   <button class="flashnote-copy-button">Copy</button>
                 </div>
                 <div id="save-btn-viewnotespreview">
@@ -75,7 +81,7 @@
                   >
                     Delete
                   </button>
-                </div>
+                </div>-->
               </div>
 
               <!-- Save Button at the bottom -->
@@ -295,38 +301,48 @@ export default {
 <style>
 @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
 </style>
-<style>
-/* trial*/
 
-/* Align Save Button to Right of Text Area */
-.save-btn-viewnotespreview .copy-btn-viewnotespreview {
-  background-color: #6798c0;
+
+<style scoped>
+
+/* Add styles for the button group container */
+.flashnote-button-group {
+  display: flex;
+  justify-content: flex-start; /* Align buttons to the left (or use flex-end for right alignment) */
+  gap: 20px; /* Space between buttons */
+  margin-top: 1rem;
+}
+
+/* Style the buttons */
+button.flashnote-save-note,
+button.flashnote-copy-button,
+button.flashnote-delete-note {
+  background-color: #6798c0; /* Button background color */
   color: white;
   border: none;
   cursor: pointer;
-  padding: 0.5rem 1.5rem;
   border-radius: 4px;
-  position: left;
-  right: 0; /* Align to the right */
-  top: 50%; /* Align vertically to the middle */
-  transform: translateY(-50%); /* Center it vertically */
+  padding: 0.5rem 1rem;
+  width: 100px;               /* Make all buttons the same width */
+  text-align: center;          /* Center the text in the buttons */
 }
 
-/* Adjust Save Button Hover Effect */
-.save-btn-viewnotespreview:hover .copy-btn-viewnotespreview {
-  background-color: #5a7ba5;
+/* Optional hover effect */
+button.flashnote-save-note:hover,
+button.flashnote-copy-button:hover,
+button.flashnote-delete-note:hover {
+  background-color: #5a7ba5; /* Darker blue on hover */
 }
 
-</style>
 
-<style>
+
+
+
 .preformatted {
   white-space: pre-wrap; /* Preserves line breaks and wraps text */
   word-wrap: break-word; /* Breaks long words to avoid overflow */
   max-width: 100%; /* Ensures it doesn’t exceed the container width */
   overflow-x: auto; /* Adds horizontal scroll if content overflows */
-
-  
 }
 
 button {
@@ -338,6 +354,7 @@ button {
   border-radius: 4px;
   padding: 0.5rem 1rem;
 }
+
 body,
 html {
   margin: 0px;
@@ -400,12 +417,31 @@ html {
   flex-direction: column;
 }
 
+/* Updated .flashnote-note-output to make it scrollable */
 .flashnote-note-output {
   margin-bottom: 1rem;
   border: 0.5px solid #9c9393; /* Border color */
   padding: 1rem;
   background-color: #f0f0f0; /* Very light grey background for input/output areas */
   border-radius: 4px;
+  max-height: 300px; /* Maximum height for the scroll box */
+  overflow-y: scroll; /* Enables vertical scrolling */
+  overflow-x: hidden; /* Ensures no horizontal scroll */
+}
+
+/* Optional: Customize the scrollbar */
+.flashnote-note-output::-webkit-scrollbar {
+  width: 8px;
+}
+
+.flashnote-note-output::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.flashnote-note-output::-webkit-scrollbar-thumb {
+  background-color: #6798c0; /* Blue scrollbar */
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
 }
 
 .flashnote-save-note {

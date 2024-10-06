@@ -26,12 +26,15 @@
           <ul class="notes-list">
             <li v-for="note in notes" :key="note._id">
               <!-- Clicking on the Note Name navigates to the ViewNotesPreview page -->
-              <router-link
-                :to="{ name: 'ViewNotesPreview', params: { id: note._id } }"
-              >
+               <!-- <router-link :to="{ name: 'ViewNotesPreview', params: { id: note._id } }"> -->
+              
+                <!-- Button to view the note -->
+              <button class="note-btn" @click="$router.push({ name: 'ViewNotesPreview', params: { id: note._id } })">
                 {{ note.note_name }}
+              </button>
+
                 <!-- Displaying the saved note name -->
-              </router-link>
+              <!--</router-link>-->
             </li>
           </ul>
         </div>
@@ -104,6 +107,31 @@ export default {
 
 
 <style scoped>
+/* Make sure the button has the same style as other buttons across the application */
+.note-btn {
+  background-color: #6798c0; /* Your button background color */
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 10px 20px; /* Consistent padding */
+  border-radius: 5px; /* Make the shape consistent with other buttons */
+  font-size: 16px;
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+/* Hover effect to make the button interactive */
+.note-btn:hover {
+  background-color: #5a7ba5; /* Slightly darker color for hover */
+}
+
+/* Ensure the button takes up the correct width if needed */
+.note-btn {
+  display: inline-block;
+  width: auto;
+  text-align: center;
+}
+
+
 
 /* Content area styles */
 .content {
