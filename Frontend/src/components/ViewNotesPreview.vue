@@ -1,9 +1,9 @@
 <template>
-    <!--body id="view-notes-preview"-->
-    <div id="app">
-      <!-- Sidebar -->
-      <div class="container">
-        <div class="sidebar">
+  <!--body id="view-notes-preview"-->
+  <div id="app">
+    <!-- Sidebar -->
+    <div class="container">
+      <div class="sidebar">
         <div class="top">
           <div class="logo">
             <i class="bx bx-edit"></i>
@@ -22,76 +22,74 @@
           </li>
         </ul>
       </div>
-      </div>
+    </div>
 
-      <div class="flashnote-container main-content">
-        <!-- Navbar -->
-        <FlashnoteNavbar
-          :userExists="userExists"
-          :userObject="userObject"
-          @update:userExists="userExists = $event"
-          @update:userObject="userObject = $event"
-        />
+    <div class="flashnote-container main-content">
+      <!-- Navbar -->
+      <FlashnoteNavbar
+        :userExists="userExists"
+        :userObject="userObject"
+        @update:userExists="userExists = $event"
+        @update:userObject="userObject = $event"
+      />
 
-        <!-- Main content -->
-        <div class="flashnote-main-content">
-          <!-- Right Column for Expanded Note Output -->
-          <div class="flashnote-right-column">
-            <div class="flashnote-note-area">
-              <h1>View Notes Preview</h1>
-              <!-- Page title added -->
-              <p>Your expanded notes are shown below.</p>
+      <!-- Main content -->
+      <div class="flashnote-main-content">
+        <!-- Right Column for Expanded Note Output -->
+        <div class="flashnote-right-column">
+          <div class="flashnote-note-area">
+            <h1>View Notes Preview</h1>
+            <!-- Page title added -->
+            <p>Your expanded notes are shown below.</p>
 
-              <div id="flashnote-content" class="flashnote-content">
-                <div  id="flashnote-note-output" class="flashnote-note-output">
-                  <div
-                    style="
-                      white-space: pre-wrap;
-                      word-wrap: break-word;
-                      max-width: 100%;
-                      overflow-x: auto;
-                    "
-                  >
-                    <pre   contenteditable="true"  @input="updateOutputText" v-html ="outputText" class="preformatted" ></pre>
-                  </div>
+            <div id="flashnote-content" class="flashnote-content">
+              <div id="flashnote-note-output" class="flashnote-note-output">
+                <div
+                  style="
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                    max-width: 100%;
+                    overflow-x: auto;
+                  "
+                >
+                  <pre
+                    contenteditable="true"
+                    @input="updateOutputText"
+                    v-html="outputText"
+                    class="preformatted"
+                  ></pre>
                 </div>
-<!-- Button group container for alignment -->
-                <div class="flashnote-button-group">
-                  <button class="flashnote-copy-button">Copy</button>
-                  <button v-if="userExists" class="flashnote-save-note" @click="updateNote">Save</button>
-                  <button v-if="userExists" class="flashnote-delete-note" @click="deleteNote">Delete</button>
-                </div>
-                <!--<div id="copy-btn-viewnotespreview">
-                  <button class="flashnote-copy-button">Copy</button>
-                </div>
-                <div id="save-btn-viewnotespreview">
-                  <button
-                    v-if="userExists"
-                    class="flashnote-save-note"
-                    @click="updateNote"
-                  >
-                    Save
-                  </button>
-                </div>
-                <div id="delete-btn-viewnotespreview">
-                  <button
-                    v-if="userExists"
-                    class="flashnote-delete-note"
-                    @click="deleteNote"
-                  >
-                    Delete
-                  </button>
-                </div>-->
               </div>
+              <!-- Button group container for alignment -->
+              <div class="flashnote-button-group">
 
-              <!-- Save Button at the bottom -->
+                <!--Copy Button-->
+                <button class="flashnote-copy-button">Copy</button>
+                
+                <!--Save Button-->
+                <button
+                  v-if="userExists"
+                  class="flashnote-save-note"
+                  @click="updateNote"
+                >
+                  Save
+                </button>
+                
+                <!--Delete Button-->
+                <button
+                  v-if="userExists"
+                  class="flashnote-delete-note"
+                  @click="deleteNote"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
- 
-
+  </div>
 </template>
 
 <script>
@@ -144,7 +142,6 @@ export default {
   },
 
   methods: {
-
     updateOutputText(event) {
       this.outputText = event.target.innerHTML;
     },
@@ -208,9 +205,7 @@ export default {
           );
           this.note = response.data;
           if (this.note.note_format === "flashcards") {
-
             this.outputText = this.note.question + "\n" + this.note.answer;
-
           } else {
             this.outputText = this.note.note_content;
           }
@@ -230,29 +225,31 @@ export default {
     },
     async updateNote() {
       try {
-
-        const response = await axios.put(`http://localhost:8080/api/notes/${this.id}`, {
-          note_name: this.note.note_name,
-          note_format: this.note.note_format,
-          folder: this.note.folder,
-          user: this.note.user,
-          _id: this.note._id,
-          note_content: this.outputText
-        });
+        const response = await axios.put(
+          `http://localhost:8080/api/notes/${this.id}`,
+          {
+            note_name: this.note.note_name,
+            note_format: this.note.note_format,
+            folder: this.note.folder,
+            user: this.note.user,
+            _id: this.note._id,
+            note_content: this.outputText,
+          }
+        );
         console.log("Note Updates successfully:", response.data);
         this.fetchNote(this.id);
         Swal.fire({
-          title: 'Note Updated',
-          text: 'Your note has been updated successfully.',
-          icon: 'success',
-          confirmButtonText: 'OK'
+          title: "Note Updated",
+          text: "Your note has been updated successfully.",
+          icon: "success",
+          confirmButtonText: "OK",
         });
         // this.fetchNote(this.id);
       } catch (error) {
         console.error("Error saving note:", error);
         alert("An error occurred while saving the note.");
       }
-    },    
+    },
     async fetchFolders() {
       const user = JSON.parse(sessionStorage.getItem("user"));
       if (!user) {
@@ -274,17 +271,19 @@ export default {
 
     async deleteNote() {
       try {
-        const response = await axios.delete(`http://localhost:8080/api/notes/${this.id}`);
+        const response = await axios.delete(
+          `http://localhost:8080/api/notes/${this.id}`
+        );
         console.log("Note deleted successfully:", response.data);
         Swal.fire({
-          title: 'Note Deleted',
-          text: 'Your note has been deleted successfully.',
-          icon: 'success',
-          confirmButtonText: 'OK'
+          title: "Note Deleted",
+          text: "Your note has been deleted successfully.",
+          icon: "success",
+          confirmButtonText: "OK",
         });
         // Pause 0.2 seconds
         // Go back a page
-          this.$router.go(-1);
+        this.$router.go(-1);
 
         // await new Promise((resolve) => setTimeout(resolve, 400));
         // window.location.href = "/home";
@@ -297,14 +296,11 @@ export default {
 };
 </script>
 
-
 <style>
 @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
 </style>
 
-
 <style scoped>
-
 /* Add styles for the button group container */
 .flashnote-button-group {
   display: flex;
@@ -323,8 +319,8 @@ button.flashnote-delete-note {
   cursor: pointer;
   border-radius: 4px;
   padding: 0.5rem 1rem;
-  width: 100px;               /* Make all buttons the same width */
-  text-align: center;          /* Center the text in the buttons */
+  width: 100px; /* Make all buttons the same width */
+  text-align: center; /* Center the text in the buttons */
 }
 
 /* Optional hover effect */
@@ -333,10 +329,6 @@ button.flashnote-copy-button:hover,
 button.flashnote-delete-note:hover {
   background-color: #5a7ba5; /* Darker blue on hover */
 }
-
-
-
-
 
 .preformatted {
   white-space: pre-wrap; /* Preserves line breaks and wraps text */
