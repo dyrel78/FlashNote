@@ -112,13 +112,25 @@ export default {
         console.log("Response:", response);
         // Handle the response
         if (!response.ok) {
+        
+          if (response.status === 500) {
           const errorData = await response.json();
           Swal.fire({
             icon: "error",
             title: "Error",
-            text: errorData.message || "Failed to create account",
+            text: errorData.message || "Account already exists",
           });
+          }else{
+            const errorData = await response.json();
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: errorData.message || "Failed to create account",
+            });
+          }
+
         } else {
+
           Swal.fire({
             icon: "success",
             title: "Success",
