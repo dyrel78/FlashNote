@@ -1,11 +1,17 @@
 <template>
-  <div>
-    <!-- Navigation bar imported from the homepage -->
-    <Navbar />
+
 
     <div class="container">
       <!-- Sidebar like in the homepage -->
       <div class="sidebar">
+        <div class="top">
+          <div class="logo">
+            <i class="bx bx-edit"></i>
+            <span>All Notes</span>
+          </div>
+          <i class="bx bx-menu" id="btn"></i>
+        </div>
+
         <ul>
           <li v-for="folder in folders" :key="folder">
             <router-link :to="{ name: 'FolderPage', params: { id: folder } }">
@@ -17,6 +23,14 @@
         </ul>
       </div>
 
+      <div class="flashnote-container main-content">
+        <!-- Navbar -->
+        <FlashnoteNavbar
+          :userExists="userExists"
+          :userObject="userObject"
+          @update:userExists="userExists = $event"
+          @update:userObject="userObject = $event"
+        />
       <!-- Main content area where the folder name and notes are displayed -->
       <div class="content">
         <h1>Folder: {{ folderName }}</h1>
@@ -43,17 +57,18 @@
         </div>
       </div>
     </div>
+    
   </div>
 </template>
 
 <script>
-import Navbar from "./Navbar.vue";
+import FlashnoteNavbar from "./Navbar.vue";
 import axios from "axios";
 
 export default {
   name: "FolderPage",
   components: {
-    Navbar,
+    FlashnoteNavbar,
   },
   props: ["id"], // Accept the folder name or ID as a prop
   data() {
@@ -61,11 +76,16 @@ export default {
       folderName: this.id, // Initialize folderName from the route parameter
       notes: [], // Array to hold notes
       folders: [], // To populate the sidebar with folders
+      userExists: false,
+      userObject: {},
     };
   },
-  created() {
+  mounted() {
+    this.checkUserInSession();
     this.fetchNotes(); // Fetch notes when the component is created
     this.fetchFolders(); // Fetch folders for the sidebar
+    this.sideBarMethods();
+
   },
   methods: {
     async fetchNotes() {
@@ -82,6 +102,25 @@ export default {
       } catch (error) {
         console.error("Error fetching notes:", error);
       }
+    },
+    async checkUserInSession() {
+      const user = sessionStorage.getItem("user");
+      if (!user) {
+        // If the user does not exist, redirect to sign-in page
+        window.location.href = "/sign-in";
+      } else {
+        this.userExists = true;
+        this.userObject = JSON.parse(user);
+        console.log("User exists in session storage:", this.userObject);
+      }
+    },
+    async sideBarMethods() {
+      let btn = document.querySelector("#btn");
+      let sidebar = document.querySelector(".sidebar");
+
+      btn.onclick = function () {
+        sidebar.classList.toggle("active");
+      };
     },
     async fetchFolders() {
       // Fetch folders to populate the sidebar
