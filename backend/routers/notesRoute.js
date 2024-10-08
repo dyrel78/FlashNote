@@ -14,6 +14,7 @@ router.post("/", async (req, res) => {
       note_format,
       note_name,
       user,
+      flashcard_set_name,
       question,
       answer,
       status,
@@ -26,6 +27,7 @@ router.post("/", async (req, res) => {
       note_format,
       note_name,
       user,
+      flashcard_set_name,
       question,
       answer,
       status,
@@ -178,6 +180,16 @@ router.delete("/:id", async (req, res) => {
       return res.status(404).json({ error: "Note not found" });
     }
     res.status(200).json({ message: "Note deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/:folder_set", async (req, res) => {
+  const folderSet = req.params.folder_set;
+  try {
+    const notes = await Note.find({ folder: folderSet });
+    res.status(200).json(notes);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
