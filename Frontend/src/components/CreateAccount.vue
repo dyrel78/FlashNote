@@ -161,5 +161,5 @@ export default {
 </script>
 
 <style>
-@import "../assets/brooke-style.css";
+@import url(../assets/flashnote-styles.css);
 </style>

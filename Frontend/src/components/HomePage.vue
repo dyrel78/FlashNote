@@ -515,7 +515,7 @@ export default {
 </script>
 
 <style>
-@import url(../assets/will-style.css);
+@import url(../assets/flashnote-styles.css);
 @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
 </style>
 
