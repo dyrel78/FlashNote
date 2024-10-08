@@ -36,25 +36,59 @@
         <h1>Folder: {{ folderName }}</h1>
 
         <!-- List of notes by their name -->
-        <div v-if="notes.length > 0">
-          <ul class="notes-list">
-            <li v-for="note in notes" :key="note._id">
-              <!-- Clicking on the Note Name navigates to the ViewNotesPreview page -->
-               <!-- <router-link :to="{ name: 'ViewNotesPreview', params: { id: note._id } }"> -->
-              
-                <!-- Button to view the note -->
-              <button class="note-btn" @click="$router.push({ name: 'ViewNotesPreview', params: { id: note._id } })">
-                {{ note.note_name }}
-              </button>
+        <div class="two-pane-container">
+                <!-- Left pane: Notes list -->
+                <div class="notes-list-pane">
+                    <h2>Folder: {{ folderName }}</h2>
+                    <div v-if="notes.length > 0">
+                        <ul class="notes-list">
+                            <li v-for="note in notes" :key="note._id">
+                                <button class="note-btn" @click="$router.push({ name: 'ViewNotesPreview', params: { id: note._id } })">
+                                    {{ note.note_name }}
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div v-else>
+                        <p>No notes available in this folder.</p>
+                    </div>
+                </div>
 
-                <!-- Displaying the saved note name -->
-              <!--</router-link>-->
-            </li>
-          </ul>
-        </div>
-        <div v-else>
-          <p>No notes available in this folder.</p>
-        </div>
+                <!-- Right pane: Content area -->
+                <div class="right-content-pane">
+                    <!-- This is where you can add the content for the selected note or any other relevant information -->
+                    <h2>Flashcard sets</h2>
+                    <div v-if="notes.length > 0">
+                        <ul class="notes-list">
+                            <!-- <li v-for="note in notes" :key="note._id">
+                              
+                                <button class="note-btn" @click="$router.push({ name: 'ViewNotesPreview', params: { id: note._id } })">
+                                    {{ note.note_name }}
+                                </button>
+                            </li> -->
+                            <li v-for="note in flashcardNotes" :key="note._id">
+                          <button class="note-btn" @click="$router.push({ name: 'ViewNotesPreview', params: { id: note._id } })">
+                              {{ note.note_name }}
+                          </button>
+                </li>
+
+                        </ul>
+                    </div>
+
+                    
+                    <div v-else>
+                        <p>No notes available in this folder.</p>
+                    </div>          
+                        </div>
+            </div>
+
+              
+         
+
+
+
+
+
       </div>
     </div>
     
@@ -64,6 +98,7 @@
 <script>
 import FlashnoteNavbar from "./Navbar.vue";
 import axios from "axios";
+// import  { all } from "axios";
 
 export default {
   name: "FolderPage",
@@ -86,6 +121,20 @@ export default {
     this.fetchFolders(); // Fetch folders for the sidebar
     this.sideBarMethods();
 
+  },  computed: {
+    flashcardNotes() {
+      const flashcards = this.notes.filter(note => note.note_format === 'flashcards');
+      const uniqueSets = new Map();
+      
+      flashcards.forEach(note => {
+        if (note.flashcard_set_name && !uniqueSets.has(note.flashcard_set_name)) {
+          uniqueSets.set(note.flashcard_set_name, note);
+        }
+      });
+      
+      return Array.from(uniqueSets.values());
+    }
+  
   },
   methods: {
     async fetchNotes() {
@@ -147,6 +196,9 @@ export default {
 
 <style scoped>
 /* Make sure the button has the same style as other buttons across the application */
+
+
+
 .note-btn {
   background-color: #6798c0; /* Your button background color */
   color: white;
@@ -207,4 +259,47 @@ h1 {
 p {
   color: #666;
 }
+
+
+
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .two-pane-container {
+            display: flex;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+        .notes-list-pane {
+            width: 300px;
+            overflow-y: auto;
+            border-right: 1px solid #ccc;
+            padding: 20px;
+        }
+        .right-content-pane {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        /* .notes-list {
+            list-style-type: none;
+            padding: 0;
+        } */
+        /* .note-btn {
+            width: 100%;
+            text-align: left;
+            padding: 10px;
+            margin-bottom: 5px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        } */
+
+
+
+
+
+
 </style>

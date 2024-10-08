@@ -201,6 +201,7 @@ export default {
       isLoading: false,
     };
   },
+
   mounted() {
     // Check if user is in session storage when the component mounts
     this.checkUserInSession();
@@ -430,6 +431,7 @@ export default {
               note_name: `${noteName}_${counter}`, // Append counter to note_name
               note_format: "flashcards",
               folder: folderName,
+              flashcard_set_name: noteName + "_set",
               user: user,
               question: flashCard.question,
               answer: flashCard.answer,
@@ -524,5 +526,9 @@ select {
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 0.25rem;
+}
+
+.flashnote-container main-content {
+color: white;
 }
 </style>
