@@ -65,19 +65,17 @@
             <!-- Right pane: Content area -->
             <div class="right-content-pane">
               <h2>Flashcard</h2>
-              <!-- <div v-if="flashcardNotes.length > 0">
-                <ul class="notes-list">
-      
-                  <li v-for="note in flashcardNotes" :key="note._id">
-                    <button class="note-btn" @click="$router.push({ name: 'ViewNotesPreview', params: { id: note._id } })">
-                      {{ note.flashcard_set_name || note.note_name }}
-                    </button>
-                  </li>
-                </ul>
+              <div class="flashcard-container" v-if="selectedFlashcard">
+                <div class="flashcard-maincontainer" @click="flipCard">
+                  <div :class="['flashcard-thecard', { 'flashcard-flip': isFlipped }]">
+                    <div class="flashcard-thefront">{{ selectedFlashcard.question }}</div>
+                    <div class="flashcard-theback">{{ selectedFlashcard.answer }}</div>
+                  </div>
+                </div>
               </div>
               <div v-else>
-                <p>No flashcard sets available in this folder.</p>
-              </div> -->
+                <p>Select a flashcard to display</p>
+              </div>
 
             </div>
           </div>
@@ -106,6 +104,9 @@
         userObject: {},
         selectedNotes: [],
         flashcards:[],
+        // these 2 below are new
+        selectedFlashcard: null,
+        isFlipped: false,
       };
     },
     computed: {
@@ -140,8 +141,12 @@
             `http://localhost:8080/api/notes/${userId}/${this.flashcard_set_name}`
           );
           // console.log(response.data)
-          this.flashcards = response.data;
-          console.log(this.flashcards);
+          // These lines below are bnew
+          this.flashcards = response.data.map(flashcard => ({
+          ...flashcard,
+          question: flashcard.note_name,
+          answer: flashcard.note_content
+        }));          console.log(this.flashcards);
           // return onlyNotes
         } catch (error) {
           console.error("Error fetching notes:", error);
@@ -206,6 +211,13 @@
             alert('An error occurred while deleting notes. Please try again.');
           }
         }
+        // These two functions are new
+      },      selectFlashcard(flashcard) {
+        this.selectedFlashcard = flashcard;
+        this.isFlipped = false;
+      },
+      flipCard() {
+        this.isFlipped = !this.isFlipped;
       },
     },
   };
@@ -367,9 +379,70 @@
               cursor: pointer;
           } */
   
+  /* FLASHCARDS
+  These are new
+  */
   
+  .two-pane-container {
+    display: flex;
+    justify-content: space-between;
+  }
   
+  .notes-list-pane, .right-content-pane {
+    width: 48%;
+  }
   
+  .flashcard-container {
+    width: 100%;
+    height: 300px;
+    perspective: 1000px;
+  }
+  
+  .flashcard-maincontainer {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+  
+  .flashcard-thecard {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+  
+  .flashcard-thefront, .flashcard-theback {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .flashcard-thefront {
+    background-color: #f0f0f0;
+    color: #333;
+  }
+  
+  .flashcard-theback {
+    background-color: #e0e0e0;
+    color: #333;
+    transform: rotateY(180deg);
+  }
+  
+  .flashcard-flip {
+    transform: rotateY(180deg);
+  }
   
   </style>
   
