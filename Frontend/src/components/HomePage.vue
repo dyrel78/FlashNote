@@ -413,7 +413,7 @@ export default {
         }
 
         if (this.selectedTab === "flashcards") {
-          let counter = 1; // Initialize counter
+          // let counter = 1; // Initialize counter
 
           for (const flashCard of this.flashCardObjects) {
             if (flashCard.question.startsWith("\n")) {
@@ -427,8 +427,15 @@ export default {
               continue;
             }
 
+            let formatedNoteName = flashCard.question;
+      
+              formatedNoteName = formatedNoteName.substring(
+                "<strong>Question:</strong>".length);
+          
+
             const newFlashcard = {
-              note_name: `${noteName}_${counter}`, // Append counter to note_name
+              // note_name: `${noteName}_${counter}`, // Append counter to note_name
+              note_name: formatedNoteName,
               note_format: "flashcards",
               folder: folderName,
               flashcard_set_name: noteName + "_set",
@@ -444,7 +451,7 @@ export default {
             );
             console.log("Flashcard saved successfully:", response.data);
 
-            counter++; // Increment counter
+            // counter++; // Increment counter
           }
 
           // Success alert for flashcards saving
