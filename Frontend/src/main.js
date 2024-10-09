@@ -7,6 +7,7 @@ import ViewNotesPreview from './components/ViewNotesPreview.vue'
 import Profile from './components/Profile.vue'
 import NotFoundPage from './components/404.vue'
 import FolderPage from './components/FolderPage.vue';  // Import FolderPage component
+import Flashcards from './components/Flashcards.vue' // Import Flashcards component
 import { createRouter, createWebHistory } from 'vue-router'
 
 // import "/css/flashnote-styles.css"
@@ -29,7 +30,7 @@ const routes = [
         props: true
     },
     {path: '/profile', component: Profile},//,
-
+    { path: '/flashcards', component: Flashcards }, 
     {path: '/folder/:id',  // Add the route for FolderPage with dynamic folder ID
     name: 'FolderPage',
     component: FolderPage,
