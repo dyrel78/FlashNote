@@ -519,16 +519,4 @@ export default {
 @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
 </style>
 
-<style>
-select {
-  padding: 0.5rem;
-  margin: 0.5rem 0;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 0.25rem;
-}
 
-.flashnote-container main-content {
-color: white;
-}
-</style>
