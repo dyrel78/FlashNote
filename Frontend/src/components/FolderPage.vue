@@ -1,10 +1,9 @@
 <template>
-
-
-    <div class="container">
-      <!-- Sidebar like in the homepage -->
-      <div class="sidebar">
-        <div class="top">
+  <div class="container">
+    <!-- Sidebar remains unchanged -->
+    <div class="sidebar">
+      <!-- ... (sidebar content remains the same) ... -->
+      <div class="top">
           <div class="logo">
             <i class="bx bx-edit"></i>
             <span>All Notes</span>
@@ -21,167 +20,165 @@
             <span class="tooltip">{{ folder }}</span>
           </li>
         </ul>
-      </div>
+    </div>
 
-      <div class="flashnote-container main-content">
-        <!-- Navbar -->
-        <FlashnoteNavbar
-          :userExists="userExists"
-          :userObject="userObject"
-          @update:userExists="userExists = $event"
-          @update:userObject="userObject = $event"
-        />
-      <!-- Main content area where the folder name and notes are displayed -->
+    <div class="flashnote-container main-content">
+      <FlashnoteNavbar
+        :userExists="userExists"
+        :userObject="userObject"
+        @update:userExists="userExists = $event"
+        @update:userObject="userObject = $event"
+      />
       <div class="content">
         <h1>Folder: {{ folderName }}</h1>
 
-        <!-- List of notes by their name -->
         <div class="two-pane-container">
-                <!-- Left pane: Notes list -->
-                <div class="notes-list-pane">
-                    <h2>Folder: {{ folderName }}</h2>
-                    <div v-if="notes.length > 0">
-                        <ul class="notes-list">
-                            <li v-for="note in notes" :key="note._id">
-                                <button class="note-btn" @click="$router.push({ name: 'ViewNotesPreview', params: { id: note._id } })">
-                                    {{ note.note_name }}
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div v-else>
-                        <p>No notes available in this folder.</p>
-                    </div>
-                </div>
+          <!-- Left pane: Notes list -->
+          <div class="notes-list-pane">
+            <h2 style= "padding-bottom: 10px;"  >Folder: {{ folderName }}</h2>
+            <div v-if="notes.length > 0">
+              <div style= "padding-bottom: 10px;" class="mass-action-controls">
+                <button @click="toggleSelectAll" class="action-btn">
+                  {{ allSelected ? 'Deselect All' : 'Select All' }}
+                </button>
+                <button @click="deleteSelected" class="action-btn delete-btn" :disabled="!hasSelection">
+                  Delete Selected
+                </button>
+              </div>
+              <ul class="notes-list">
+                <li v-for="note in notes" :key="note._id">
+                  <div class="note-item">
+                    <input type="checkbox" :value="note._id" v-model="selectedNotes">
+                    <button class="note-btn" @click="$router.push({ name: 'ViewNotesPreview', params: { id: note._id } })">
+                      {{ note.note_name }}
+                    </button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div v-else>
+              <p>No notes available in this folder.</p>
+            </div>
+          </div>
 
-                <!-- Right pane: Content area -->
-                <div class="right-content-pane">
-                    <!-- This is where you can add the content for the selected note or any other relevant information -->
-                    <h2>Flashcard sets</h2>
-                    <div v-if="notes.length > 0">
-                        <ul class="notes-list">
-                            <!-- <li v-for="note in notes" :key="note._id">
+          <!-- Right pane: Content area -->
+          <div class="right-content-pane">
+            <h2>Flashcard sets</h2>
+            <div v-if="flashcardNotes.length > 0">
+              <ul class="notes-list">
+                <!-- <li v-for="note in notes" :key="note._id">
                               
                                 <button class="note-btn" @click="$router.push({ name: 'ViewNotesPreview', params: { id: note._id } })">
                                     {{ note.note_name }}
                                 </button>
                             </li> -->
-                            <li v-for="note in flashcardNotes" :key="note._id">
-                          <button class="note-btn" @click="$router.push({ name: 'ViewNotesPreview', params: { id: note._id } })">
-                              {{ note.note_name }}
-                              {{ note.flashcard_set_name }}
-                          </button>
+                <li v-for="note in flashcardNotes" :key="note._id">
+                  <button class="note-btn" @click="$router.push({ name: 'FCPage', params: { id: note.flashcard_set_name } })">
+                    {{ note.flashcard_set_name  }}
+                  </button>
+
+
                 </li>
-
-                        </ul>
-                    </div>
-
-                    
-                    <div v-else>
-                        <p>No notes available in this folder.</p>
-                    </div>          
-                        </div>
+              </ul>
             </div>
-
-              
-         
-
-
-
-
-
+            <div v-else>
+              <p>No flashcard sets available in this folder.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    
   </div>
 </template>
 
 <script>
 import FlashnoteNavbar from "./Navbar.vue";
 import axios from "axios";
-// import  { all } from "axios";
 
 export default {
   name: "FolderPage",
   components: {
     FlashnoteNavbar,
   },
-  props: ["id"], // Accept the folder name or ID as a prop
+  props: ["id"],
   data() {
     return {
-      folderName: this.$route.params.id, // Initialize folderName from the route parameter
-      notes: [], // Array to hold notes
-      folders: [], // To populate the sidebar with folders
+      folderName: this.$route.params.id,
+      notes: [],
+      folders: [],
       userExists: false,
       userObject: {},
+      selectedNotes: [],
+      flashcards:[],
     };
-
   },
-  watch: {
-    '$route'(to) {
-      this.folderName = to.params.id;
-      this.fetchNotes(); // Fetch notes for the new folder
-    },
-  },
-  mounted() {
-    this.checkUserInSession();
-    this.fetchNotes(); // Fetch notes when the component is created
-    this.fetchFolders(); // Fetch folders for the sidebar
-    this.sideBarMethods();
-
-  },  computed: {
+  computed: {
     flashcardNotes() {
-      const flashcards = this.notes.filter(note => note.note_format === 'flashcards');
+      
       const uniqueSets = new Map();
       
-      flashcards.forEach(note => {
+      this.flashcards.forEach(note => {
         if (note.flashcard_set_name && !uniqueSets.has(note.flashcard_set_name)) {
           uniqueSets.set(note.flashcard_set_name, note);
         }
       });
       
       return Array.from(uniqueSets.values());
-
+    },
+    allSelected() {
+      return this.notes.length > 0 && this.selectedNotes.length === this.notes.length;
+    },
+    hasSelection() {
+      return this.selectedNotes.length > 0;
     }
-  
+  },
+  watch: {
+    '$route'(to) {
+      this.folderName = to.params.id;
+      this.fetchNotes();
+    },
+  },
+  mounted() {
+    this.checkUserInSession();
+    this.fetchNotes();
+    this.fetchFolders();
+    this.sideBarMethods();
   },
   methods: {
     async fetchNotes() {
       try {
-        // Get the current user's ID from the session or store
         const user = JSON.parse(sessionStorage.getItem("user"));
         const userId = user._id;
-
-        // Replace with your actual backend API endpoint to fetch notes by folder and user
         const response = await axios.get(
           `http://localhost:8080/api/notes/${userId}/folder/${this.folderName}`
         );
-        this.notes = response.data; // Assuming the API returns an array of notes
+        let onlyNotes = response.data;
+        this.flashcards= onlyNotes.filter(note => note.note_format === 'flashcards' );
+        onlyNotes= onlyNotes.filter(note => note.note_format !== 'flashcards' );
+        this.notes = onlyNotes
+        this.selectedNotes = []; // Reset selections when fetching new notes
+        // return onlyNotes
       } catch (error) {
         console.error("Error fetching notes:", error);
       }
     },
-    async checkUserInSession() {
+    checkUserInSession() {
       const user = sessionStorage.getItem("user");
       if (!user) {
-        // If the user does not exist, redirect to sign-in page
         window.location.href = "/sign-in";
       } else {
         this.userExists = true;
         this.userObject = JSON.parse(user);
-        console.log("User exists in session storage:", this.userObject);
       }
     },
-    async sideBarMethods() {
+    sideBarMethods() {
       let btn = document.querySelector("#btn");
       let sidebar = document.querySelector(".sidebar");
-
       btn.onclick = function () {
         sidebar.classList.toggle("active");
       };
     },
     async fetchFolders() {
-      // Fetch folders to populate the sidebar
       const user = JSON.parse(sessionStorage.getItem("user"));
       try {
         const response = await axios.get(
@@ -193,12 +190,43 @@ export default {
         this.folders = [];
       }
     },
+    toggleSelectAll() {
+      if (this.allSelected) {
+        this.selectedNotes = [];
+      } else {
+        this.selectedNotes = this.notes.map(note => note._id);
+      }
+    },
+    async deleteSelected() {
+      if (this.selectedNotes.length === 0) return;
+      
+      if (confirm(`Are you sure you want to delete ${this.selectedNotes.length} selected note(s)?`)) {
+        try {
+          // const user = JSON.parse(sessionStorage.getItem("user"));
+          // const userId = user._id;
+          
+          // Assuming your API supports bulk delete
+          for( const noteId of this.selectedNotes) {
+            await axios.delete(`http://localhost:8080/api/notes/${noteId}`);
+          }
+          
+          // Remove deleted notes from the local array
+          this.notes = this.notes.filter(note => !this.selectedNotes.includes(note._id));
+          this.selectedNotes = []; // Clear selections
+          
+          alert('Selected notes have been deleted successfully.');
+        } catch (error) {
+          console.error("Error deleting notes:", error);
+          alert('An error occurred while deleting notes. Please try again.');
+        }
+      }
+    },
   },
 };
 </script>
 
 <style>
-@import url(../assets/will-style.css);
+@import url(../assets/flashnote-styles.css);
 @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
 </style>
 
@@ -206,7 +234,54 @@ export default {
 <style scoped>
 /* Make sure the button has the same style as other buttons across the application */
 
+.mass-action-controls {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+}
 
+.action-btn {
+  padding: 8px 15px;
+  background-color: #6798c0;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.action-btn:hover {
+  background-color: #5a7ba5;
+}
+
+.action-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.delete-btn {
+  background-color: #d9534f;
+}
+
+.delete-btn:hover {
+  background-color: #c9302c;
+}
+
+.note-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.note-item input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+/* Adjust existing note-btn style */
+.note-btn {
+  flex-grow: 1;
+  text-align: left;
+}
 
 .note-btn {
   background-color: #6798c0; /* Your button background color */
@@ -305,7 +380,6 @@ p {
             border: 1px solid #ddd;
             cursor: pointer;
         } */
-
 
 
 

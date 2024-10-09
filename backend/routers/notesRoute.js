@@ -185,14 +185,24 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.get("/:folder_set", async (req, res) => {
-  const folderSet = req.params.folder_set;
+router.get("/:id/folder/:flashcard_set_name", async (req, res) => {
   try {
-    const notes = await Note.find({ folder: folderSet });
+    const userId = req.params.id;
+    const flashcard_set_name = req.params.flashcard_set_name;
+
+    // Find all notes for the user in the specified folder
+    const notes = await Note.find({
+      user: userId,
+      flashcard_set_name: flashcard_set_name,
+    });
+
+    // Respond with the notes found in the folder
     res.status(200).json(notes);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error fetching notes by folder:", error);
+    res.status(500).json({ error: "An error occurred while fetching notes." });
   }
-});
+}
+);
 
 export default router;
