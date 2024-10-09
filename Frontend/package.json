@@ -12,6 +12,7 @@
     "axios": "^1.7.5",
     "core-js": "^3.8.3",
     "marked": "^14.1.0",
+    "quill": "^2.0.2",
     "sweetalert2": "^11.6.13",
     "vue": "^3.2.13",
     "vue-cli-plugin-s3-deploy": "^3.0.0",
