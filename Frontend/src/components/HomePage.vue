@@ -6,12 +6,13 @@
         <div class="top">
           <div class="logo">
             <i class="bx bx-edit"></i>
-            <span>All Notes</span>
+            <span v-if="userExists">All Notes</span>
+            <span v-else>Sign in to view notes</span>
           </div>
           <i class="bx bx-menu" id="btn"></i>
         </div>
-
-        <ul>
+      
+        <ul v-if="userExists">
           <li v-for="folder in folders" :key="folder">
             <router-link :to="{ name: 'FolderPage', params: { id: folder } }">
               <i class="bx bx-folder"></i>
