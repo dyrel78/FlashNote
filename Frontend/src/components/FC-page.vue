@@ -49,8 +49,8 @@
                   <li v-for="flashcard in this.flashcards" :key="flashcard._id">
                     <div class="note-item">
                       <input type="checkbox" :value="flashcard._id" v-model="selectedNotes">
-                      <button class="note-btn" @click="$router.push({ name: 'ViewNotesPreview', params: { id: flashcard._id } })">
-                        {{ flashcard.note_name }}
+                      <!-- v-html turns the html styling into someting that is readable -->
+                      <button v-html="flashcard.note_name" class="note-btn" @click="$router.push({ name: 'ViewNotesPreview', params: { id: flashcard._id } })">
                       </button>
                       <!-- <p> {{ flashcard.note_name }}</p> -->
                     </div>
@@ -109,18 +109,7 @@
       };
     },
     computed: {
-      // flashcardNotes() {
-        
-      //   const uniqueSets = new Map();
-        
-      //   this.flashcards.forEach(note => {
-      //     if (note.flashcard_set_name && !uniqueSets.has(note.flashcard_set_name)) {
-      //       uniqueSets.set(note.flashcard_set_name, note);
-      //     }
-      //   });
-        
-      //   return Array.from(uniqueSets.values());
-      // },
+  
       allSelected() {
         return this.notes.length > 0 && this.selectedNotes.length === this.notes.length;
       },
@@ -159,26 +148,6 @@
         }
       },
 
-      // async fetchFlashcardsInSet() {
-      //   try {
-      //     const user = JSON.parse(sessionStorage.getItem("user"));
-      //     const userId = user._id;
-      //     console.log(this.flashcard_set_name)
-      //     console.log(userId)
-      //     const response = await axios.get(
-      //       `http://localhost:8080/api/notes/${userId}/folder/${this.folderName}`
-      //     );
-      //   console.log(response.data)
-      //     let onlyNotes = response.data;
-  
-      //     this.notes = onlyNotes
-      //     this.selectedNotes = []; // Reset selections when fetching new notes
-      //     // return onlyNotes
-      //   } catch (error) {
-      //     console.error("Error fetching notes:", error);
-      //   }
-      // }
-      //,
       checkUserInSession() {
         const user = sessionStorage.getItem("user");
         if (!user) {
@@ -362,28 +331,28 @@
   }
   
   
-  
-          .main-content {
-              flex-grow: 1;
-              display: flex;
-              flex-direction: column;
-          }
-          .two-pane-container {
-              display: flex;
-              flex-grow: 1;
-              overflow: hidden;
-          }
-          .notes-list-pane {
-              width: 400px;
-              overflow-y: auto;
-              border-right: 1px solid #ccc;
-              padding: 20px;
-          }
-          .right-content-pane {
-              flex-grow: 1;
-              overflow-y: auto;
-              padding: 20px;
-          }
+
+  .main-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+  }
+  .two-pane-container {
+      display: flex;
+      flex-grow: 1;
+      overflow: hidden;
+  }
+  .notes-list-pane {
+      width: 400px;
+      overflow-y: auto;
+      border-right: 1px solid #ccc;
+      padding: 20px;
+  }
+  .right-content-pane {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 20px;
+  }
           /* .notes-list {
               list-style-type: none;
               padding: 0;
