@@ -14,6 +14,7 @@ router.post("/", async (req, res) => {
       note_format,
       note_name,
       user,
+      flashcard_set_name,
       question,
       answer,
       status,
@@ -26,6 +27,7 @@ router.post("/", async (req, res) => {
       note_format,
       note_name,
       user,
+      flashcard_set_name,
       question,
       answer,
       status,
@@ -122,11 +124,18 @@ router.get("/folders/:userId", async (req, res) => {
 });
 // Update a note by ID
 router.put("/:id", async (req, res) => {
+  console.log(req.body);
+  const id = req.params.id;
   try {
-    const updatedNote = await Note.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    }).populate("user", "username");
+    const updatedNote = await Note.findByIdAndUpdate(
+      id,
+      {
+        note_content: req.body.note_content,
+      },
+      {
+        runValidators: true,
+      }
+    );
 
     if (!updatedNote) {
       return res.status(404).json({ error: "Note not found" });
@@ -175,5 +184,25 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+router.get("/:id/folder/:flashcard_set_name", async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const flashcard_set_name = req.params.flashcard_set_name;
+
+    // Find all notes for the user in the specified folder
+    const notes = await Note.find({
+      user: userId,
+      flashcard_set_name: flashcard_set_name,
+    });
+
+    // Respond with the notes found in the folder
+    res.status(200).json(notes);
+  } catch (error) {
+    console.error("Error fetching notes by folder:", error);
+    res.status(500).json({ error: "An error occurred while fetching notes." });
+  }
+}
+);
 
 export default router;

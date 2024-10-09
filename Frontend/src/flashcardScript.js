@@ -1,9 +1,9 @@
 const FormatFlashcards = (text) => {
+
+    
     const parts= text.split('|');
     const flashcards = [];
     // let formattedText = '';
-
-
     for (let i = 0; i < parts.length; i+=2) {
         const question = parts[i];
         const answer = parts[i+1];

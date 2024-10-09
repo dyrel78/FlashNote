@@ -123,3 +123,7 @@ export default {
   },
 };
 </script>
+
+<style>
+@import url(../assets/flashnote-styles.css);
+</style>

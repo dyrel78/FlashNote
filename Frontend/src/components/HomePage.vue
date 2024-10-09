@@ -1,5 +1,4 @@
 <template>
-
   <body id="app">
     <!-- Sidebar -->
     <div class="container">
@@ -7,29 +6,31 @@
         <div class="top">
           <div class="logo">
             <i class="bx bx-edit"></i>
-            <span>All Notes</span>
+            <span v-if="userExists">All Notes</span>
+            <span v-else>Sign in to view notes</span>
           </div>
           <i class="bx bx-menu" id="btn"></i>
         </div>
-
-        <ul>
+      
+        <ul v-if="userExists">
           <li v-for="folder in folders" :key="folder">
-            <a href="#">
+            <router-link :to="{ name: 'FolderPage', params: { id: folder } }">
               <i class="bx bx-folder"></i>
               <span class="nav-item">{{ folder }}</span>
-            </a>
+            </router-link>
             <span class="tooltip">{{ folder }}</span>
           </li>
         </ul>
       </div>
 
       <div class="flashnote-container main-content">
-
         <!-- Navbar -->
-        <FlashnoteNavbar :userExists="userExists" :userObject="userObject" @update:userExists="userExists = $event"
-          @update:userObject="userObject = $event" />
-
-
+        <FlashnoteNavbar
+          :userExists="userExists"
+          :userObject="userObject"
+          @update:userExists="userExists = $event"
+          @update:userObject="userObject = $event"
+        />
 
         <!-- Main content -->
         <div class="flashnote-main-content">
@@ -56,25 +57,45 @@
                 <button @click="setTab('short')">Short</button>
                 <button @click="setTab('flashcards')">Flashcards</button>
               </div>
-              <div class="flashnote-content" style="
+              <div
+                class="flashnote-content"
+                style="
                   display: flex;
                   flex-direction: row;
                   justify-content: space-evenly;
                   align-items: flex-start;
                   height: 100%;
                   flex-wrap: wrap;
-                ">
+                "
+              >
                 <div class="flashnote-note-input">
-                  <textarea v-model="inputText" placeholder="Paste text"></textarea>
-                  <input class="choose-file-input" type="file" id="inpfile" @change="handleFileUpload" />
+                  <textarea
+                    v-model="inputText"
+                    placeholder="Paste text"
+                  ></textarea>
+                  <input
+                    class="choose-file-input"
+                    type="file"
+                    id="inpfile"
+                    @change="handleFileUpload"
+                  />
                   <button class="flashnote-upload-pdf" @click="uploadPDF">
                     Upload PDF
                   </button>
+
                   <div v-if="userExists">
                     <label for="folderSelect">Select Folder:</label>
-                    <select id="folderSelect" @change="handleFolderChange" v-model="selectedFolder">
+                    <select
+                      id="folderSelect"
+                      @change="handleFolderChange"
+                      v-model="selectedFolder"
+                    >
                       <option value="" disabled>Select a folder</option>
-                      <option v-for="folder in folders" :key="folder" :value="folder">
+                      <option
+                        v-for="folder in folders"
+                        :key="folder"
+                        :value="folder"
+                      >
                         {{ folder }}
                       </option>
                       <option value="new">Create New Folder</option>
@@ -82,13 +103,26 @@
 
                     <!-- Input for new folder name (only shown when "Create New Folder" is selected) -->
                     <div class="enterNewFolder" v-if="isNewFolder">
-                      <input type="text" v-model="newFolderName" placeholder="Enter new folder name" />
+                      <input
+                        type="text"
+                        v-model="newFolderName"
+                        placeholder="Enter new folder name"
+                      />
                     </div>
                   </div>
-                  <button class="flashnote-create-note" @click="createNote">
+
+                  <button
+                    class="flashnote-create-note"
+                    @click="createNote"
+                    :disabled="isLoading"
+                  >
                     Create
                   </button>
-                  <button class="flashnote-clear-button" v-if="userExists" @click="clearInput">
+                  <button
+                    class="flashnote-clear-button"
+                    v-if="userExists"
+                    @click="clearInput"
+                  >
                     Clear
                   </button>
                 </div>
@@ -101,17 +135,29 @@
                         <!-- {{ outputText }} -->
                         <p v-html="outputText"></p>
                       </pre>
+
+                    <div v-if="isLoading" class="loading-spinner">
+                      <i class="bx bx-loader-alt bx-spin"></i>
+                    </div>
                   </div>
                   <!-- Placeholder for AI generated notes preview -->
 
-                  <button class="flashnote-clear-button" v-if="userExists" @click="clearOutput">
+                  <button
+                    class="flashnote-clear-button"
+                    v-if="userExists"
+                    @click="clearOutput"
+                  >
                     Clear
                   </button>
-                  <button class="flashnote-copy-button">Copy</button>
+                  <button class="flashnote-copy-button" @click="copyText">Copy</button>
                 </div>
               </div>
 
-              <button v-if="userExists" class="flashnote-save-note" @click="saveNote">
+              <button
+                v-if="userExists"
+                class="flashnote-save-note"
+                @click="saveNote"
+              >
                 Save
               </button>
             </div>
@@ -119,12 +165,8 @@
         </div>
       </div>
       <!-- End of Flashnote Main Content -->
-
-
-
-      
     </div>
-  
+
     <!-- End of Container-->
   </body>
 </template>
@@ -132,13 +174,13 @@
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
-import FlashnoteNavbar from './Navbar.vue';
-import FormatNoteText from '../markdownScript.js'
-import FormatFlashcards from '../flashcardScript.js'
+import FlashnoteNavbar from "./Navbar.vue";
+import FormatNoteText from "../markdownScript.js";
+import FormatFlashcards from "../flashcardScript.js";
 export default {
   name: "HomePage",
   components: {
-    FlashnoteNavbar  // Register FlashnoteNavbar component here
+    FlashnoteNavbar, // Register FlashnoteNavbar component here
   },
   data() {
     return {
@@ -157,8 +199,10 @@ export default {
       userObject: "",
       selectedFile: null,
       flashCardObjects: [],
+      isLoading: false,
     };
   },
+
   mounted() {
     // Check if user is in session storage when the component mounts
     this.checkUserInSession();
@@ -237,8 +281,37 @@ export default {
       console.log("Selected tab:", this.selectedTab);
     },
 
+    // copyText method
+    copyText() {
+      const textToCopy = this.outputText; // Get the text to copy
+      const textArea = document.createElement("textarea");
+
+      // Set the textarea's value to the plain text (use innerText for plain text)
+      textArea.value = textToCopy.replace(/<\/?[^>]+(>|$)/g, ""); // Removes HTML tags
+
+      // Append the textarea temporarily to the body
+      document.body.appendChild(textArea);
+
+      // Select the text and copy
+      textArea.select();
+      document.execCommand("copy");
+
+      // Remove the textarea after copying
+      document.body.removeChild(textArea);
+
+      // Show a nice SweetAlert2 message
+      Swal.fire({
+        title: "Copied!",
+        text: "Note content copied as plain text.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+    },
+
     async createNote() {
       try {
+        this.isLoading = true;
+        this.outputText = "";
         const endpointMap = {
           short: "http://localhost:8080/api/llm/short",
           medium: "http://localhost:8080/api/llm/medium",
@@ -260,14 +333,16 @@ export default {
 
           // THIS FLASHCARD OBJECTS IS IMPORTANT WHEN SAVING THE FLASHCARDS
 
-         this.flashCardObjects.forEach(flashcard => {
-          this.outputText += flashcard.question + " " + flashcard.answer + "\n";
-        });
-
+          this.flashCardObjects.forEach((flashcard) => {
+            this.outputText +=
+              flashcard.question + " " + flashcard.answer + "\n";
+          });
         }
       } catch (error) {
         console.error("Error creating note:", error);
         this.outputText = "An error occurred while generating the note.";
+      } finally {
+        this.isLoading = false;
       }
     },
 
@@ -309,6 +384,9 @@ export default {
         // Use the new folder name if the user has selected to create a new one
         if (this.isNewFolder) {
           folderName = this.newFolderName;
+          if (!this.folders.includes(folderName)) {
+            this.folders.push(folderName);
+          }
         }
 
         if (!folderName) {
@@ -335,32 +413,77 @@ export default {
           return;
         }
 
-        const newNote = {
-          note_name: noteName,
-          note_content: this.outputText,
-          note_format: this.selectedTab,
-          folder: folderName,
-          user: user,
-        };
+        if (this.selectedTab === "flashcards") {
+          let counter = 1; // Initialize counter
 
-        const response = await axios.post(
-          "http://localhost:8080/api/notes/",
-          newNote
-        );
-        console.log("Note saved successfully:", response.data);
-        // Success alert for note saving
-        Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Note saved successfully!",
-        });
+          for (const flashCard of this.flashCardObjects) {
+            if (flashCard.question.startsWith("\n")) {
+              flashCard.question = flashCard.question.substring(1);
+            }
+            if (flashCard.question.startsWith("\n")) {
+              flashCard.question = flashCard.question.substring(1);
+            }
+            if (flashCard.question.trim() === "") {
+              // Skip flashcards with invalid questions
+              continue;
+            }
+
+            const newFlashcard = {
+              note_name: `${noteName}_${counter}`, // Append counter to note_name
+              note_format: "flashcards",
+              folder: folderName,
+              flashcard_set_name: noteName + "_set",
+              user: user,
+              question: flashCard.question,
+              answer: flashCard.answer,
+              status: flashCard.status,
+            };
+
+            const response = await axios.post(
+              "http://localhost:8080/api/notes/",
+              newFlashcard
+            );
+            console.log("Flashcard saved successfully:", response.data);
+
+            counter++; // Increment counter
+          }
+
+          // Success alert for flashcards saving
+          Swal.fire({
+            icon: "success",
+            title: "Success!",
+            text: "Flashcards saved successfully!",
+          });
+        } else {
+          const newNote = {
+            note_name: noteName,
+            note_content: this.outputText,
+            note_format: this.selectedTab,
+            folder: folderName,
+            user: user,
+          };
+
+          const response = await axios.post(
+            "http://localhost:8080/api/notes/",
+            newNote
+          );
+          console.log("Note saved successfully:", response.data);
+          await this.fetchFolders();
+
+          // Success alert for note saving
+          Swal.fire({
+            icon: "success",
+            title: "Success!",
+            text: "Note saved successfully!",
+          });
+        }
       } catch (error) {
         console.error("Error saving note:", error);
-        // Success alert for note saving
+        // Error alert for note saving
         Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Note saved successfully!",
+          icon: "error",
+          title: "Error!",
+          text: "There was an error saving the note.",
         });
       }
     },
@@ -390,22 +513,11 @@ export default {
     },
   },
 };
-
-
-
 </script>
 
 <style>
-@import url(../assets/will-style.css);
+@import url(../assets/flashnote-styles.css);
 @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
 </style>
 
-<style>
-select {
-  padding: 0.5rem;
-  margin: 0.5rem 0;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 0.25rem;
-}
-</style>
+
