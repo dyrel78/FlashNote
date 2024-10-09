@@ -132,15 +132,7 @@
   };
   </script>
   
-  <style scoped>
-  .note-page {
-    margin: 20px;
-  }
-  
-  pre {
-    background-color: #f8f8f8;
-    padding: 10px;
-    white-space: pre-wrap;
-  }
+  <style>
+@import url(../assets/flashnote-styles.css);
   </style>
   
