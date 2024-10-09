@@ -69,6 +69,7 @@
                             <li v-for="note in flashcardNotes" :key="note._id">
                           <button class="note-btn" @click="$router.push({ name: 'ViewNotesPreview', params: { id: note._id } })">
                               {{ note.note_name }}
+                              {{ note.flashcard_set_name }}
                           </button>
                 </li>
 
@@ -108,12 +109,19 @@ export default {
   props: ["id"], // Accept the folder name or ID as a prop
   data() {
     return {
-      folderName: this.id, // Initialize folderName from the route parameter
+      folderName: this.$route.params.id, // Initialize folderName from the route parameter
       notes: [], // Array to hold notes
       folders: [], // To populate the sidebar with folders
       userExists: false,
       userObject: {},
     };
+
+  },
+  watch: {
+    '$route'(to) {
+      this.folderName = to.params.id;
+      this.fetchNotes(); // Fetch notes for the new folder
+    },
   },
   mounted() {
     this.checkUserInSession();
@@ -133,6 +141,7 @@ export default {
       });
       
       return Array.from(uniqueSets.values());
+
     }
   
   },

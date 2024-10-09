@@ -43,6 +43,7 @@
             <p>Your expanded notes are shown below.</p>
 
             <div id="flashnote-content" class="flashnote-content">
+
               <div id="flashnote-note-output" class="flashnote-note-output">
                 <div
                   style="
@@ -57,10 +58,18 @@
                     @input="updateOutputText"
                     v-html="outputText"
                     class="preformatted"
-                  ></pre>
+                  ></pre> 
+                  <div class="preformatted" id="editor">
+                    <h3>{{  outputText }}</h3>
+
+                  </div>
+                  </div>
+
+                  <p>{{ outputText }}</p>
                 </div>
-              </div>
-              <!-- Button group container for alignment -->
+
+
+
               <div class="flashnote-button-group">
                 <!--Copy Button-->
                 <button class="flashnote-copy-button" @click="copyText">
@@ -87,15 +96,21 @@
               </div>
             </div>
           </div>
+          
+
         </div>
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
+import Quill from "quill";
+// const { Delta } = Quill.import('delta');
+import Delta from 'quill-delta'; 
 
 import FlashnoteNavbar from "./Navbar.vue";
 // import { get } from "core-js/core/dict";
@@ -105,6 +120,7 @@ export default {
   components: {
     FlashnoteNavbar, // Make sure the Navbar is registered
   },
+  
   props: ["id"],
   watch: {
     id: {
@@ -113,6 +129,7 @@ export default {
         {
           if (newId) {
             this.fetchNote(newId);
+            console.log('note id is '+newId);
           }
         }
       },
@@ -140,12 +157,60 @@ export default {
     //   sidebar.classList.toggle("active");
     // };
     this.sideBarMethods();
+    this.setQuillContent();
+    this.initQuillEditor();
+
+
   },
 
   methods: {
+    initQuillEditor() {
+      this.quill = new Quill('#editor', {
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            ['bold', 'italic', 'underline', 'strike'],
+            ['blockquote', 'code-block'],
+            [{ 'header': 1 }, { 'header': 2 }],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            [{ 'script': 'sub'}, { 'script': 'super' }],
+            [{ 'indent': '-1'}, { 'indent': '+1' }],
+            [{ 'direction': 'rtl' }],
+            [{ 'size': ['small', false, 'large', 'huge'] }],
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+            [{ 'color': [] }, { 'background': [] }],
+            [{ 'font': [] }],
+            [{ 'align': [] }],
+            ['clean']
+          ]
+        }
+      });
+      this.setQuillContent();
+    },
+    setQuillContent() {
+      // if (this.quill && this.outputText) {
+      //   this.quill.setText(''); // Clear existing content
+      //   this.quill.clipboard.dangerouslyPasteHTML(0, this.outputText);
+      // }
+
+      if (this.quill && this.outputText) {
+        this.quill.setText(''); // Clear existing content
+        const lines = this.outputText.split('\n');
+        const delta = lines.reduce((delta, line, index) => {
+          if (index > 0) {
+            delta.insert('\n');
+          }
+          return delta.insert(line);
+        }, new Delta());
+        this.quill.updateContents(delta);
+      }
+    },
     updateOutputText(event) {
       this.outputText = event.target.innerHTML;
+      this.outputText = this.quill.root.innerHTML;
+
     },
+  
     // Copy functionality
     copyText() {
       const textToCopy = this.outputText; // Grab the note content to copy
@@ -232,9 +297,11 @@ export default {
           } else {
             this.outputText = this.note.note_content;
           }
+          this.setQuillContent();
           console.log("Notes retrieved successfully:", this.note);
         } else {
           this.outputText = "Please select a note to view";
+          this.setQuillContent();
         }
       } catch (error) {
         console.error("Error retrieving notes:", error);
@@ -322,4 +389,6 @@ export default {
 <style>
 @import url(../assets/flashnote-styles.css);
 @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
+
+@import url("https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css");
 </style>
