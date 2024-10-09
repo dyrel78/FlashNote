@@ -398,10 +398,21 @@ export default {
           return;
         }
 
-        const noteName = window.prompt(
-          "Enter a name for your note:",
-          `Note_${new Date().toISOString()}`
-        );
+        // const noteName = window.prompt(
+        //   "Enter a name for your note:",
+        //   `Note_${new Date().toISOString()}`
+        // );
+        const { value: noteName } = await Swal.fire({
+            title: 'Enter a name for your note',
+            input: 'text',
+            inputValue: `Note_${new Date().toISOString()}`,
+            showCancelButton: true,
+            inputValidator: (value) => {
+              if (!value) {
+                return 'You need to write something!'
+              }
+            }
+          })
 
         if (!noteName) {
           // Error alert for missing note name
@@ -525,6 +536,9 @@ export default {
 <style>
 @import url(../assets/flashnote-styles.css);
 @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
+
+
+
 </style>
 
 
