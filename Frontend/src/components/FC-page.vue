@@ -30,13 +30,13 @@
           @update:userObject="userObject = $event"
         />
         <div class="content">
-          <h1>Folder: {{ folderName }}</h1>
+          <h1>Flashcard Set: {{ folderName }}</h1>
   
           <div class="two-pane-container">
             <!-- Left pane: Notes list -->
             <div class="notes-list-pane">
               <h2 style= "padding-bottom: 10px;"  >Flashcards in: {{ flashcard_set_name }}</h2>
-              <div v-if="notes.length > 0">
+              <div v-if="flashcards.length > 0">
                 <div style= "padding-bottom: 10px;" class="mass-action-controls">
                   <button @click="toggleSelectAll" class="action-btn">
                     {{ allSelected ? 'Deselect All' : 'Select All' }}
@@ -46,12 +46,13 @@
                   </button>
                 </div>
                 <ul class="notes-list">
-                  <li v-for="flashcard in flashcards" :key="flashcard._id">
+                  <li v-for="flashcard in this.flashcards" :key="flashcard._id">
                     <div class="note-item">
                       <input type="checkbox" :value="flashcard._id" v-model="selectedNotes">
                       <button class="note-btn" @click="$router.push({ name: 'ViewNotesPreview', params: { id: flashcard._id } })">
                         {{ flashcard.note_name }}
                       </button>
+                      <!-- <p> {{ flashcard.note_name }}</p> -->
                     </div>
                   </li>
                 </ul>
@@ -144,33 +145,40 @@
         try {
           const user = JSON.parse(sessionStorage.getItem("user"));
           const userId = user._id;
+          console.log(this.flashcard_set_name)
+          console.log(userId)
           const response = await axios.get(
-            `http://localhost:8080/api/notes/${userId}/folder/${this.flashcard_set_name}`
+            `http://localhost:8080/api/notes/${userId}/${this.flashcard_set_name}`
           );
+          // console.log(response.data)
           this.flashcards = response.data;
-  
+          console.log(this.flashcards);
           // return onlyNotes
         } catch (error) {
           console.error("Error fetching notes:", error);
         }
       },
 
-      async fetchFlashcardsInSet() {
-        try {
-          const user = JSON.parse(sessionStorage.getItem("user"));
-          const userId = user._id;
-          const response = await axios.get(
-            `http://localhost:8080/api/notes/${userId}/folder/${this.folderName}`
-          );
-          let onlyNotes = response.data;
+      // async fetchFlashcardsInSet() {
+      //   try {
+      //     const user = JSON.parse(sessionStorage.getItem("user"));
+      //     const userId = user._id;
+      //     console.log(this.flashcard_set_name)
+      //     console.log(userId)
+      //     const response = await axios.get(
+      //       `http://localhost:8080/api/notes/${userId}/folder/${this.folderName}`
+      //     );
+      //   console.log(response.data)
+      //     let onlyNotes = response.data;
   
-          this.notes = onlyNotes
-          this.selectedNotes = []; // Reset selections when fetching new notes
-          // return onlyNotes
-        } catch (error) {
-          console.error("Error fetching notes:", error);
-        }
-      },
+      //     this.notes = onlyNotes
+      //     this.selectedNotes = []; // Reset selections when fetching new notes
+      //     // return onlyNotes
+      //   } catch (error) {
+      //     console.error("Error fetching notes:", error);
+      //   }
+      // }
+      //,
       checkUserInSession() {
         const user = sessionStorage.getItem("user");
         if (!user) {
