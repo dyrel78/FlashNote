@@ -400,7 +400,7 @@ export default {
         }
       } catch (error) {
         console.error("Error creating note:", error);
-        this.outputText = "An error occurred while generating the note.";
+        this.outputText = "You have too many words in your input";
       } finally {
         this.isLoading = false;
       }
