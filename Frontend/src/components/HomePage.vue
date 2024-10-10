@@ -11,7 +11,7 @@
           </div>
           <i class="bx bx-menu" id="btn"></i>
         </div>
-      
+
         <ul v-if="userExists">
           <li v-for="folder in folders" :key="folder">
             <router-link :to="{ name: 'FolderPage', params: { id: folder } }">
@@ -110,13 +110,20 @@
                       />
                     </div>
                   </div>
-
+                  <button
+                    id="startButton"
+                    class="flashnote-clear-button"
+                    @click="startVoiceInput"
+                  >
+                    Start Voice Input
+                  </button>
                   <button
                     class="flashnote-create-note"
                     @click="createNote"
                     :disabled="isLoading"
+                    style="margin-left: 10px"
                   >
-                    Create
+                    Create Note
                   </button>
                   <button
                     class="flashnote-clear-button"
@@ -149,7 +156,9 @@
                   >
                     Clear
                   </button>
-                  <button class="flashnote-copy-button" @click="copyText">Copy</button>
+                  <button class="flashnote-copy-button" @click="copyText">
+                    Copy
+                  </button>
                 </div>
               </div>
 
@@ -200,6 +209,9 @@ export default {
       selectedFile: null,
       flashCardObjects: [],
       isLoading: false,
+      recognition: null, // To hold the SpeechRecognition instance
+      isListening: false,
+      tempText: "",
     };
   },
 
@@ -211,6 +223,54 @@ export default {
     this.sideBarMethods();
   },
   methods: {
+    startVoiceInput() {
+      const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition ||
+        window.mozSpeechRecognition ||
+        window.msSpeechRecognition;
+      if (!SpeechRecognition) {
+        Swal.fire({
+          icon: "error",
+          title: "Speech Recognition Not Supported",
+          text: "Sorry, your browser does not support speech recognition.",
+        });
+        return;
+      }
+
+      if (!this.recognition) {
+        this.recognition = new SpeechRecognition();
+        this.recognition.lang = "en-US";
+        this.recognition.continuous = true; // Keep listening until explicitly stopped
+        this.recognition.interimResults = false; // Only process final results
+
+        this.recognition.onstart = () => {
+          this.isListening = true; // Update state
+          this.tempText = ""; // Clear tempText on start
+          document.getElementById("startButton").textContent = "Listening...";
+        };
+
+        this.recognition.onresult = (event) => {
+          // Collect all final results
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            this.inputText += event.results[i][0].transcript + " "; // Append final results to inputText
+          }
+        };
+
+        this.recognition.onend = () => {
+          this.isListening = false; // Update state
+
+          document.getElementById("startButton").textContent =
+            "Start Voice Input";
+        };
+      }
+
+      if (this.isListening) {
+        this.recognition.stop(); // Stop recognition if currently listening
+      } else {
+        this.recognition.start(); // Start recognition if not listening
+      }
+    },
     async created() {
       if (sessionStorage.getItem("user")) {
         console.log(
@@ -398,10 +458,21 @@ export default {
           return;
         }
 
-        const noteName = window.prompt(
-          "Enter a name for your note:",
-          `Note_${new Date().toISOString()}`
-        );
+        // const noteName = window.prompt(
+        //   "Enter a name for your note:",
+        //   `Note_${new Date().toISOString()}`
+        // );
+        const { value: noteName } = await Swal.fire({
+          title: "Enter a name for your note",
+          input: "text",
+          inputValue: `Note_${new Date().toISOString()}`,
+          showCancelButton: true,
+          inputValidator: (value) => {
+            if (!value) {
+              return "You need to write something!";
+            }
+          },
+        });
 
         if (!noteName) {
           // Error alert for missing note name
@@ -414,7 +485,7 @@ export default {
         }
 
         if (this.selectedTab === "flashcards") {
-          let counter = 1; // Initialize counter
+          // let counter = 1; // Initialize counter
 
           for (const flashCard of this.flashCardObjects) {
             if (flashCard.question.startsWith("\n")) {
@@ -427,15 +498,38 @@ export default {
               // Skip flashcards with invalid questions
               continue;
             }
+    console.log(flashCard.question);
+    console.log(flashCard.answer);
+            let formatedNoteName = flashCard.question;
+      
+              // formatedNoteName = formatedNoteName.substring(
+              //   "<strong>Question:</strong>".length);
+              const questionRegex = /^<strong>Question:<\/strong>\s*/;
+
+             // Regex pattern to remove "<strong>Answer:</strong>" from the beginning of the string
+              const answerRegex = /^<strong>Answer:<\/strong>\s*/;
+                formatedNoteName = formatedNoteName.replace(questionRegex, "");
+                formatedNoteName = formatedNoteName.replace(answerRegex, "");
+
+                let flashCardAnswer = flashCard.answer;
+                let flashCardQuestion = flashCard.question;
+
+                // Regex pattern to remove "<strong>Answer:</strong>" from the beginning of the string
+                flashCardAnswer = flashCardAnswer.replace(answerRegex, "");
+                flashCardQuestion = flashCardQuestion.replace(questionRegex, "");
+
 
             const newFlashcard = {
-              note_name: `${noteName}_${counter}`, // Append counter to note_name
+              // note_name: `${noteName}_${counter}`, // Append counter to note_name
+              note_name: formatedNoteName,
               note_format: "flashcards",
               folder: folderName,
               flashcard_set_name: noteName + "_set",
               user: user,
-              question: flashCard.question,
-              answer: flashCard.answer,
+              // question: flashCard.question,
+              // answer: flashCard.answer,
+              question: flashCardQuestion,
+              answer: flashCardAnswer,
               status: flashCard.status,
             };
 
@@ -445,7 +539,7 @@ export default {
             );
             console.log("Flashcard saved successfully:", response.data);
 
-            counter++; // Increment counter
+            // counter++; // Increment counter
           }
 
           // Success alert for flashcards saving
@@ -489,6 +583,14 @@ export default {
     },
     // Placeholder for showing a PDF upload popup
     uploadPDF() {
+      if (this.selectedFile == null) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops!",
+          text: "Please select a PDF file to upload.",
+        });
+        return;
+      }
       if (this.selectedFile) {
         console.log("uploading pdf");
         const formData = new FormData();
@@ -519,5 +621,3 @@ export default {
 @import url(../assets/flashnote-styles.css);
 @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
 </style>
-
-

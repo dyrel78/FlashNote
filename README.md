@@ -109,7 +109,7 @@ Before starting, ensure you have the following installed:
     ```bash
    cd backend 
    npm install
-   npm run serve
+   npm run start
 
 
 ### License

@@ -60,12 +60,12 @@
                     class="preformatted"
                   ></pre> 
                   <div class="preformatted" id="editor">
-                    <h3>{{  outputText }}</h3>
+                    <!-- <h3>{{  outputText }}</h3> -->
 
                   </div>
                   </div>
 
-                  <p>{{ outputText }}</p>
+                  <!-- <p>{{ outputText }}</p> -->
                 </div>
 
 

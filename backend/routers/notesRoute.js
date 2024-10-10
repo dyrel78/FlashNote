@@ -185,17 +185,22 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.get("/:id/folder/:flashcard_set_name", async (req, res) => {
+router.get("/:userId/:flashcard_set_name", async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = req.params.userId;
     const flashcard_set_name = req.params.flashcard_set_name;
-
+    console.log("flashcard_set_name", flashcard_set_name);
+    console.log("userId", userId);
     // Find all notes for the user in the specified folder
     const notes = await Note.find({
       user: userId,
       flashcard_set_name: flashcard_set_name,
     });
-
+    if (notes.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "No flashcards found for the specified criteria" });
+    }
     // Respond with the notes found in the folder
     res.status(200).json(notes);
   } catch (error) {
