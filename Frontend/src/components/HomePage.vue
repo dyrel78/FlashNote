@@ -230,9 +230,11 @@ export default {
         window.mozSpeechRecognition ||
         window.msSpeechRecognition;
       if (!SpeechRecognition) {
-        alert(
-          "Speech Recognition is not supported in this browser. Please use Google Chrome or another supported browser."
-        );
+        Swal.fire({
+          icon: "error",
+          title: "Speech Recognition Not Supported",
+          text: "Sorry, your browser does not support speech recognition.",
+        });
         return;
       }
 
@@ -251,14 +253,13 @@ export default {
         this.recognition.onresult = (event) => {
           // Collect all final results
           for (let i = event.resultIndex; i < event.results.length; i++) {
-            if (event.results[i].isFinal) {
-              this.inputText += event.results[i][0].transcript + " "; // Append final results to inputText
-            }
+            this.inputText += event.results[i][0].transcript + " "; // Append final results to inputText
           }
         };
 
         this.recognition.onend = () => {
           this.isListening = false; // Update state
+
           document.getElementById("startButton").textContent =
             "Start Voice Input";
         };
