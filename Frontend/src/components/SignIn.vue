@@ -34,7 +34,6 @@
           placeholder="Password"
           required
         /><br />
-        <a href="#">Forgot password?</a><br /><br />
       </div>
       <!-- Login Button -->
       <div class="form-group">
