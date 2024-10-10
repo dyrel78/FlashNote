@@ -112,7 +112,7 @@
     computed: {
   
       allSelected() {
-        return this.notes.length > 0 && this.selectedNotes.length === this.notes.length;
+        return this.flashcards.length > 0 && this.selectedNotes.length === this.flashcards.length;
       },
       hasSelection() {
         return this.selectedNotes.length > 0;
@@ -185,7 +185,7 @@
         if (this.allSelected) {
           this.selectedNotes = [];
         } else {
-          this.selectedNotes = this.notes.map(note => note._id);
+          this.selectedNotes = this.flashcards.map(note => note._id);
         }
       },
       async deleteSelected() {
