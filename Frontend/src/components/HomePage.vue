@@ -6,12 +6,13 @@
         <div class="top">
           <div class="logo">
             <i class="bx bx-edit"></i>
-            <span>All Notes</span>
+            <span v-if="userExists">All Notes</span>
+            <span v-else>Sign in to view notes</span>
           </div>
           <i class="bx bx-menu" id="btn"></i>
         </div>
-
-        <ul>
+      
+        <ul v-if="userExists">
           <li v-for="folder in folders" :key="folder">
             <router-link :to="{ name: 'FolderPage', params: { id: folder } }">
               <i class="bx bx-folder"></i>
@@ -399,10 +400,21 @@ export default {
           return;
         }
 
-        const noteName = window.prompt(
-          "Enter a name for your note:",
-          `Note_${new Date().toISOString()}`
-        );
+        // const noteName = window.prompt(
+        //   "Enter a name for your note:",
+        //   `Note_${new Date().toISOString()}`
+        // );
+        const { value: noteName } = await Swal.fire({
+            title: 'Enter a name for your note',
+            input: 'text',
+            inputValue: `Note_${new Date().toISOString()}`,
+            showCancelButton: true,
+            inputValidator: (value) => {
+              if (!value) {
+                return 'You need to write something!'
+              }
+            }
+          })
 
         if (!noteName) {
           // Error alert for missing note name
@@ -415,7 +427,7 @@ export default {
         }
 
         if (this.selectedTab === "flashcards") {
-          let counter = 1; // Initialize counter
+          // let counter = 1; // Initialize counter
 
           for (const flashCard of this.flashCardObjects) {
             if (flashCard.question.startsWith("\n")) {
@@ -429,8 +441,15 @@ export default {
               continue;
             }
 
+            let formatedNoteName = flashCard.question;
+      
+              formatedNoteName = formatedNoteName.substring(
+                "<strong>Question:</strong>".length);
+          
+
             const newFlashcard = {
-              note_name: `${noteName}_${counter}`, // Append counter to note_name
+              // note_name: `${noteName}_${counter}`, // Append counter to note_name
+              note_name: formatedNoteName,
               note_format: "flashcards",
               folder: folderName,
               flashcard_set_name: noteName + "_set",
@@ -446,7 +465,7 @@ export default {
             );
             console.log("Flashcard saved successfully:", response.data);
 
-            counter++; // Increment counter
+            // counter++; // Increment counter
           }
 
           // Success alert for flashcards saving
@@ -527,4 +546,7 @@ export default {
 <style>
 @import url(../assets/flashnote-styles.css);
 @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
+
+
+
 </style>
