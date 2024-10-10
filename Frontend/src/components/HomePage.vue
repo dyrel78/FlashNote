@@ -11,7 +11,7 @@
           </div>
           <i class="bx bx-menu" id="btn"></i>
         </div>
-      
+
         <ul v-if="userExists">
           <li v-for="folder in folders" :key="folder">
             <router-link :to="{ name: 'FolderPage', params: { id: folder } }">
@@ -110,13 +110,20 @@
                       />
                     </div>
                   </div>
-
+                  <button
+                    id="startButton"
+                    class="flashnote-clear-button"
+                    @click="startVoiceInput"
+                  >
+                    Start Voice Input
+                  </button>
                   <button
                     class="flashnote-create-note"
                     @click="createNote"
                     :disabled="isLoading"
+                    style="margin-left: 10px"
                   >
-                    Create
+                    Create Note
                   </button>
                   <button
                     class="flashnote-clear-button"
@@ -202,6 +209,9 @@ export default {
       selectedFile: null,
       flashCardObjects: [],
       isLoading: false,
+      recognition: null, // To hold the SpeechRecognition instance
+      isListening: false,
+      tempText: "",
     };
   },
 
@@ -213,6 +223,53 @@ export default {
     this.sideBarMethods();
   },
   methods: {
+    startVoiceInput() {
+      const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition ||
+        window.mozSpeechRecognition ||
+        window.msSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert(
+          "Speech Recognition is not supported in this browser. Please use Google Chrome or another supported browser."
+        );
+        return;
+      }
+
+      if (!this.recognition) {
+        this.recognition = new SpeechRecognition();
+        this.recognition.lang = "en-US";
+        this.recognition.continuous = true; // Keep listening until explicitly stopped
+        this.recognition.interimResults = false; // Only process final results
+
+        this.recognition.onstart = () => {
+          this.isListening = true; // Update state
+          this.tempText = ""; // Clear tempText on start
+          document.getElementById("startButton").textContent = "Listening...";
+        };
+
+        this.recognition.onresult = (event) => {
+          // Collect all final results
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            if (event.results[i].isFinal) {
+              this.inputText += event.results[i][0].transcript + " "; // Append final results to inputText
+            }
+          }
+        };
+
+        this.recognition.onend = () => {
+          this.isListening = false; // Update state
+          document.getElementById("startButton").textContent =
+            "Start Voice Input";
+        };
+      }
+
+      if (this.isListening) {
+        this.recognition.stop(); // Stop recognition if currently listening
+      } else {
+        this.recognition.start(); // Start recognition if not listening
+      }
+    },
     async created() {
       if (sessionStorage.getItem("user")) {
         console.log(
@@ -405,16 +462,16 @@ export default {
         //   `Note_${new Date().toISOString()}`
         // );
         const { value: noteName } = await Swal.fire({
-            title: 'Enter a name for your note',
-            input: 'text',
-            inputValue: `Note_${new Date().toISOString()}`,
-            showCancelButton: true,
-            inputValidator: (value) => {
-              if (!value) {
-                return 'You need to write something!'
-              }
+          title: "Enter a name for your note",
+          input: "text",
+          inputValue: `Note_${new Date().toISOString()}`,
+          showCancelButton: true,
+          inputValidator: (value) => {
+            if (!value) {
+              return "You need to write something!";
             }
-          })
+          },
+        });
 
         if (!noteName) {
           // Error alert for missing note name
@@ -442,10 +499,10 @@ export default {
             }
 
             let formatedNoteName = flashCard.question;
-      
-              formatedNoteName = formatedNoteName.substring(
-                "<strong>Question:</strong>".length);
-          
+
+            formatedNoteName = formatedNoteName.substring(
+              "<strong>Question:</strong>".length
+            );
 
             const newFlashcard = {
               // note_name: `${noteName}_${counter}`, // Append counter to note_name
@@ -546,7 +603,4 @@ export default {
 <style>
 @import url(../assets/flashnote-styles.css);
 @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
-
-
-
 </style>
