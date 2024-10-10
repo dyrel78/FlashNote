@@ -438,12 +438,26 @@ export default {
               // Skip flashcards with invalid questions
               continue;
             }
-
+    console.log(flashCard.question);
+    console.log(flashCard.answer);
             let formatedNoteName = flashCard.question;
       
-              formatedNoteName = formatedNoteName.substring(
-                "<strong>Question:</strong>".length);
-          
+              // formatedNoteName = formatedNoteName.substring(
+              //   "<strong>Question:</strong>".length);
+              const questionRegex = /^<strong>Question:<\/strong>\s*/;
+
+             // Regex pattern to remove "<strong>Answer:</strong>" from the beginning of the string
+              const answerRegex = /^<strong>Answer:<\/strong>\s*/;
+                formatedNoteName = formatedNoteName.replace(questionRegex, "");
+                formatedNoteName = formatedNoteName.replace(answerRegex, "");
+
+                let flashCardAnswer = flashCard.answer;
+                let flashCardQuestion = flashCard.question;
+
+                // Regex pattern to remove "<strong>Answer:</strong>" from the beginning of the string
+                flashCardAnswer = flashCardAnswer.replace(answerRegex, "");
+                flashCardQuestion = flashCardQuestion.replace(questionRegex, "");
+
 
             const newFlashcard = {
               // note_name: `${noteName}_${counter}`, // Append counter to note_name
@@ -452,8 +466,10 @@ export default {
               folder: folderName,
               flashcard_set_name: noteName + "_set",
               user: user,
-              question: flashCard.question,
-              answer: flashCard.answer,
+              // question: flashCard.question,
+              // answer: flashCard.answer,
+              question: flashCardQuestion,
+              answer: flashCardAnswer,
               status: flashCard.status,
             };
 
