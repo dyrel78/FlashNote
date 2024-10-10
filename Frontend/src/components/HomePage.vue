@@ -148,7 +148,9 @@
                   >
                     Clear
                   </button>
-                  <button class="flashnote-copy-button" @click="copyText">Copy</button>
+                  <button class="flashnote-copy-button" @click="copyText">
+                    Copy
+                  </button>
                 </div>
               </div>
 
@@ -488,6 +490,14 @@ export default {
     },
     // Placeholder for showing a PDF upload popup
     uploadPDF() {
+      if (this.selectedFile == null) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops!",
+          text: "Please select a PDF file to upload.",
+        });
+        return;
+      }
       if (this.selectedFile) {
         console.log("uploading pdf");
         const formData = new FormData();
@@ -518,5 +528,3 @@ export default {
 @import url(../assets/flashnote-styles.css);
 @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
 </style>
-
-
