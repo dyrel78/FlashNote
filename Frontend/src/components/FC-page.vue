@@ -65,20 +65,45 @@
             <!-- Right pane: Content area -->
             <div class="right-content-pane">
               <h2>Flashcard</h2>
-              <!-- <div v-if="flashcardNotes.length > 0">
-                <ul class="notes-list">
-      
-                  <li v-for="note in flashcardNotes" :key="note._id">
-                    <button class="note-btn" @click="$router.push({ name: 'ViewNotesPreview', params: { id: note._id } })">
-                      {{ note.flashcard_set_name || note.note_name }}
-                    </button>
-                  </li>
-                </ul>
+              <!-- <div class="flashcard-container" v-if="selectedFlashcard">
+                <div class="flashcard-maincontainer" @click="flipCard">
+                  <div :class="['flashcard-thecard', { 'flashcard-flip': isFlipped }]">
+                    <div class="flashcard-thefront">{{ selectedFlashcard.question }}</div>
+                    <div class="flashcard-theback">{{ selectedFlashcard.answer }}</div>
+                  </div>
+                </div>
               </div>
               <div v-else>
-                <p>No flashcard sets available in this folder.</p>
+                <p>Select a flashcard to display</p>
               </div> -->
+              <div class="flashcard-page-body">
+         <div class="flashcard-container" id="cardContainer" v-if="flashcards.length > 0">
+          <div class="flashcard-maincontainer" @click="flipCard(currentCard)">
+              <div :class="['flashcard-thecard', { 'flashcard-flip': flippedCards.includes(currentCard) }]">
+                <div v-html=" flashcards[currentCard - 1].question" class="flashcard-thefront"></div>
+                <div   v-html=" flashcards[currentCard - 1].answer" class="flashcard-theback"></div>
+              </div>
+            </div>
+          </div>
+          <div v-else>
+            <p>No flashcards available in this set.</p>
+          </div>
 
+
+         
+  
+          <!-- Navigation buttons -->
+          <div class="flashcard-navigation" v-if="flashcards.length > 0">
+            <button id="prevBtn" @click="previousCard" :disabled="currentCard === 1">Previous</button>
+            <span id="cardIndicator">{{ currentCard }} / {{ totalCards }}</span>
+            <button id="nextBtn" @click="nextCard" :disabled="currentCard === totalCards">Next</button>
+          </div>
+          <!-- <div class="flashcard-navigation">
+            <button id="prevBtn" @click="previousCard">Previous</button>
+            <span id="cardIndicator">{{ currentCard }} / {{ totalCards }}</span>
+            <button id="nextBtn" @click="nextCard">Next</button>
+          </div> -->
+        </div>
             </div>
           </div>
         </div>
@@ -106,12 +131,18 @@
         userObject: {},
         selectedNotes: [],
         flashcards:[],
+        // these 2 below are new
+        
+        currentCard: 1,
+        flippedCards: [],
       };
     },
     computed: {
-  
+      totalCards() {
+      return this.flashcards.length;
+    },
       allSelected() {
-        return this.notes.length > 0 && this.selectedNotes.length === this.notes.length;
+        return this.flashcards.length > 0 && this.selectedNotes.length === this.flashcards.length;
       },
       hasSelection() {
         return this.selectedNotes.length > 0;
@@ -128,26 +159,51 @@
       this.fetchFlashcards();
       this.fetchFolders();
       this.sideBarMethods();
+      // this.updateCardDisplay();
+
     },
     methods: {
+      // async fetchFlashcards() {
+      //   try {
+      //     const user = JSON.parse(sessionStorage.getItem("user"));
+      //     const userId = user._id;
+      //     console.log(this.flashcard_set_name)
+      //     console.log(userId)
+      //     const response = await axios.get(
+      //       `http://localhost:8080/api/notes/${userId}/${this.flashcard_set_name}`
+      //     );
+      //     // console.log(response.data)
+      //     // These lines below are bnew
+      //     this.flashcards = response.data.map(flashcard => ({
+      //     ...flashcard,
+      //     question: flashcard.note_name,
+      //     answer: flashcard.note_content
+      //   }));          console.log(this.flashcards);
+      //     // return onlyNotes
+      //   } catch (error) {
+      //     console.error("Error fetching notes:", error);
+      //   }
+      // },
       async fetchFlashcards() {
-        try {
-          const user = JSON.parse(sessionStorage.getItem("user"));
-          const userId = user._id;
-          console.log(this.flashcard_set_name)
-          console.log(userId)
-          const response = await axios.get(
-            `http://localhost:8080/api/notes/${userId}/${this.flashcard_set_name}`
-          );
-          // console.log(response.data)
-          this.flashcards = response.data;
-          console.log(this.flashcards);
-          // return onlyNotes
-        } catch (error) {
-          console.error("Error fetching notes:", error);
-        }
-      },
-
+      try {
+        const user = JSON.parse(sessionStorage.getItem("user"));
+        const userId = user._id;
+        const response = await axios.get(
+          `http://localhost:8080/api/notes/${userId}/${this.flashcard_set_name}`
+        );
+        this.flashcards = response.data.map(flashcard => ({
+          ...flashcard,
+          question: flashcard.note_name,
+          answer: flashcard.answer
+        }));
+        console.log(this.flashcards);
+        this.currentCard = 1;
+        this.flippedCards = [];
+      } catch (error) {
+        console.error("Error fetching flashcards:", error);
+      }
+    },
+    // ..
       checkUserInSession() {
         const user = sessionStorage.getItem("user");
         if (!user) {
@@ -180,7 +236,7 @@
         if (this.allSelected) {
           this.selectedNotes = [];
         } else {
-          this.selectedNotes = this.notes.map(note => note._id);
+          this.selectedNotes = this.flashcards.map(note => note._id);
         }
       },
       async deleteSelected() {
@@ -206,7 +262,47 @@
             alert('An error occurred while deleting notes. Please try again.');
           }
         }
+        // These two functions are new
+      },updateCardDisplay() {
+        for (let i = 1; i <= this.totalCards; i++) {
+          const card = document.getElementById('card' + i);
+          card.style.display = i === this.currentCard ? 'block' : 'none';
+        }
+        document.getElementById('cardIndicator').innerText = `${this.currentCard} / ${this.totalCards}`;
       },
+      nextCard() {
+      if (this.currentCard < this.totalCards) {
+        this.currentCard++;
+      }
+    },
+    previousCard() {
+      if (this.currentCard > 1) {
+        this.currentCard--;
+      }
+    },
+    flipCard(cardNumber) {
+      if (this.flippedCards.includes(cardNumber)) {
+        this.flippedCards = this.flippedCards.filter((num) => num !== cardNumber);
+      } else {
+        this.flippedCards.push(cardNumber);
+      }
+    },
+      // nextCard() {
+      //   this.currentCard = this.currentCard < this.totalCards ? this.currentCard + 1 : 1;
+      //   this.updateCardDisplay();
+      // },
+      // previousCard() {
+      //   this.currentCard = this.currentCard > 1 ? this.currentCard - 1 : this.totalCards;
+      //   this.updateCardDisplay();
+      // },
+      // flipCard(cardNumber) {
+      //   if (this.flippedCards.includes(cardNumber)) {
+      //     this.flippedCards = this.flippedCards.filter((num) => num !== cardNumber);
+      //   } else {
+      //     this.flippedCards.push(cardNumber);
+      //   }
+      // },
+      
     },
   };
   </script>
@@ -367,9 +463,118 @@
               cursor: pointer;
           } */
   
+  /* FLASHCARDS
+  These are new
+  */
   
+  .two-pane-container {
+    display: flex;
+    justify-content: space-between;
+  }
   
+  .notes-list-pane, .right-content-pane {
+    width: 48%;
+  }
+  .flashcard-page-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    margin: 0;
+  }
   
+  .flashcard-container {
+    position: relative;
+    width: 70%; /* Increased width */
+    height: 70%; /* Increased height */
+    /* max-width: 900px; */
+    /* max-height: 650px; */
+    max-width: 700px;
+    max-height: 450px;
+    perspective: 1000px;
+    margin-bottom: 20px; /* Ensure some space below the card for buttons */
+  }
+  
+  .flashcard-maincontainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    perspective: 1000px;
+  }
+  
+  .flashcard-thecard {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease;
+  }
+  
+  .flashcard-thefront, .flashcard-theback {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* Ensure that the back side isn't visible when it flips */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px; /* Increased font size */
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+    padding: 20px; /* Added padding for better text layout */
+    border-radius: 20px; /* Apply rounded corners to both sides */
+  }
+
+  .flashcard-theback{
+    font-size: 25px;
+  }
+  
+  .flashcard-thefront {
+    background-color: #c3d3f0;
+    color: #333;
+  }
+  
+  .flashcard-theback {
+    background-color: #fff5ba;
+    color: #333;
+    transform: rotateY(180deg);
+  }
+  
+  /* Flip the card when clicked */
+  .flashcard-flip {
+    transform: rotateY(180deg);
+  }
+  
+  /* Ensure the navigation is placed below the card */
+  .flashcard-navigation {
+    display: flex;
+    justify-content: space-between;
+    width: 70%; /* Match the width of the card */
+    max-width: 500px; /* Match the width of the card */
+    font-family: Arial, sans-serif;
+    margin-top: 20px; /* Add some space above the buttons */
+  }
+  
+  .flashcard-navigation button {
+    padding: 10px 20px;
+    font-size: 16px; /* Adjusted button font size */
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .flashcard-navigation button:hover {
+    background-color: #0056b3;
+  }
+  
+  .flashcard-indicator {
+    display: flex;
+    align-items: center;
+    font-size: 16px; /* Increased indicator font size */
+  }
   
   </style>
   
