@@ -34,15 +34,10 @@
           placeholder="Password"
           required
         /><br />
-        <a href="#">Forgot password?</a><br /><br />
       </div>
       <!-- Login Button -->
       <div class="form-group">
         <button type="submit">Log in</button><br /><br />
-      </div>
-      <div class="form-group">
-        <input type="checkbox" id="remember" name="remember" />
-        <label for="remember">Remember me</label><br /><br />
       </div>
     </form>
     <!-- link to Create Account Page -->
