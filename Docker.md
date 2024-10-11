@@ -45,4 +45,29 @@ Set a health check in docker compose so backend waits for frontend to be healthy
 
 Changed filed path in backend to work with docker ( the dist files lol in res.sendFile)
 
-  
+819123aa6f45
+   docker image tag rhel-httpd:latest registry-host:5000/myadmin/rhel-httpd:latest
+
+
+100273c56eef
+ docker container commit 100273c56eef dyrellumiwes/flashnote-info301:backend
+ 
+docker image tag dyrellumiwes/flashnote-info301:backend dyrellumiwes/flashnote-info301/dyrellumiwes/flashnote-info301:backend
+
+ docker image push dyrellumiwes/flashnote-info301/dyrellumiwes/flashnote-info301:backend
+ 
+
+
+819123aa6f45
+docker image tag flashnote-frontend:latest dyrellumiwes/flashnote-frontend:latest
+
+ docker image push dyrellumiwes/flashnote-frontend:latest
+
+
+
+docker container commit 100273c56eef dyrellumiwes/flashnote-info301:frontend
+ 
+docker image tag dyrellumiwes/flashnote-info301:frontend dyrellumiwes/flashnote-info301/dyrellumiwes/flashnote-info301:frontend
+
+ docker image push dyrellumiwes/flashnote-info301/dyrellumiwes/flashnote-info301:frontend
+ 

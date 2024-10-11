@@ -10,4 +10,7 @@ COPY . .
 
 RUN npm run build
 EXPOSE 3000
-CMD [ "npm", "run", "serve" ]
+RUN chmod +x start.sh
+CMD ["sh","start.sh"]
+# CMD [start.sh]
+# CMD [ "npm", "run", "build", "&&", "npm","run","serve" ]
