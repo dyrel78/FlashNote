@@ -268,7 +268,7 @@ export default {
     },
     async deleteSelectedFlashcards() {
       if (this.selectedFlashcards.length === 0) return;
-      
+
       // Log the selected flashcards to ensure the correct IDs are selected
       console.log("Selected flashcards for deletion:", this.selectedFlashcards);
 
@@ -286,17 +286,19 @@ export default {
         if (result.isConfirmed) {
           try {
             for (const flashcardId of this.selectedFlashcards) {
-              console.log(`Deleting flashcard with ID: ${flashcardId}`); // Log each deletion call
-              
+              const flashcardSetName = this.flashcards.find(note => note._id === flashcardId).flashcard_set_name;
+
               // Make the API call to delete the flashcard
-          await axios.delete(`http://localhost:8080/api/notes/flashcards/${flashcardId}`);
-        }
+              await axios.delete(`http://localhost:8080/api/notes/flashcards/set/${flashcardSetName}`);
+            }
 
             // Remove deleted flashcards from the local array
             this.flashcards = this.flashcards.filter(
-              (note) => !this.selectedFlashcards.includes(note._id)
+              (note) => !this.selectedFlashcards.includes(note._id.toString())
             );
             this.selectedFlashcards = []; // Clear selections
+            // Optionally refetch notes to ensure the latest state
+            await this.fetchNotes();
 
             // SweetAlert2 success dialog
             Swal.fire(
@@ -323,14 +325,14 @@ export default {
 
       // SweetAlert2 confirmation dialog
       Swal.fire({
-        title: 'Are you sure?',
+        title: "Are you sure?",
         text: `You are about to delete ${this.selectedNotes.length} selected note(s). This action cannot be undone!`,
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete them!',
-        cancelButtonText: 'Cancel',
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete them!",
+        cancelButtonText: "Cancel",
       }).then(async (result) => {
         if (result.isConfirmed) {
           try {
@@ -345,16 +347,20 @@ export default {
             this.selectedNotes = []; // Clear selections
 
             // SweetAlert2 success dialog
-            Swal.fire('Deleted!', 'Your notes have been deleted.', 'success');
+            Swal.fire("Deleted!", "Your notes have been deleted.", "success");
           } catch (error) {
             console.error("Error deleting notes:", error);
 
             // SweetAlert2 error dialog
-            Swal.fire('Error', 'An error occurred while deleting notes. Please try again.', 'error');
+            Swal.fire(
+              "Error",
+              "An error occurred while deleting notes. Please try again.",
+              "error"
+            );
           }
         }
       });
-    }
+    },
   },
 };
 </script>
