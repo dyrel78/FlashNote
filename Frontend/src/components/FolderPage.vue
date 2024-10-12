@@ -35,7 +35,7 @@
         <div class="two-pane-container">
           <!-- Left pane: Notes list -->
           <div class="notes-list-pane">
-            <h2 style="padding-bottom: 10px">Folder: {{ folderName }}</h2>
+            <h2 style="padding-bottom: 10px">{{ folderName }} :Notes</h2>
             <div v-if="notes.length > 0">
               <div style="padding-bottom: 10px" class="mass-action-controls">
                 <button @click="toggleSelectAll" class="action-btn">
@@ -77,29 +77,45 @@
             </div>
           </div>
 
-          <!-- Right pane: Content area -->
           <div class="right-content-pane">
-            <h2>Flashcard sets</h2>
+            <h2>Flashcard Sets</h2>
             <div v-if="flashcardNotes.length > 0">
+              <!-- Mass action controls for flashcards -->
+              <div style="padding-bottom: 10px" class="mass-action-controls">
+                <button @click="toggleSelectAllFlashcards" class="action-btn">
+                  {{ allSelectedFlashcards ? "Deselect All" : "Select All" }}
+                </button>
+                <button
+                  @click="deleteSelectedFlashcards"
+                  class="action-btn delete-btn"
+                  :disabled="!hasSelectionFlashcards"
+                >
+                  Delete Selected
+                </button>
+              </div>
+
+              <!-- List of flashcards with checkboxes for selection -->
               <ul class="notes-list">
-                <!-- <li v-for="note in notes" :key="note._id">
-                              
-                                <button class="note-btn" @click="$router.push({ name: 'ViewNotesPreview', params: { id: note._id } })">
-                                    {{ note.note_name }}
-                                </button>
-                            </li> -->
                 <li v-for="note in flashcardNotes" :key="note._id">
-                  <button
-                    class="note-btn"
-                    @click="
-                      $router.push({
-                        name: 'FCPage',
-                        params: { id: note.flashcard_set_name },
-                      })
-                    "
-                  >
-                    {{ note.flashcard_set_name }}
-                  </button>
+                  <div class="note-item">
+                    <!-- Checkbox for selecting flashcards -->
+                    <input
+                      type="checkbox"
+                      :value="note._id"
+                      v-model="selectedFlashcards"
+                    />
+                    <button
+                      class="note-btn"
+                      @click="
+                        $router.push({
+                          name: 'FCPage',
+                          params: { id: note.flashcard_set_name },
+                        })
+                      "
+                    >
+                      {{ note.flashcard_set_name }}
+                    </button>
+                  </div>
                 </li>
               </ul>
             </div>
@@ -116,6 +132,7 @@
 <script>
 import FlashnoteNavbar from "./Navbar.vue";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
   name: "FolderPage",
@@ -131,6 +148,7 @@ export default {
       userExists: false,
       userObject: {},
       selectedNotes: [],
+      selectedFlashcards: [], // state for selected flashcards
       flashcards: [],
     };
   },
@@ -156,6 +174,17 @@ export default {
     },
     hasSelection() {
       return this.selectedNotes.length > 0;
+    },
+
+    // Computed properties for flashcards selection
+    allSelectedFlashcards() {
+      return (
+        this.flashcardNotes.length > 0 &&
+        this.selectedFlashcards.length === this.flashcardNotes.length
+      );
+    },
+    hasSelectionFlashcards() {
+      return this.selectedFlashcards.length > 0;
     },
   },
   watch: {
@@ -187,6 +216,7 @@ export default {
         );
         this.notes = onlyNotes;
         this.selectedNotes = []; // Reset selections when fetching new notes
+        this.selectedFlashcards = []; // Reset flashcard selections
         // return onlyNotes
       } catch (error) {
         console.error("Error fetching notes:", error);
@@ -227,36 +257,100 @@ export default {
         this.selectedNotes = this.notes.map((note) => note._id);
       }
     },
+
+    // Methods for flashcards select and delete actions
+    toggleSelectAllFlashcards() {
+      if (this.allSelectedFlashcards) {
+        this.selectedFlashcards = [];
+      } else {
+        this.selectedFlashcards = this.flashcardNotes.map((note) => note._id);
+      }
+    },
+    async deleteSelectedFlashcards() {
+      if (this.selectedFlashcards.length === 0) return;
+
+      // SweetAlert2 confirmation dialog
+      Swal.fire({
+        title: "Are you sure?",
+        text: `You are about to delete ${this.selectedFlashcards.length} selected flashcard set(s). This action cannot be undone!`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete them!",
+        cancelButtonText: "Cancel",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            for (const flashcardId of this.selectedFlashcards) {
+              await axios.delete(
+                `http://localhost:8080/api/notes/${flashcardId}`
+              );
+            }
+
+            // Remove deleted flashcards from the local array
+            this.flashcards = this.flashcards.filter(
+              (note) => !this.selectedFlashcards.includes(note._id)
+            );
+            this.selectedFlashcards = []; // Clear selections
+
+            // SweetAlert2 success dialog
+            Swal.fire(
+              "Deleted!",
+              "Your flashcards have been deleted.",
+              "success"
+            );
+          } catch (error) {
+            console.error("Error deleting flashcards:", error);
+
+            // SweetAlert2 error dialog
+            Swal.fire(
+              "Error",
+              "An error occurred while deleting flashcards. Please try again.",
+              "error"
+            );
+          }
+        }
+      });
+    },
+
     async deleteSelected() {
       if (this.selectedNotes.length === 0) return;
 
-      if (
-        confirm(
-          `Are you sure you want to delete ${this.selectedNotes.length} selected note(s)?`
-        )
-      ) {
-        try {
-          // const user = JSON.parse(sessionStorage.getItem("user"));
-          // const userId = user._id;
+      // SweetAlert2 confirmation dialog
+      Swal.fire({
+        title: 'Are you sure?',
+        text: `You are about to delete ${this.selectedNotes.length} selected note(s). This action cannot be undone!`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete them!',
+        cancelButtonText: 'Cancel',
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            for (const noteId of this.selectedNotes) {
+              await axios.delete(`http://localhost:8080/api/notes/${noteId}`);
+            }
 
-          // Assuming your API supports bulk delete
-          for (const noteId of this.selectedNotes) {
-            await axios.delete(`http://localhost:8080/api/notes/${noteId}`);
+            // Remove deleted notes from the local array
+            this.notes = this.notes.filter(
+              (note) => !this.selectedNotes.includes(note._id)
+            );
+            this.selectedNotes = []; // Clear selections
+
+            // SweetAlert2 success dialog
+            Swal.fire('Deleted!', 'Your notes have been deleted.', 'success');
+          } catch (error) {
+            console.error("Error deleting notes:", error);
+
+            // SweetAlert2 error dialog
+            Swal.fire('Error', 'An error occurred while deleting notes. Please try again.', 'error');
           }
-
-          // Remove deleted notes from the local array
-          this.notes = this.notes.filter(
-            (note) => !this.selectedNotes.includes(note._id)
-          );
-          this.selectedNotes = []; // Clear selections
-
-          alert("Selected notes have been deleted successfully.");
-        } catch (error) {
-          console.error("Error deleting notes:", error);
-          alert("An error occurred while deleting notes. Please try again.");
         }
-      }
-    },
+      });
+    }
   },
 };
 </script>
