@@ -210,4 +210,27 @@ router.get("/:userId/:flashcard_set_name", async (req, res) => {
 }
 );
 
+
+router.delete("/flashcards/:id", async (req, res) => {
+  try {
+    // Find and delete the flashcard with the specified ID and note_format as "flashcards"
+    const deletedFlashcard = await Note.findOneAndDelete({
+      _id: req.params.id,
+      note_format: "flashcards",
+    });
+
+    // If no flashcard was found, return a 404 error
+    if (!deletedFlashcard) {
+      return res.status(404).json({ error: "Flashcard not found" });
+    }
+
+    // Respond with a success message
+    res.status(200).json({ message: "Flashcard deleted successfully" });
+  } catch (error) {
+    // Catch any errors and return a 500 error
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 export default router;

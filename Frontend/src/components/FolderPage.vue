@@ -268,6 +268,9 @@ export default {
     },
     async deleteSelectedFlashcards() {
       if (this.selectedFlashcards.length === 0) return;
+      
+      // Log the selected flashcards to ensure the correct IDs are selected
+      console.log("Selected flashcards for deletion:", this.selectedFlashcards);
 
       // SweetAlert2 confirmation dialog
       Swal.fire({
@@ -283,10 +286,11 @@ export default {
         if (result.isConfirmed) {
           try {
             for (const flashcardId of this.selectedFlashcards) {
-              await axios.delete(
-                `http://localhost:8080/api/notes/${flashcardId}`
-              );
-            }
+              console.log(`Deleting flashcard with ID: ${flashcardId}`); // Log each deletion call
+              
+              // Make the API call to delete the flashcard
+          await axios.delete(`http://localhost:8080/api/notes/flashcards/${flashcardId}`);
+        }
 
             // Remove deleted flashcards from the local array
             this.flashcards = this.flashcards.filter(
