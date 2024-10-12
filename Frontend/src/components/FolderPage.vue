@@ -30,12 +30,12 @@
         @update:userObject="userObject = $event"
       />
       <div class="content">
-        <h1>Folder: {{ folderName }}</h1>
+        <h1>{{ folderName }}</h1>
 
         <div class="two-pane-container">
           <!-- Left pane: Notes list -->
           <div class="notes-list-pane">
-            <h2 style="padding-bottom: 10px">{{ folderName }} :Notes</h2>
+            <h2 style="padding-bottom: 10px">{{ folderName }} Notes</h2>
             <div v-if="notes.length > 0">
               <div style="padding-bottom: 10px" class="mass-action-controls">
                 <button @click="toggleSelectAll" class="action-btn">
