@@ -4,22 +4,22 @@
     <div class="sidebar">
       <!-- ... (sidebar content remains the same) ... -->
       <div class="top">
-          <div class="logo">
-            <i class="bx bx-edit"></i>
-            <span>All Notes</span>
-          </div>
-          <i class="bx bx-menu" id="btn"></i>
+        <div class="logo">
+          <i class="bx bx-edit"></i>
+          <span>All Notes</span>
         </div>
+        <i class="bx bx-menu" id="btn"></i>
+      </div>
 
-        <ul>
-          <li v-for="folder in folders" :key="folder">
-            <router-link :to="{ name: 'FolderPage', params: { id: folder } }">
-              <i class="bx bx-folder"></i>
-              <span class="nav-item">{{ folder }}</span>
-            </router-link>
-            <span class="tooltip">{{ folder }}</span>
-          </li>
-        </ul>
+      <ul>
+        <li v-for="folder in folders" :key="folder">
+          <router-link :to="{ name: 'FolderPage', params: { id: folder } }">
+            <i class="bx bx-folder"></i>
+            <span class="nav-item">{{ folder }}</span>
+          </router-link>
+          <span class="tooltip">{{ folder }}</span>
+        </li>
+      </ul>
     </div>
 
     <div class="flashnote-container main-content">
@@ -35,21 +35,37 @@
         <div class="two-pane-container">
           <!-- Left pane: Notes list -->
           <div class="notes-list-pane">
-            <h2 style= "padding-bottom: 10px;"  >Folder: {{ folderName }}</h2>
+            <h2 style="padding-bottom: 10px">Folder: {{ folderName }}</h2>
             <div v-if="notes.length > 0">
-              <div style= "padding-bottom: 10px;" class="mass-action-controls">
+              <div style="padding-bottom: 10px" class="mass-action-controls">
                 <button @click="toggleSelectAll" class="action-btn">
-                  {{ allSelected ? 'Deselect All' : 'Select All' }}
+                  {{ allSelected ? "Deselect All" : "Select All" }}
                 </button>
-                <button @click="deleteSelected" class="action-btn delete-btn" :disabled="!hasSelection">
+                <button
+                  @click="deleteSelected"
+                  class="action-btn delete-btn"
+                  :disabled="!hasSelection"
+                >
                   Delete Selected
                 </button>
               </div>
               <ul class="notes-list">
                 <li v-for="note in notes" :key="note._id">
                   <div class="note-item">
-                    <input type="checkbox" :value="note._id" v-model="selectedNotes">
-                    <button class="note-btn" @click="$router.push({ name: 'ViewNotesPreview', params: { id: note._id } })">
+                    <input
+                      type="checkbox"
+                      :value="note._id"
+                      v-model="selectedNotes"
+                    />
+                    <button
+                      class="note-btn"
+                      @click="
+                        $router.push({
+                          name: 'ViewNotesPreview',
+                          params: { id: note._id },
+                        })
+                      "
+                    >
                       {{ note.note_name }}
                     </button>
                   </div>
@@ -73,11 +89,17 @@
                                 </button>
                             </li> -->
                 <li v-for="note in flashcardNotes" :key="note._id">
-                  <button class="note-btn" @click="$router.push({ name: 'FCPage', params: { id: note.flashcard_set_name } })">
-                    {{ note.flashcard_set_name  }}
+                  <button
+                    class="note-btn"
+                    @click="
+                      $router.push({
+                        name: 'FCPage',
+                        params: { id: note.flashcard_set_name },
+                      })
+                    "
+                  >
+                    {{ note.flashcard_set_name }}
                   </button>
-
-
                 </li>
               </ul>
             </div>
@@ -109,31 +131,35 @@ export default {
       userExists: false,
       userObject: {},
       selectedNotes: [],
-      flashcards:[],
+      flashcards: [],
     };
   },
   computed: {
     flashcardNotes() {
-      
       const uniqueSets = new Map();
-      
-      this.flashcards.forEach(note => {
-        if (note.flashcard_set_name && !uniqueSets.has(note.flashcard_set_name)) {
+
+      this.flashcards.forEach((note) => {
+        if (
+          note.flashcard_set_name &&
+          !uniqueSets.has(note.flashcard_set_name)
+        ) {
           uniqueSets.set(note.flashcard_set_name, note);
         }
       });
-      
+
       return Array.from(uniqueSets.values());
     },
     allSelected() {
-      return this.notes.length > 0 && this.selectedNotes.length === this.notes.length;
+      return (
+        this.notes.length > 0 && this.selectedNotes.length === this.notes.length
+      );
     },
     hasSelection() {
       return this.selectedNotes.length > 0;
-    }
+    },
   },
   watch: {
-    '$route'(to) {
+    $route(to) {
       this.folderName = to.params.id;
       this.fetchNotes();
     },
@@ -153,9 +179,13 @@ export default {
           `http://localhost:8080/api/notes/${userId}/folder/${this.folderName}`
         );
         let onlyNotes = response.data;
-        this.flashcards= onlyNotes.filter(note => note.note_format === 'flashcards' );
-        onlyNotes= onlyNotes.filter(note => note.note_format !== 'flashcards' );
-        this.notes = onlyNotes
+        this.flashcards = onlyNotes.filter(
+          (note) => note.note_format === "flashcards"
+        );
+        onlyNotes = onlyNotes.filter(
+          (note) => note.note_format !== "flashcards"
+        );
+        this.notes = onlyNotes;
         this.selectedNotes = []; // Reset selections when fetching new notes
         // return onlyNotes
       } catch (error) {
@@ -194,30 +224,36 @@ export default {
       if (this.allSelected) {
         this.selectedNotes = [];
       } else {
-        this.selectedNotes = this.notes.map(note => note._id);
+        this.selectedNotes = this.notes.map((note) => note._id);
       }
     },
     async deleteSelected() {
       if (this.selectedNotes.length === 0) return;
-      
-      if (confirm(`Are you sure you want to delete ${this.selectedNotes.length} selected note(s)?`)) {
+
+      if (
+        confirm(
+          `Are you sure you want to delete ${this.selectedNotes.length} selected note(s)?`
+        )
+      ) {
         try {
           // const user = JSON.parse(sessionStorage.getItem("user"));
           // const userId = user._id;
-          
+
           // Assuming your API supports bulk delete
-          for( const noteId of this.selectedNotes) {
+          for (const noteId of this.selectedNotes) {
             await axios.delete(`http://localhost:8080/api/notes/${noteId}`);
           }
-          
+
           // Remove deleted notes from the local array
-          this.notes = this.notes.filter(note => !this.selectedNotes.includes(note._id));
+          this.notes = this.notes.filter(
+            (note) => !this.selectedNotes.includes(note._id)
+          );
           this.selectedNotes = []; // Clear selections
-          
-          alert('Selected notes have been deleted successfully.');
+
+          alert("Selected notes have been deleted successfully.");
         } catch (error) {
           console.error("Error deleting notes:", error);
-          alert('An error occurred while deleting notes. Please try again.');
+          alert("An error occurred while deleting notes. Please try again.");
         }
       }
     },
@@ -229,7 +265,6 @@ export default {
 @import url(../assets/flashnote-styles.css);
 @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
 </style>
-
 
 <style scoped>
 /* Make sure the button has the same style as other buttons across the application */
@@ -306,8 +341,6 @@ export default {
   text-align: center;
 }
 
-
-
 /* Content area styles */
 .content {
   flex-grow: 1;
@@ -344,45 +377,47 @@ p {
   color: #666;
 }
 
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+.two-pane-container {
+  display: flex;
+  flex-grow: 1;
+  overflow: 100%;
+}
+.notes-list-pane,
+.right-content-pane {
+  flex: 1; /* Both panes will take up equal space */
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin: 0 10px; /* Add some space between the two panes */
+}
 
+.notes-list-pane {
+  /*width: 300px;*/
+  overflow-y: auto;
+  border-right: 1px solid #ccc;
+}
+.right-content-pane {
+  overflow-y: auto;
+}
 
-        .main-content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        .two-pane-container {
-            display: flex;
-            flex-grow: 1;
-            overflow: hidden;
-        }
-        .notes-list-pane {
-            width: 300px;
-            overflow-y: auto;
-            border-right: 1px solid #ccc;
-            padding: 20px;
-        }
-        .right-content-pane {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
-        /* .notes-list {
-            list-style-type: none;
-            padding: 0;
-        } */
-        /* .note-btn {
-            width: 100%;
-            text-align: left;
-            padding: 10px;
-            margin-bottom: 5px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            cursor: pointer;
-        } */
+/*Make sure the content inside both panes is well spaced */
+.notes-list li,
+.flashcard-list li {
+  padding: 12px;
+  background-color: #f0f0f0;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
 
-
-
-
-
+.notes-list li:hover,
+.flashcard-list li:hover {
+  background-color: #e0e0e0;
+}
 </style>
