@@ -34,7 +34,7 @@
   
           <div class="two-pane-container">
             <!-- Left pane: Notes list -->
-            <div class="notes-list-pane">
+            <div id="notes-list-pane-id" :class="['notes-list-pane', { 'hidden': !isNotesListVisible }]">
               <h2 style= "padding-bottom: 10px;"  >Flashcards in: {{ flashcard_set_name }}</h2>
               <div v-if="flashcards.length > 0">
                 <div style= "padding-bottom: 10px;" class="mass-action-controls">
@@ -65,17 +65,8 @@
             <!-- Right pane: Content area -->
             <div class="right-content-pane">
               <h2>Flashcard</h2>
-              <!-- <div class="flashcard-container" v-if="selectedFlashcard">
-                <div class="flashcard-maincontainer" @click="flipCard">
-                  <div :class="['flashcard-thecard', { 'flashcard-flip': isFlipped }]">
-                    <div class="flashcard-thefront">{{ selectedFlashcard.question }}</div>
-                    <div class="flashcard-theback">{{ selectedFlashcard.answer }}</div>
-                  </div>
-                </div>
-              </div>
-              <div v-else>
-                <p>Select a flashcard to display</p>
-              </div> -->
+              <button @click="toggleNotesListPane">{{ isNotesListVisible ? 'Hide Notes List' : 'Show Notes List' }}</button> 
+
               <div class="flashcard-page-body">
          <div class="flashcard-container" id="cardContainer" v-if="flashcards.length > 0">
           <div class="flashcard-maincontainer" @click="flipCard(currentCard)">
@@ -98,11 +89,7 @@
             <span id="cardIndicator">{{ currentCard }} / {{ totalCards }}</span>
             <button id="nextBtn" @click="nextCard" :disabled="currentCard === totalCards">Next</button>
           </div>
-          <!-- <div class="flashcard-navigation">
-            <button id="prevBtn" @click="previousCard">Previous</button>
-            <span id="cardIndicator">{{ currentCard }} / {{ totalCards }}</span>
-            <button id="nextBtn" @click="nextCard">Next</button>
-          </div> -->
+    
         </div>
             </div>
           </div>
@@ -135,6 +122,7 @@
         
         currentCard: 1,
         flippedCards: [],
+        isNotesListVisible: true,
       };
     },
     computed: {
@@ -159,9 +147,13 @@
       this.fetchFlashcards();
       this.fetchFolders();
       this.sideBarMethods();
+      this.checkMediaQuery();
+      window.addEventListener('resize', this.checkMediaQuery);
       // this.updateCardDisplay();
 
-    },
+    },beforeUnmount() {
+  window.removeEventListener('resize', this.checkMediaQuery);
+},
     methods: {
       // async fetchFlashcards() {
       //   try {
@@ -184,6 +176,13 @@
       //     console.error("Error fetching notes:", error);
       //   }
       // },
+      toggleNotesListPane() {
+  this.isNotesListVisible = !this.isNotesListVisible;
+},
+checkMediaQuery() {
+  const mediaQuery = window.matchMedia('(max-width: 1000px)');
+  this.isNotesListVisible = !mediaQuery.matches;
+},
       async fetchFlashcards() {
       try {
         const user = JSON.parse(sessionStorage.getItem("user"));
@@ -433,7 +432,7 @@
       display: flex;
       flex-direction: column;
   }
-  .two-pane-container {
+  /* .two-pane-container {
       display: flex;
       flex-grow: 1;
       overflow: hidden;
@@ -443,7 +442,37 @@
       overflow-y: auto;
       border-right: 1px solid #ccc;
       padding: 20px;
+      transition: opacity 0.3s ease, max-width 0.3s ease;
+
   }
+  .notes-list-pane.hidden {
+  opacity: 0;
+  max-width: 0;
+} */
+.two-pane-container {
+  display: flex;
+  gap: 20px;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.notes-list-pane {
+  flex: 1;
+  transition: opacity 0.3s ease, max-width 0.3s ease;
+  opacity: 1;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 20px;
+
+  border-right: 1px solid #ccc;
+
+}
+
+.notes-list-pane.hidden {
+  opacity: 0;
+  max-width: 0;
+}
+
   .right-content-pane {
       flex-grow: 1;
       overflow-y: auto;
@@ -466,7 +495,57 @@
   /* FLASHCARDS
   These are new
   */
-  
+  /* @media screen and (max-width:1000px){
+    .notes-list-pane{
+      display: none;
+    }
+  } */
+   
+  @media screen and (max-width: 1000px) {
+  .two-pane-container {
+    flex-direction: column;
+    align-items: center; /* Center children horizontally */
+  }
+
+  .notes-list-pane {
+    max-width: 100%;
+    width: 100%; /* Ensure full width when visible */
+  }
+
+  .notes-list-pane.hidden {
+    display: none;
+  }
+
+  .right-content-pane {
+    width: 100%; /* Full width to allow proper centering of content */
+    max-width: 600px; /* Limit maximum width for readability */
+    padding: 0 20px; /* Add some padding on smaller screens */
+    box-sizing: border-box; /* Ensure padding is included in width calculation */
+  }
+
+  .toggle-notes-btn {
+    display: block;
+    margin: 0 auto 20px; /* Center the button and add some bottom margin */
+  }
+
+  /* Center the flashcard content */
+  .flashcard-page-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .flashcard-thecard{
+    width:100%;
+  }
+
+  /* Ensure the flashcard container is centered and responsive */
+  .flashcard-container {
+    width: 100%;
+    max-width: 100%; /* Adjust this value as needed */
+  }
+}
+
+
   .two-pane-container {
     display: flex;
     justify-content: space-between;
