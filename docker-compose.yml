@@ -28,7 +28,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "8081:8081"
+      - "8081:3000"
 
     volumes:
       - ./frontend:/usr/src/frontend
@@ -36,7 +36,7 @@ services:
       - frontend_build:/usr/src/frontend/dist
 
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
       interval: 30s
       timeout: 10s
       retries: 5
