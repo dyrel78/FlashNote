@@ -82,6 +82,27 @@
                   <button class="flashnote-upload-pdf" @click="uploadPDF">
                     Upload PDF
                   </button>
+                  <button
+                  
+                    class="flashnote-clear-button"
+                    @click="test1"
+                  >
+                    Test1
+                  </button>
+                  <button
+                  
+                  class="flashnote-clear-button"
+                  @click="test2"
+                >
+                  Test2
+                </button>
+                <button
+                  
+                  class="flashnote-clear-button"
+                  @click="test3"
+                >
+                  Test3
+                </button>
 
                   <div v-if="userExists">
                     <label for="folderSelect">Select Folder:</label>
@@ -223,14 +244,45 @@ export default {
     this.sideBarMethods();
   },
   methods: {
-    test1(){
+   async test1(){
+      try {
 
+        const response = await axios.get("http://34.228.224.45:8080/api/llm/test", {
+        });
+
+        // this.outputText = FormatNoteText(response.data);
+        this.outputText = response.data;
+  
+      } catch (error) {
+        console.error("Error creating note:", error);
+        this.outputText = "An error occurred while generating the note.";
+      } 
     },
-    test2(){
+   async test2(){
+      try{
+      const response = await axios.get("http://ec2-34-228-224-45.compute-1.amazonaws.com:8080/api/llm/test", {
+        });
 
+        // this.outputText = FormatNoteText(response.data);
+        this.outputText = response.data;
+  
+      } catch (error) {
+        console.error("Error creating note:", error);
+        this.outputText = "An error occurred while generating the note.";
+      } 
     },
-    test3(){
+   async test3(){
+    try{
+      const response = await axios.get("http://34.228.224.45:8080/api/llm/test", {
+        });
 
+        // this.outputText = FormatNoteText(response.data);
+        this.outputText = response.data;
+  
+      } catch (error) {
+        console.error("Error creating note:", error);
+        this.outputText = "An error occurred while generating the note.";
+      } 
     },
     startVoiceInput() {
       const SpeechRecognition =
