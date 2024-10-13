@@ -24,6 +24,8 @@ const allowedOrigins = [
   'http://34.228.224.45:8082',  // In case you're using the other frontend port
   'http://localhost:8081',      // For local development
   'http://ec2-34-228-224-45.compute-1.amazonaws.com:8080',
+  'http://34.228.224.45:8080',
+  'http://34.228.2224.45'
 
   // Add any other origins you need to allow
 ];
