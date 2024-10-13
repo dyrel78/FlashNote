@@ -27,7 +27,9 @@ const allowedOrigins = [
   'http://3.217.34.111:8080',
   'http://3.217.34.111',
   'www.flashnote.click',
+  'www.flashnote.click:8080',
   'flashnote.click',
+  'flashnote.click:8080',
   'www.flashnote.tech'
 
   // Add any other origins you need to allow
