@@ -205,7 +205,7 @@ export default {
         const user = JSON.parse(sessionStorage.getItem("user"));
         const userId = user._id;
         const response = await axios.get(
-          `http://localhost:8080/api/notes/${userId}/folder/${this.folderName}`
+          `http://3.217.34.111:8080/api/notes/${userId}/folder/${this.folderName}`
         );
         let onlyNotes = response.data;
         this.flashcards = onlyNotes.filter(
@@ -242,7 +242,7 @@ export default {
       const user = JSON.parse(sessionStorage.getItem("user"));
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/notes/folders/${user._id}`
+          `http://3.217.34.111:8080/api/notes/folders/${user._id}`
         );
         this.folders = response.data;
       } catch (error) {
@@ -289,7 +289,7 @@ export default {
               const flashcardSetName = this.flashcards.find(note => note._id === flashcardId).flashcard_set_name;
 
               // Make the API call to delete the flashcard
-              await axios.delete(`http://localhost:8080/api/notes/flashcards/set/${flashcardSetName}`);
+              await axios.delete(`http://3.217.34.111:8080/api/notes/flashcards/set/${flashcardSetName}`);
             }
 
             // Remove deleted flashcards from the local array
@@ -337,7 +337,7 @@ export default {
         if (result.isConfirmed) {
           try {
             for (const noteId of this.selectedNotes) {
-              await axios.delete(`http://localhost:8080/api/notes/${noteId}`);
+              await axios.delete(`http://3.217.34.111:8080/api/notes/${noteId}`);
             }
 
             // Remove deleted notes from the local array

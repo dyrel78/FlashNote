@@ -25,7 +25,10 @@ const allowedOrigins = [
   'http://localhost:8081',      // For local development
   'http://ec2-3-217-34-111.compute-1.amazonaws.com:8080',
   'http://3.217.34.111:8080',
-  'http://3.217.34.111'
+  'http://3.217.34.111',
+  'www.flashnote.click',
+  'flashnote.click',
+  'www.flashnote.tech'
 
   // Add any other origins you need to allow
 ];

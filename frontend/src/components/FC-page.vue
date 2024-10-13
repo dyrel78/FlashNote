@@ -162,7 +162,7 @@
       //     console.log(this.flashcard_set_name)
       //     console.log(userId)
       //     const response = await axios.get(
-      //       `http://localhost:8080/api/notes/${userId}/${this.flashcard_set_name}`
+      //       `http://3.217.34.111:8080/api/notes/${userId}/${this.flashcard_set_name}`
       //     );
       //     // console.log(response.data)
       //     // These lines below are bnew
@@ -188,7 +188,7 @@ checkMediaQuery() {
         const user = JSON.parse(sessionStorage.getItem("user"));
         const userId = user._id;
         const response = await axios.get(
-          `http://localhost:8080/api/notes/${userId}/${this.flashcard_set_name}`
+          `http://3.217.34.111:8080/api/notes/${userId}/${this.flashcard_set_name}`
         );
         this.flashcards = response.data.map(flashcard => ({
           ...flashcard,
@@ -223,7 +223,7 @@ checkMediaQuery() {
         const user = JSON.parse(sessionStorage.getItem("user"));
         try {
           const response = await axios.get(
-            `http://localhost:8080/api/notes/folders/${user._id}`
+            `http://3.217.34.111:8080/api/notes/folders/${user._id}`
           );
           this.folders = response.data;
         } catch (error) {
@@ -248,7 +248,7 @@ checkMediaQuery() {
             
             // Assuming your API supports bulk delete
             for( const noteId of this.selectedNotes) {
-              await axios.delete(`http://localhost:8080/api/notes/${noteId}`);
+              await axios.delete(`http://3.217.34.111:8080/api/notes/${noteId}`);
             }
             
             // Remove deleted notes from the local array
