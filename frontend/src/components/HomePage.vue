@@ -223,6 +223,15 @@ export default {
     this.sideBarMethods();
   },
   methods: {
+    test1(){
+
+    },
+    test2(){
+
+    },
+    test3(){
+
+    },
     startVoiceInput() {
       const SpeechRecognition =
         window.SpeechRecognition ||
