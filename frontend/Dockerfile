@@ -9,7 +9,7 @@ RUN npm install
 COPY . .
 
 RUN npm run build
-EXPOSE 3000
+EXPOSE 8081
 RUN chmod +x start.sh
 CMD ["sh","start.sh"]
 # CMD [start.sh]
