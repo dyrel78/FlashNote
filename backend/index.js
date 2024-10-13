@@ -14,9 +14,37 @@ import pdfRoutes from "./routers/pdfRoute.js";
 const app = express();
 const port = process.env.PORT || 8080;
 import cors from "cors";
-app.use(cors());
+// app.use(cors());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// CORS configuration
+const allowedOrigins = [
+  'http://34.228.224.45:8081',  // Your EC2 public IP and frontend port
+  'http://34.228.224.45:8082',  // In case you're using the other frontend port
+  'http://localhost:8081',      // For local development
+  'http://ec2-34-228-224-45.compute-1.amazonaws.com:8080',
+
+  // Add any other origins you need to allow
+];
+const corsOptions = {
+  origin: function (origin, callback) {
+    // allow requests with no origin 
+    // (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      var msg = 'The CORS policy for this site does not ' +
+                'allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true  // This allows session cookies to be sent back and forth
+};
+app.use(cors(corsOptions));
+
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 app.use(express.static(path.join(__dirname, 'frontend','dist')));
 
@@ -28,7 +56,7 @@ app.use(
     saveUninitialized: true,
   })
 );
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/users", usersRoute);
