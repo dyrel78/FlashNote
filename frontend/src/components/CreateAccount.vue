@@ -99,7 +99,7 @@ export default {
       try {
         // Send POST request to register the user
         const response = await fetch(
-          "http://34.228.224.45:8080/api/users/register",
+          "http://3.217.34.111:8080/api/users/register",
           {
             method: "POST",
             headers: {

@@ -20,12 +20,12 @@ const __dirname = path.dirname(__filename);
 
 // CORS configuration
 const allowedOrigins = [
-  'http://34.228.224.45:8081',  // Your EC2 public IP and frontend port
-  'http://34.228.224.45:8082',  // In case you're using the other frontend port
+  'http://3.217.34.111:8081',  // Your EC2 public IP and frontend port
+  'http://3.217.34.111:8082',  // In case you're using the other frontend port
   'http://localhost:8081',      // For local development
-  'http://ec2-34-228-224-45.compute-1.amazonaws.com:8080',
-  'http://34.228.224.45:8080',
-  'http://34.228.2224.45'
+  'http://ec2-3-217-34-111.compute-1.amazonaws.com:8080',
+  'http://3.217.34.111:8080',
+  'http://3.217.34.111'
 
   // Add any other origins you need to allow
 ];
@@ -93,6 +93,7 @@ mongoose
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
       console.log(`Click here to open the app: http://localhost:${port}`);
+      console.log(`Click here to open the app: http://3.217.34.111:${port}`)
     });
   })
   .catch((err) => console.error("Failed to connect to MongoDB", err));

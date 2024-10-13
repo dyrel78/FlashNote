@@ -71,7 +71,7 @@ export default {
   methods: {
     async signInUser() {
       try {
-        const endpoint = "http://34.228.224.45:8080/api/users/login";
+        const endpoint = "http://3.217.34.111:8080/api/users/login";
         const response = await axios.post(endpoint, {
           email: this.email,
           password: this.password,

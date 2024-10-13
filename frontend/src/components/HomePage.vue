@@ -247,7 +247,7 @@ export default {
    async test1(){
       try {
 
-        const response = await axios.get("http://34.228.224.45:8080/api/llm/test", {
+        const response = await axios.get("http://3.217.34.111:8080/api/llm/test", {
         });
 
         // this.outputText = FormatNoteText(response.data);
@@ -260,7 +260,7 @@ export default {
     },
    async test2(){
       try{
-      const response = await axios.get("http://ec2-34-228-224-45.compute-1.amazonaws.com:8080/api/llm/test", {
+      const response = await axios.get("http://ec2-3-217-34-111.compute-1.amazonaws.com:8080/api/llm/test", {
         });
 
         // this.outputText = FormatNoteText(response.data);
@@ -273,7 +273,7 @@ export default {
     },
    async test3(){
     try{
-      const response = await axios.get("http://34.228.224.45:8080/api/llm/test", {
+      const response = await axios.get("http://3.217.34.111:8080/api/llm/test", {
         });
 
         // this.outputText = FormatNoteText(response.data);
