@@ -82,7 +82,7 @@
                   <button class="flashnote-upload-pdf" @click="uploadPDF">
                     Upload PDF
                   </button>
-                  <button
+                  <!-- <button
                   
                     class="flashnote-clear-button"
                     @click="test1"
@@ -102,7 +102,7 @@
                   @click="test3"
                 >
                   Test3
-                </button>
+                </button> -->
 
                   <div v-if="userExists">
                     <label for="folderSelect">Select Folder:</label>
@@ -244,46 +244,46 @@ export default {
     this.sideBarMethods();
   },
   methods: {
-   async test1(){
-      try {
+  //  async test1(){
+  //     try {
 
-        const response = await axios.get("http://3.217.34.111:8080/api/llm/test", {
-        });
+  //       const response = await axios.get("http://3.217.34.111:8080/api/llm/test", {
+  //       });
 
-        // this.outputText = FormatNoteText(response.data);
-        this.outputText = response.data;
+  //       // this.outputText = FormatNoteText(response.data);
+  //       this.outputText = response.data;
   
-      } catch (error) {
-        console.error("Error creating note:", error);
-        this.outputText = "An error occurred while generating the note.";
-      } 
-    },
-   async test2(){
-      try{
-      const response = await axios.get("http://ec2-3-217-34-111.compute-1.amazonaws.com:8080/api/llm/test", {
-        });
+  //     } catch (error) {
+  //       console.error("Error creating note:", error);
+  //       this.outputText = "An error occurred while generating the note.";
+  //     } 
+  //   },
+  //  async test2(){
+  //     try{
+  //     const response = await axios.get("http://ec2-3-217-34-111.compute-1.amazonaws.com:8080/api/llm/test", {
+  //       });
 
-        // this.outputText = FormatNoteText(response.data);
-        this.outputText = response.data;
+  //       // this.outputText = FormatNoteText(response.data);
+  //       this.outputText = response.data;
   
-      } catch (error) {
-        console.error("Error creating note:", error);
-        this.outputText = "An error occurred while generating the note.";
-      } 
-    },
-   async test3(){
-    try{
-      const response = await axios.get("http://3.217.34.111:8080/api/llm/test", {
-        });
+  //     } catch (error) {
+  //       console.error("Error creating note:", error);
+  //       this.outputText = "An error occurred while generating the note.";
+  //     } 
+  //   },
+  //  async test3(){
+  //   try{
+  //     const response = await axios.get("http://3.217.34.111:8080/api/llm/test", {
+  //       });
 
-        // this.outputText = FormatNoteText(response.data);
-        this.outputText = response.data;
+  //       // this.outputText = FormatNoteText(response.data);
+  //       this.outputText = response.data;
   
-      } catch (error) {
-        console.error("Error creating note:", error);
-        this.outputText = "An error occurred while generating the note.";
-      } 
-    },
+  //     } catch (error) {
+  //       console.error("Error creating note:", error);
+  //       this.outputText = "An error occurred while generating the note.";
+  //     } 
+  //   },
     startVoiceInput() {
       const SpeechRecognition =
         window.SpeechRecognition ||
