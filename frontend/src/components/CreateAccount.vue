@@ -15,27 +15,27 @@
       <div>
         <!-- Username -->
         <label for="user-name">Username:</label>
-        <input type="text" id="user-name" v-model="username" required />
+        <input type="text" id="user-name" v-model="username" placeholder="johndoe123" required />
       </div>
       <div>
         <!-- First Name -->
         <label for="first-name">First Name:</label>
-        <input type="text" id="first-name" v-model="first_name" required />
+        <input type="text" id="first-name" v-model="first_name" placeholder="John" required />
       </div>
       <div>
         <!-- Last Name -->
         <label for="last-name">Last Name:</label>
-        <input type="text" id="last-name" v-model="last_name" required />
+        <input type="text" id="last-name" v-model="last_name" placeholder="Doe" required />
       </div>
       <div>
         <!-- Email -->
         <label for="email">Email:</label>
-        <input type="email" id="email" v-model="email" required />
+        <input type="email" id="email" v-model="email" placeholder="email@address.com" required />
       </div>
       <div>
         <!-- Password -->
         <label for="password">Password:</label>
-        <input type="password" id="password" v-model="password" required />
+        <input type="password" id="password" v-model="password" placeholder="Password" required />
       </div>
       <div>
         <!-- Confirm Password -->
@@ -44,6 +44,7 @@
           type="password"
           id="confirm-password"
           v-model="confirm_password"
+          placeholder="Password"
           required
         />
       </div>
