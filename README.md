@@ -23,7 +23,7 @@ FlashNote is an AI-powered study tool designed to help students create various t
     <a href="https://github.com/dyrel78/FlashNote/DevDocs.md"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/dyrel78/Best-README">View Demo</a>
+    <a href="http://www.flashnote.click:8080/">View Demo</a>
     ·
     <a href="
     <a href="https://github.com/dyrel78/Best-README">Request Feature</a>
@@ -81,7 +81,12 @@ Other technologies:
 
 ## Getting Started
 
-Follow these instructions to set up and run the FlashNote application on your local machine.
+
+<a href="http://www.flashnote.click:8080/">Link to a deployed solution</a>
+
+
+
+For local setup, follow these instructions to set up and run the FlashNote application on your local machine.
 
 
 ### Prerequisites
