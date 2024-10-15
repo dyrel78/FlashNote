@@ -186,6 +186,9 @@ import Swal from "sweetalert2";
 import FlashnoteNavbar from "./Navbar.vue";
 import FormatNoteText from "../markdownScript.js";
 import FormatFlashcards from "../flashcardScript.js";
+import introJs from "intro.js";
+import "intro.js/introjs.css";
+
 export default {
   name: "HomePage",
   components: {
@@ -221,8 +224,63 @@ export default {
     this.created();
     this.fetchFolders();
     this.sideBarMethods();
+    // Check if user is logging in for the first time
+    if (this.userExists && !localStorage.getItem("tourCompleted")) {
+      // Show welcome alert using SweetAlert
+      Swal.fire({
+        title: "Welcome!",
+        text: "Thanks for signing in. Would you like to take a quick tour?",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonText: "Start Tour",
+        cancelButtonText: "Skip",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.startTour(); // Trigger the walkthrough after clicking OK
+        }
+        localStorage.setItem("tourCompleted", "true"); // Set flag in localStorage
+      });
+    }
   },
   methods: {
+    startTour() {
+      introJs()
+        .setOptions({
+          steps: [
+            {
+              intro:
+                "Welcome to FlashNote! Let's walk you through the features.",
+            },
+            {
+              element: ".flashnote-note-input",
+              intro: "Here you can input or upload your lecture notes.",
+              position: "right",
+            },
+            {
+              element: ".flashnote-tabs",
+              intro: "Choose the type of summary you want to generate here.",
+              position: "bottom",
+            },
+            {
+              element: ".flashnote-save-note",
+              intro: "Once done, you can save your generated notes.",
+              position: "left",
+            },
+            {
+              element: ".sidebar",
+              intro:
+                "This is where you can navigate between different folders and saved notes.",
+              position: "right",
+            },
+          ],
+          showStepNumbers: true,
+          exitOnOverlayClick: true,
+          showBullets: false,
+          disableInteraction: true,
+        })
+        .start();
+    },
+
     startVoiceInput() {
       const SpeechRecognition =
         window.SpeechRecognition ||
@@ -498,26 +556,25 @@ export default {
               // Skip flashcards with invalid questions
               continue;
             }
-    console.log(flashCard.question);
-    console.log(flashCard.answer);
+            console.log(flashCard.question);
+            console.log(flashCard.answer);
             let formatedNoteName = flashCard.question;
-      
-              // formatedNoteName = formatedNoteName.substring(
-              //   "<strong>Question:</strong>".length);
-              const questionRegex = /^<strong>Question:<\/strong>\s*/;
 
-             // Regex pattern to remove "<strong>Answer:</strong>" from the beginning of the string
-              const answerRegex = /^<strong>Answer:<\/strong>\s*/;
-                formatedNoteName = formatedNoteName.replace(questionRegex, "");
-                formatedNoteName = formatedNoteName.replace(answerRegex, "");
+            // formatedNoteName = formatedNoteName.substring(
+            //   "<strong>Question:</strong>".length);
+            const questionRegex = /^<strong>Question:<\/strong>\s*/;
 
-                let flashCardAnswer = flashCard.answer;
-                let flashCardQuestion = flashCard.question;
+            // Regex pattern to remove "<strong>Answer:</strong>" from the beginning of the string
+            const answerRegex = /^<strong>Answer:<\/strong>\s*/;
+            formatedNoteName = formatedNoteName.replace(questionRegex, "");
+            formatedNoteName = formatedNoteName.replace(answerRegex, "");
 
-                // Regex pattern to remove "<strong>Answer:</strong>" from the beginning of the string
-                flashCardAnswer = flashCardAnswer.replace(answerRegex, "");
-                flashCardQuestion = flashCardQuestion.replace(questionRegex, "");
+            let flashCardAnswer = flashCard.answer;
+            let flashCardQuestion = flashCard.question;
 
+            // Regex pattern to remove "<strong>Answer:</strong>" from the beginning of the string
+            flashCardAnswer = flashCardAnswer.replace(answerRegex, "");
+            flashCardQuestion = flashCardQuestion.replace(questionRegex, "");
 
             const newFlashcard = {
               // note_name: `${noteName}_${counter}`, // Append counter to note_name
