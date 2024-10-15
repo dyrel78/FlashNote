@@ -3,9 +3,6 @@
     <ul>
       <li><a href="/home">Home</a></li>
       <li v-if="userExists">
-        <a href="/flashcards">Flashcards</a>
-      </li>
-      <li v-if="userExists">
         <a href="/profile">Profile</a>
       </li>
       <li v-else>
