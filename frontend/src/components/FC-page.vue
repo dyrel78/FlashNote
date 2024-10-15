@@ -207,7 +207,7 @@ this.isNotesListVisible = !mediaQuery.matches;
       const user = JSON.parse(sessionStorage.getItem("user"));
       const userId = user._id;
       const response = await axios.get(
-        `http://localhost:8080/api/notes/${userId}/${this.flashcard_set_name}`
+        `http://3.217.34.111:8080/api/notes/${userId}/${this.flashcard_set_name}`
       );
       this.flashcards = response.data.map(flashcard => ({
         ...flashcard,
