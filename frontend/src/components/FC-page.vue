@@ -267,7 +267,7 @@ this.isNotesListVisible = !mediaQuery.matches;
           
           // Assuming your API supports bulk delete
           for( const noteId of this.selectedNotes) {
-            await axios.delete(`http://localhost:8080/api/notes/${noteId}`);
+            await axios.delete(`http://3.217.34.111:8080/api/notes/${noteId}`);
           }
           
           // Remove deleted notes from the local array
