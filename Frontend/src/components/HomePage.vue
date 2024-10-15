@@ -127,11 +127,7 @@
                   >
                     Create Note
                   </button>
-                  <button
-                    class="flashnote-clear-button"
-                    v-if="userExists"
-                    @click="clearInput"
-                  >
+                  <button class="flashnote-clear-button" @click="clearInput">
                     Clear
                   </button>
                 </div>
