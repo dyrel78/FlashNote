@@ -42,26 +42,20 @@
                 <p>Your expanded notes are shown below.</p>
 
                 <div id="flashnote-content" class="flashnote-content">
-                  <div id="flashnote-note-output" class="flashnote-note-output">
-                    <div
-                      style="
-                        white-space: pre-wrap;
+                  <div 
+                  style= 
+                  "
+                  width: calc(100% - 40rem);
+                  "
+                  class = "editor-container">
+                    <div style="
+                        white-space: normal;
                         word-wrap: break-word;
                         max-width: 100%;
                         overflow-x: auto;
-                      "
-                    >
-                      <pre
-                        contenteditable="true"
-                        @input="updateOutputText"
-                        v-html="outputText"
-                        class="preformatted"
-                      ></pre>
-                      <div class="preformatted" id="editor">
-                        <!-- <h3>{{  outputText }}</h3> -->
+                      " id="editor">
                       </div>
                     </div>
-                  </div>
 
                   <div class="flashnote-button-group">
                     <!--Copy Button-->
@@ -88,6 +82,7 @@
                     </button>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>
@@ -102,7 +97,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Quill from "quill";
 // const { Delta } = Quill.import('delta');
-import Delta from "quill-delta";
+// import Delta from "quill-delta";
 
 import FlashnoteNavbar from "./Navbar.vue";
 // import { get } from "core-js/core/dict";
@@ -126,6 +121,16 @@ export default {
         }
       },
     },
+      outputText: {
+    handler(newOutputText) {
+      // Update the Quill editor when outputText changes
+      if (this.quill && newOutputText) {
+        this.quill.setContents([]); // Clear the existing content
+        this.quill.clipboard.dangerouslyPasteHTML(0, newOutputText); // Paste the updated content
+      }
+    },
+    immediate: false // Update immediately if outputText is already available
+  }
   },
   data() {
     return {
@@ -155,46 +160,64 @@ export default {
 
   methods: {
     initQuillEditor() {
-      this.quill = new Quill("#editor", {
-        theme: "snow",
-        modules: {
-          toolbar: [
-            ["bold", "italic", "underline", "strike"],
-            ["blockquote", "code-block"],
-            [{ header: 1 }, { header: 2 }],
-            [{ list: "ordered" }, { list: "bullet" }],
-            [{ script: "sub" }, { script: "super" }],
-            [{ indent: "-1" }, { indent: "+1" }],
-            [{ direction: "rtl" }],
-            [{ size: ["small", false, "large", "huge"] }],
-            [{ header: [1, 2, 3, 4, 5, 6, false] }],
-            [{ color: [] }, { background: [] }],
-            [{ font: [] }],
-            [{ align: [] }],
-            ["clean"],
-          ],
-        },
-      });
-      this.setQuillContent();
-    },
-    setQuillContent() {
-      // if (this.quill && this.outputText) {
-      //   this.quill.setText(''); // Clear existing content
-      //   this.quill.clipboard.dangerouslyPasteHTML(0, this.outputText);
-      // }
+    this.quill = new Quill("#editor", {
+      theme: "snow",
+      modules: {
+        toolbar: [
+          ["bold", "italic", "underline", "strike"],
+          ["blockquote", "code-block"],
+          [{ header: 1 }, { header: 2 }],
+          [{ list: "ordered" }, { list: "bullet" }],
+          [{ script: "sub" }, { script: "super" }],
+          [{ indent: "-1" }, { indent: "+1" }],
+          [{ direction: "rtl" }],
+          [{ size: ["small", false, "large", "huge"] }],
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          [{ color: [] }, { background: [] }],
+          [{ font: [] }],
+          [{ align: [] }],
+          ["clean"],
+        ],
+      },
+    });
 
-      if (this.quill && this.outputText) {
-        this.quill.setText(""); // Clear existing content
-        const lines = this.outputText.split("\n");
-        const delta = lines.reduce((delta, line, index) => {
-          if (index > 0) {
-            delta.insert("\n");
-          }
-          return delta.insert(line);
-        }, new Delta());
-        this.quill.updateContents(delta);
-      }
-    },
+    // Set the initial Quill content if outputText is already available
+    this.setQuillContent();
+
+    // Listen for changes in Quill editor
+    this.quill.on("text-change", () => {
+      // Update outputText with Quill editor's content
+      this.outputText = this.quill.root.innerHTML;
+    });
+  },
+    // setQuillContent() {
+    //   // if (this.quill && this.outputText) {
+    //   //   this.quill.setText(''); // Clear existing content
+    //   //   this.quill.clipboard.dangerouslyPasteHTML(0, this.outputText);
+    //   // }
+
+    //   if (this.quill && this.outputText) {
+    //     this.quill.setText(""); // Clear existing content
+    //     const lines = this.outputText.split("\n");
+    //     const delta = lines.reduce((delta, line, index) => {
+    //       if (index > 0) {
+    //         delta.insert("\n");
+    //       }
+    //       return delta.insert(line);
+    //     }, new Delta());
+    //     this.quill.updateContents(delta);
+    //   }
+    // },
+    setQuillContent() {
+    // if (this.quill && this.outputText) {
+    //   // this.quill.root.innerHTML = this.outputText; // Set content in Quill editor
+    //   this.quill.setContents([]); // Clear existing content
+    //   this.quill.clipboard.dangerouslyPasteHTML(0, this.outputText);
+
+    // }
+  },
+
+
     updateOutputText(event) {
       this.outputText = event.target.innerHTML;
       // this.outputText = this.quill.root.innerHTML;
@@ -380,4 +403,9 @@ export default {
 @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
 
 @import url("https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css");
+
+.ql-editor {
+  /* padding: 12px 0; */
+  font-size: 18px;
+}
 </style>
