@@ -47,14 +47,9 @@
               </div>
               <h2>FlashNote - Advanced AI Note Creation</h2>
 
-              <p>
-                Easily create concise notes from your
-                lecture slides.
-              </p>
+              <p>Easily create concise notes from your lecture slides.</p>
               <div class="space"></div>
-              <h3>
-                Choose your preferred note format:
-              </h3>
+              <h3>Choose your preferred note format:</h3>
               <div class="space"></div>
               <div class="flashnote-tabs">
                 <button @click="setTab('long')">Detailed</button>
@@ -132,11 +127,7 @@
                   >
                     Create Note
                   </button>
-                  <button
-                    class="flashnote-clear-button"
-                    v-if="userExists"
-                    @click="clearInput"
-                  >
+                  <button class="flashnote-clear-button" @click="clearInput">
                     Clear
                   </button>
                 </div>
@@ -223,7 +214,6 @@ export default {
       isListening: false,
       tempText: "",
       isNewFolder: false,
-
     };
   },
 
@@ -262,23 +252,77 @@ export default {
             },
             {
               element: ".flashnote-note-input",
-              intro: "Here you can input or upload your lecture notes.",
+              intro:
+                "This is where you can input or upload your lecture notes.",
+              position: "right",
+            },
+            {
+              element: ".choose-file-input",
+              intro:
+                "Click here to choose a PDF file to upload. The file must be a PDF.",
+              position: "right",
+            },
+            {
+              element: ".flashnote-upload-pdf",
+              intro:
+                "After selecting your PDF, click this button to upload and add the content to the input section.",
               position: "right",
             },
             {
               element: ".flashnote-tabs",
-              intro: "Choose the type of summary you want to generate here.",
+              intro: `
+                Choose the type of summary you'd like to generate:\n
+                - [Detailed]: More detailed and comprehensive.\n
+                - [Concise]: Balanced between detail and brevity.\n
+                - [Bullet-Point]: Concise, with only the most important points.\n
+                - [Flashcards]: Ideal for quick review and studying.
+                `,
               position: "bottom",
             },
             {
-              element: ".flashnote-save-note",
-              intro: "Once done, you can save your generated notes.",
+              element: ".flashnote-create-note",
+              intro:
+                "Once you've entered your content, click here to generate notes according to your selected summary style.",
               position: "left",
+            },
+            {
+              element: ".flashnote-note-output",
+              intro: "Here is where your generated notes will appear:",
+              position: "left",
+            },
+            {
+              element: ".flashnote-clear-button",
+              intro: "Use this button to clear the input or output areas.",
+              position: "left",
+            },
+            {
+              element: ".flashnote-copy-button",
+              intro:
+                "Click here to copy the generated output to your clipboard.",
+              position: "left",
+            },
+            {
+              element: ".flashnote-save-note",
+              intro:
+                "Save your created notes into a selected or newly created folder by clicking here.",
+              position: "left",
+            },
+            {
+              element: "#folderSelect",
+              intro:
+                "Select an existing folder to save your notes or create a new folder.",
+              position: "right",
+            },
+            {
+              element: ".flashnote-navbar",
+              intro:
+                "Navigate through the app using the navbar: Home, Profile, Help (for further assistence), or Sign Out.",
+              position: "bottom",
             },
             {
               element: ".sidebar",
               intro:
-                "This is where you can navigate between different folders and saved notes.",
+                "This is where you can navigate between different folders. Once you click on a folder, it will take you to the folder page, where you can view all notes and flashcards saved within that folder.",
               position: "right",
             },
           ],
@@ -387,7 +431,6 @@ export default {
       console.log(user);
     },
 
-
     // Set the active tab for generating different types of notes
     setTab(tab) {
       this.selectedTab = tab;
@@ -452,19 +495,13 @@ export default {
         }
       } catch (error) {
         console.error("Error creating note:", error);
-        if (
-          (error.response && error.response.status === 431) ||
-          (error.response && error.response.status === 500)
-        ) {
-          Swal.fire({
-            icon: "error",
-            title: "Input Size Too Big",
-            text: "The input size is too big. Please reduce the size of your input and try again.",
-            confirmButtonText: "OK",
-          });
-        } else {
-          this.outputText = "An error occurred while generating the note.";
-        }
+        this.outputText = "Error creating note. Please try again.";
+        Swal.fire({
+          icon: "error",
+          title: "Input Size Too Big",
+          text: "The input size is too big. Please reduce the size of your input and try again.",
+          confirmButtonText: "OK",
+        });
       } finally {
         this.isLoading = false;
       }
@@ -492,7 +529,6 @@ export default {
     async handleFolderChange() {
       // Toggle the visibility of the new folder input based on selection
       this.isNewFolder = this.selectedFolder === "new";
-
     },
     async clearOutput() {
       this.outputText = "";
