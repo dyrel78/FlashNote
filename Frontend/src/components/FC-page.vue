@@ -149,10 +149,13 @@ export default {
     this.sideBarMethods();
     this.checkMediaQuery();
     window.addEventListener('resize', this.checkMediaQuery);
+    window.addEventListener('keydown', this.handleKeyDown);
     // this.updateCardDisplay();
 
   },beforeUnmount() {
 window.removeEventListener('resize', this.checkMediaQuery);
+window.removeEventListener('keydown', this.handleKeyDown);
+
 },
   methods: {
     // async fetchFlashcards() {
@@ -176,6 +179,22 @@ window.removeEventListener('resize', this.checkMediaQuery);
     //     console.error("Error fetching notes:", error);
     //   }
     // },
+    handleKeyDown(event) {
+      switch(event.key) {
+        case 'ArrowLeft':
+          this.previousCard();
+          break;
+        case 'ArrowRight':
+          this.nextCard();
+          break;
+        case ' ': // Space key
+          event.preventDefault(); // Prevent scrolling
+          this.flipCard(this.currentCard);
+          break;
+      }
+    },
+
+
     toggleNotesListPane() {
 this.isNotesListVisible = !this.isNotesListVisible;
 },
