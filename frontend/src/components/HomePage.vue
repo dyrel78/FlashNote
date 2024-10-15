@@ -45,16 +45,16 @@
               <div v-if="userExists">
                 <h2>Welcome, {{ userObject.first_name }}!</h2>
               </div>
-              <h2>Advanced AI Note Creation</h2>
+              <h2>FlashNote - Advanced AI Note Creation</h2>
 
-              <p>
-                Welcome to FlashNote! Easily create concise notes from your
-                lecture slides.
-              </p>
+              <p>Easily create concise notes from your lecture slides.</p>
+              <div class="space"></div>
+              <h3>Choose your preferred note format:</h3>
+              <div class="space"></div>
               <div class="flashnote-tabs">
-                <button @click="setTab('long')">Long</button>
-                <button @click="setTab('medium')">Medium</button>
-                <button @click="setTab('short')">Short</button>
+                <button @click="setTab('long')">Detailed</button>
+                <button @click="setTab('medium')">Concise</button>
+                <button @click="setTab('short')">Bullet-Points</button>
                 <button @click="setTab('flashcards')">Flashcards</button>
               </div>
               <div
@@ -131,13 +131,15 @@
                       />
                     </div>
                   </div>
-                  <button
-                    id="startButton"
-                    class="flashnote-clear-button"
-                    @click="startVoiceInput"
-                  >
-                    Start Voice Input
-                  </button>
+                  <!--
+<button
+  id="startButton"
+  class="flashnote-clear-button"
+  @click="startVoiceInput"
+>
+  Start Voice Input
+</button>
+-->
                   <button
                     class="flashnote-create-note"
                     @click="createNote"
@@ -146,11 +148,7 @@
                   >
                     Create Note
                   </button>
-                  <button
-                    class="flashnote-clear-button"
-                    v-if="userExists"
-                    @click="clearInput"
-                  >
+                  <button class="flashnote-clear-button" @click="clearInput">
                     Clear
                   </button>
                 </div>
@@ -207,6 +205,9 @@ import Swal from "sweetalert2";
 import FlashnoteNavbar from "./Navbar.vue";
 import FormatNoteText from "../markdownScript.js";
 import FormatFlashcards from "../flashcardScript.js";
+import introJs from "intro.js";
+import "intro.js/introjs.css";
+
 export default {
   name: "HomePage",
   components: {
@@ -233,6 +234,7 @@ export default {
       recognition: null, // To hold the SpeechRecognition instance
       isListening: false,
       tempText: "",
+      isNewFolder: false,
     };
   },
 
@@ -242,48 +244,117 @@ export default {
     this.created();
     this.fetchFolders();
     this.sideBarMethods();
+    // Check if user is logging in for the first time
+    if (this.userExists && !localStorage.getItem("tourCompleted")) {
+      // Show welcome alert using SweetAlert
+      Swal.fire({
+        title: "Welcome!",
+        text: "Thanks for signing in. Would you like to take a quick tour?",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonText: "Start Tour",
+        cancelButtonText: "Skip",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.startTour(); // Trigger the walkthrough after clicking OK
+        }
+        localStorage.setItem("tourCompleted", "true"); // Set flag in localStorage
+      });
+    }
   },
   methods: {
-  //  async test1(){
-  //     try {
+    startTour() {
+      introJs()
+        .setOptions({
+          steps: [
+            {
+              intro:
+                "Welcome to FlashNote! Let's walk you through the features.",
+            },
+            {
+              element: ".flashnote-note-input",
+              intro:
+                "This is where you can input or upload your lecture notes.",
+              position: "right",
+            },
+            {
+              element: ".choose-file-input",
+              intro:
+                "Click here to choose a PDF file to upload. The file must be a PDF.",
+              position: "right",
+            },
+            {
+              element: ".flashnote-upload-pdf",
+              intro:
+                "After selecting your PDF, click this button to upload and add the content to the input section.",
+              position: "right",
+            },
+            {
+              element: ".flashnote-tabs",
+              intro: `
+                Choose the type of summary you'd like to generate:\n
+                - [Detailed]: More detailed and comprehensive.\n
+                - [Concise]: Balanced between detail and brevity.\n
+                - [Bullet-Point]: Concise, with only the most important points.\n
+                - [Flashcards]: Ideal for quick review and studying.
+                `,
+              position: "bottom",
+            },
+            {
+              element: ".flashnote-create-note",
+              intro:
+                "Once you've entered your content, click here to generate notes according to your selected summary style.",
+              position: "left",
+            },
+            {
+              element: ".flashnote-note-output",
+              intro: "Here is where your generated notes will appear:",
+              position: "left",
+            },
+            {
+              element: ".flashnote-clear-button",
+              intro: "Use this button to clear the input or output areas.",
+              position: "left",
+            },
+            {
+              element: ".flashnote-copy-button",
+              intro:
+                "Click here to copy the generated output to your clipboard.",
+              position: "left",
+            },
+            {
+              element: ".flashnote-save-note",
+              intro:
+                "Save your created notes into a selected or newly created folder by clicking here.",
+              position: "left",
+            },
+            {
+              element: "#folderSelect",
+              intro:
+                "Select an existing folder to save your notes or create a new folder.",
+              position: "right",
+            },
+            {
+              element: ".flashnote-navbar",
+              intro:
+                "Navigate through the app using the navbar: Home, Profile, Help (for further assistence), or Sign Out.",
+              position: "bottom",
+            },
+            {
+              element: ".sidebar",
+              intro:
+                "This is where you can navigate between different folders. Once you click on a folder, it will take you to the folder page, where you can view all notes and flashcards saved within that folder.",
+              position: "right",
+            },
+          ],
+          showStepNumbers: true,
+          exitOnOverlayClick: true,
+          showBullets: false,
+          disableInteraction: true,
+        })
+        .start();
+    },
 
-  //       const response = await axios.get("http://3.217.34.111:8080/api/llm/test", {
-  //       });
-
-  //       // this.outputText = FormatNoteText(response.data);
-  //       this.outputText = response.data;
-  
-  //     } catch (error) {
-  //       console.error("Error creating note:", error);
-  //       this.outputText = "An error occurred while generating the note.";
-  //     } 
-  //   },
-  //  async test2(){
-  //     try{
-  //     const response = await axios.get("http://ec2-3-217-34-111.compute-1.amazonaws.com:8080/api/llm/test", {
-  //       });
-
-  //       // this.outputText = FormatNoteText(response.data);
-  //       this.outputText = response.data;
-  
-  //     } catch (error) {
-  //       console.error("Error creating note:", error);
-  //       this.outputText = "An error occurred while generating the note.";
-  //     } 
-  //   },
-  //  async test3(){
-  //   try{
-  //     const response = await axios.get("http://3.217.34.111:8080/api/llm/test", {
-  //       });
-
-  //       // this.outputText = FormatNoteText(response.data);
-  //       this.outputText = response.data;
-  
-  //     } catch (error) {
-  //       console.error("Error creating note:", error);
-  //       this.outputText = "An error occurred while generating the note.";
-  //     } 
-  //   },
     startVoiceInput() {
       const SpeechRecognition =
         window.SpeechRecognition ||
@@ -381,21 +452,6 @@ export default {
       console.log(user);
     },
 
-    // Placeholder for adding a new folder to the database
-    addFolder() {
-      const newId = this.notes.length + 1;
-      const newNote = {
-        id: newId,
-        title: `New Folder ${newId}`,
-        date: new Date().toLocaleDateString(),
-      };
-
-      // Placeholder for database interaction - this would be an API call
-      console.log("Creating new folder in the database:", newNote);
-
-      this.notes.push(newNote);
-    },
-
     // Set the active tab for generating different types of notes
     setTab(tab) {
       this.selectedTab = tab;
@@ -447,7 +503,6 @@ export default {
         });
 
         this.outputText = FormatNoteText(response.data);
-        // this.outputText = response.data;
         if (this.selectedTab === "flashcards") {
           this.flashCardObjects = FormatFlashcards(this.outputText);
           this.outputText = "";
@@ -461,7 +516,13 @@ export default {
         }
       } catch (error) {
         console.error("Error creating note:", error);
-        this.outputText = "An error occurred while generating the note.";
+        this.outputText = "Error creating note. Please try again.";
+        Swal.fire({
+          icon: "error",
+          title: "Input Size Too Big",
+          text: "The input size is too big. Please reduce the size of your input and try again.",
+          confirmButtonText: "OK",
+        });
       } finally {
         this.isLoading = false;
       }
@@ -494,7 +555,12 @@ export default {
       this.outputText = "";
     },
     async clearInput() {
-      this.inputText = "";
+      this.inputText = ""; // Clear the input text
+      this.selectedFile = null; // Clear the selected file
+      const fileInput = document.getElementById("inpfile");
+      if (fileInput) {
+        fileInput.value = ""; // Reset the file input value
+      }
     },
 
     async saveNote() {
@@ -507,6 +573,9 @@ export default {
           folderName = this.newFolderName;
           if (!this.folders.includes(folderName)) {
             this.folders.push(folderName);
+            this.isNewFolder = false; // Reset the new folder input
+            this.selectedFolder = folderName; // Select the new folder
+            this.newFolderName = ""; // Clear the new folder name
           }
         }
 
@@ -559,26 +628,25 @@ export default {
               // Skip flashcards with invalid questions
               continue;
             }
-    console.log(flashCard.question);
-    console.log(flashCard.answer);
+            console.log(flashCard.question);
+            console.log(flashCard.answer);
             let formatedNoteName = flashCard.question;
-      
-              // formatedNoteName = formatedNoteName.substring(
-              //   "<strong>Question:</strong>".length);
-              const questionRegex = /^<strong>Question:<\/strong>\s*/;
 
-             // Regex pattern to remove "<strong>Answer:</strong>" from the beginning of the string
-              const answerRegex = /^<strong>Answer:<\/strong>\s*/;
-                formatedNoteName = formatedNoteName.replace(questionRegex, "");
-                formatedNoteName = formatedNoteName.replace(answerRegex, "");
+            // formatedNoteName = formatedNoteName.substring(
+            //   "<strong>Question:</strong>".length);
+            const questionRegex = /^<strong>Question:<\/strong>\s*/;
 
-                let flashCardAnswer = flashCard.answer;
-                let flashCardQuestion = flashCard.question;
+            // Regex pattern to remove "<strong>Answer:</strong>" from the beginning of the string
+            const answerRegex = /^<strong>Answer:<\/strong>\s*/;
+            formatedNoteName = formatedNoteName.replace(questionRegex, "");
+            formatedNoteName = formatedNoteName.replace(answerRegex, "");
 
-                // Regex pattern to remove "<strong>Answer:</strong>" from the beginning of the string
-                flashCardAnswer = flashCardAnswer.replace(answerRegex, "");
-                flashCardQuestion = flashCardQuestion.replace(questionRegex, "");
+            let flashCardAnswer = flashCard.answer;
+            let flashCardQuestion = flashCard.question;
 
+            // Regex pattern to remove "<strong>Answer:</strong>" from the beginning of the string
+            flashCardAnswer = flashCardAnswer.replace(answerRegex, "");
+            flashCardQuestion = flashCardQuestion.replace(questionRegex, "");
 
             const newFlashcard = {
               // note_name: `${noteName}_${counter}`, // Append counter to note_name

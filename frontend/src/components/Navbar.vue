@@ -3,13 +3,13 @@
     <ul>
       <li><a href="/home">Home</a></li>
       <li v-if="userExists">
-        <a href="/flashcards">Flashcards</a>
-      </li>
-      <li v-if="userExists">
         <a href="/profile">Profile</a>
       </li>
       <li v-else>
         <a href="/create-account">Create Account</a>
+      </li>
+      <li>
+        <a href="/help">Help Page</a>
       </li>
       <li v-if="userExists">
         <a @click="handleSignInOut">Sign Out</a>

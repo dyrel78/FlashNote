@@ -1,16 +1,16 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import HomePage from './components/HomePage.vue'
-import CreateAccount from './components/CreateAccount.vue'
-import SignIn from './components/SignIn.vue'
-import ViewNotesPreview from './components/ViewNotesPreview.vue'
-import Profile from './components/Profile.vue'
-import NotFoundPage from './components/404.vue'
-import FolderPage from './components/FolderPage.vue';  // Import FolderPage component
-import FCPage from './components/FC-page.vue';  
-import Flashcards from './components/Flashcards.vue' // Import Flashcards component
-import { createRouter, createWebHistory } from 'vue-router'
-
+import { createApp } from "vue";
+import App from "./App.vue";
+import HomePage from "./components/HomePage.vue";
+import CreateAccount from "./components/CreateAccount.vue";
+import SignIn from "./components/SignIn.vue";
+import ViewNotesPreview from "./components/ViewNotesPreview.vue";
+import Profile from "./components/Profile.vue";
+import NotFoundPage from "./components/404.vue";
+import FolderPage from "./components/FolderPage.vue"; // Import FolderPage component
+import FCPage from "./components/FC-page.vue";
+import Flashcards from "./components/Flashcards.vue"; // Import Flashcards component
+import { createRouter, createWebHistory } from "vue-router";
+import helpPage from "./components/help.vue";
 // import "/css/flashnote-styles.css"
 // import "./assets/flashnote-styles.css"
 // import "./assets/noteable-styles.css"
@@ -19,42 +19,38 @@ import { createRouter, createWebHistory } from 'vue-router'
 // import "./assets/zara-style.css"
 
 const routes = [
-    {path: '/', component: HomePage},
-    { path: '/home', component: HomePage },
-    { path: '/create-account', component: CreateAccount },
-    {path:'/sign-in', component: SignIn},
-    {path : '/view-notes-preview', component: ViewNotesPreview},
-    {
-        path: '/view-notes-preview/:id?',
-        name: 'ViewNotesPreview',
-        component: ViewNotesPreview,
-        props: true
-    },
-    {path: '/profile', component: Profile},//,
-    { path: '/flashcards', component: Flashcards }, 
+  { path: "/", component: HomePage },
+  { path: "/home", component: HomePage },
+  { path: "/create-account", component: CreateAccount },
+  { path: "/help", component: helpPage },
+  { path: "/sign-in", component: SignIn },
+  { path: "/view-notes-preview", component: ViewNotesPreview },
+  {
+    path: "/view-notes-preview/:id?",
+    name: "ViewNotesPreview",
+    component: ViewNotesPreview,
+    props: true,
+  },
+  { path: "/profile", component: Profile }, //,
+  { path: "/flashcards", component: Flashcards },
 
-  
-    {path: '/folder/:id',  // Add the route for FolderPage with dynamic folder ID
-    name: 'FolderPage',
+  {
+    path: "/folder/:id", // Add the route for FolderPage with dynamic folder ID
+    name: "FolderPage",
     component: FolderPage,
-    props: true},
-    
-    {path: '/fc-page/:id',
-    name: 'FCPage',
-    component: FCPage,
-    props: true
-    },
+    props: true,
+  },
 
-    { path: '/:pathMatch(.*)*', component: NotFoundPage }
+  { path: "/fc-page/:id", name: "FCPage", component: FCPage, props: true },
+
+  { path: "/:pathMatch(.*)*", component: NotFoundPage },
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes
+  history: createWebHistory(),
+  routes,
 });
-const app = createApp(App)
-app.use(router)
-app.mount('#app')
+const app = createApp(App);
+app.use(router);
+app.mount("#app");
 // createApp(App).mount('#app')
-
-

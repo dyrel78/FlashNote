@@ -1,108 +1,95 @@
 <template>
-  <!--body id="view-notes-preview"-->
-  <div id="app">
-    <!-- Sidebar -->
-    <div class="container">
-      <div class="sidebar">
-        <div class="top">
-          <div class="logo">
-            <i class="bx bx-edit"></i>
-            <span>All Notes</span>
+  <body id="view-notes-preview">
+    <div id="app">
+      <!-- Sidebar -->
+      <div class="container">
+        <div class="sidebar">
+          <div class="top">
+            <div class="logo">
+              <i class="bx bx-edit"></i>
+              <span>All Notes</span>
+            </div>
+            <i class="bx bx-menu" id="btn"></i>
           </div>
-          <i class="bx bx-menu" id="btn"></i>
+
+          <ul>
+            <li v-for="folder in folders" :key="folder">
+              <router-link :to="{ name: 'FolderPage', params: { id: folder } }">
+                <i class="bx bx-folder"></i>
+                <span class="nav-item">{{ folder }}</span>
+              </router-link>
+              <span class="tooltip">{{ folder }}</span>
+            </li>
+          </ul>
         </div>
 
-        <ul>
-          <li v-for="folder in folders" :key="folder">
-            <router-link :to="{ name: 'FolderPage', params: { id: folder } }">
-              <i class="bx bx-folder"></i>
-              <span class="nav-item">{{ folder }}</span>
-            </router-link>
-            <span class="tooltip">{{ folder }}</span>
-          </li>
-        </ul>
-      </div>
-    </div>
+        <div class="flashnote-container main-content">
+          <!-- Navbar -->
+          <FlashnoteNavbar
+            :userExists="userExists"
+            :userObject="userObject"
+            @update:userExists="userExists = $event"
+            @update:userObject="userObject = $event"
+          />
 
-    <div class="flashnote-container main-content">
-      <!-- Navbar -->
-      <FlashnoteNavbar
-        :userExists="userExists"
-        :userObject="userObject"
-        @update:userExists="userExists = $event"
-        @update:userObject="userObject = $event"
-      />
+          <!-- Main content -->
+          <div class="flashnote-main-content">
+            <!-- Expanded Note Output -->
+            <div class="flashnote-right-column">
+              <div class="flashnote-note-area">
+                <h1>View Notes Preview</h1>
+                <!-- Page title added -->
+                <p>Your expanded notes are shown below.</p>
 
-      <!-- Main content -->
-      <div class="flashnote-main-content">
-        <!-- Right Column for Expanded Note Output -->
-        <div class="flashnote-right-column">
-          <div class="flashnote-note-area">
-            <h1>View Notes Preview</h1>
-            <!-- Page title added -->
-            <p>Your expanded notes are shown below.</p>
-
-            <div id="flashnote-content" class="flashnote-content">
-
-              <div id="flashnote-note-output" class="flashnote-note-output">
-                <div
-                  style="
-                    white-space: pre-wrap;
-                    word-wrap: break-word;
-                    max-width: 100%;
-                    overflow-x: auto;
+                <div id="flashnote-content" class="flashnote-content">
+                  <div 
+                  style= 
                   "
-                >
-                  <pre
-                    contenteditable="true"
-                    @input="updateOutputText"
-                    v-html="outputText"
-                    class="preformatted"
-                  ></pre> 
-                  <div class="preformatted" id="editor">
-                    <!-- <h3>{{  outputText }}</h3> -->
+                  width: calc(100% - 40rem);
+                  "
+                  class = "editor-container">
+                    <div style="
+                        white-space: normal;
+                        word-wrap: break-word;
+                        max-width: 100%;
+                        overflow-x: auto;
+                      " id="editor">
+                      </div>
+                    </div>
 
-                  </div>
-                  </div>
+                  <div class="flashnote-button-group">
+                    <!--Copy Button-->
+                    <button class="flashnote-copy-button" @click="copyText">
+                      Copy
+                    </button>
 
-                  <!-- <p>{{ outputText }}</p> -->
+                    <!--Save Button-->
+                    <button
+                      v-if="userExists"
+                      class="flashnote-save-note"
+                      @click="updateNote"
+                    >
+                      Save
+                    </button>
+
+                    <!--Delete Button-->
+                    <button
+                      v-if="userExists"
+                      class="flashnote-delete-note"
+                      @click="deleteNote"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
 
-
-
-              <div class="flashnote-button-group">
-                <!--Copy Button-->
-                <button class="flashnote-copy-button" @click="copyText">
-                  Copy
-                </button>
-
-                <!--Save Button-->
-                <button
-                  v-if="userExists"
-                  class="flashnote-save-note"
-                  @click="updateNote"
-                >
-                  Save
-                </button>
-
-                <!--Delete Button-->
-                <button
-                  v-if="userExists"
-                  class="flashnote-delete-note"
-                  @click="deleteNote"
-                >
-                  Delete
-                </button>
               </div>
             </div>
           </div>
-          
-
         </div>
       </div>
     </div>
-  </div>
-
+  </body>
 </template>
 
 <script>
@@ -110,7 +97,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Quill from "quill";
 // const { Delta } = Quill.import('delta');
-import Delta from 'quill-delta'; 
+// import Delta from "quill-delta";
 
 import FlashnoteNavbar from "./Navbar.vue";
 // import { get } from "core-js/core/dict";
@@ -120,7 +107,7 @@ export default {
   components: {
     FlashnoteNavbar, // Make sure the Navbar is registered
   },
-  
+
   props: ["id"],
   watch: {
     id: {
@@ -129,11 +116,21 @@ export default {
         {
           if (newId) {
             this.fetchNote(newId);
-            console.log('note id is '+newId);
+            console.log("note id is " + newId);
           }
         }
       },
     },
+      outputText: {
+    handler(newOutputText) {
+      // Update the Quill editor when outputText changes
+      if (this.quill && newOutputText) {
+        this.quill.setContents([]); // Clear the existing content
+        this.quill.clipboard.dangerouslyPasteHTML(0, newOutputText); // Paste the updated content
+      }
+    },
+    immediate: false // Update immediately if outputText is already available
+  }
   },
   data() {
     return {
@@ -159,58 +156,73 @@ export default {
     this.sideBarMethods();
     this.setQuillContent();
     this.initQuillEditor();
-
-
   },
 
   methods: {
     initQuillEditor() {
-      this.quill = new Quill('#editor', {
-        theme: 'snow',
-        modules: {
-          toolbar: [
-            ['bold', 'italic', 'underline', 'strike'],
-            ['blockquote', 'code-block'],
-            [{ 'header': 1 }, { 'header': 2 }],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-            [{ 'script': 'sub'}, { 'script': 'super' }],
-            [{ 'indent': '-1'}, { 'indent': '+1' }],
-            [{ 'direction': 'rtl' }],
-            [{ 'size': ['small', false, 'large', 'huge'] }],
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-            [{ 'color': [] }, { 'background': [] }],
-            [{ 'font': [] }],
-            [{ 'align': [] }],
-            ['clean']
-          ]
-        }
-      });
-      this.setQuillContent();
-    },
-    setQuillContent() {
-      // if (this.quill && this.outputText) {
-      //   this.quill.setText(''); // Clear existing content
-      //   this.quill.clipboard.dangerouslyPasteHTML(0, this.outputText);
-      // }
+    this.quill = new Quill("#editor", {
+      theme: "snow",
+      modules: {
+        toolbar: [
+          ["bold", "italic", "underline", "strike"],
+          ["blockquote", "code-block"],
+          [{ header: 1 }, { header: 2 }],
+          [{ list: "ordered" }, { list: "bullet" }],
+          [{ script: "sub" }, { script: "super" }],
+          [{ indent: "-1" }, { indent: "+1" }],
+          [{ direction: "rtl" }],
+          [{ size: ["small", false, "large", "huge"] }],
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          [{ color: [] }, { background: [] }],
+          [{ font: [] }],
+          [{ align: [] }],
+          ["clean"],
+        ],
+      },
+    });
 
-      if (this.quill && this.outputText) {
-        this.quill.setText(''); // Clear existing content
-        const lines = this.outputText.split('\n');
-        const delta = lines.reduce((delta, line, index) => {
-          if (index > 0) {
-            delta.insert('\n');
-          }
-          return delta.insert(line);
-        }, new Delta());
-        this.quill.updateContents(delta);
-      }
-    },
+    // Set the initial Quill content if outputText is already available
+    this.setQuillContent();
+
+    // Listen for changes in Quill editor
+    this.quill.on("text-change", () => {
+      // Update outputText with Quill editor's content
+      this.outputText = this.quill.root.innerHTML;
+    });
+  },
+    // setQuillContent() {
+    //   // if (this.quill && this.outputText) {
+    //   //   this.quill.setText(''); // Clear existing content
+    //   //   this.quill.clipboard.dangerouslyPasteHTML(0, this.outputText);
+    //   // }
+
+    //   if (this.quill && this.outputText) {
+    //     this.quill.setText(""); // Clear existing content
+    //     const lines = this.outputText.split("\n");
+    //     const delta = lines.reduce((delta, line, index) => {
+    //       if (index > 0) {
+    //         delta.insert("\n");
+    //       }
+    //       return delta.insert(line);
+    //     }, new Delta());
+    //     this.quill.updateContents(delta);
+    //   }
+    // },
+    setQuillContent() {
+    // if (this.quill && this.outputText) {
+    //   // this.quill.root.innerHTML = this.outputText; // Set content in Quill editor
+    //   this.quill.setContents([]); // Clear existing content
+    //   this.quill.clipboard.dangerouslyPasteHTML(0, this.outputText);
+
+    // }
+  },
+
+
     updateOutputText(event) {
       this.outputText = event.target.innerHTML;
-      this.outputText = this.quill.root.innerHTML;
-
+      // this.outputText = this.quill.root.innerHTML;
     },
-  
+
     // Copy functionality
     copyText() {
       const textToCopy = this.outputText; // Grab the note content to copy
@@ -391,4 +403,9 @@ export default {
 @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
 
 @import url("https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css");
+
+.ql-editor {
+  /* padding: 12px 0; */
+  font-size: 18px;
+}
 </style>
