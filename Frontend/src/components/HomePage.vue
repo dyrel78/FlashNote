@@ -45,16 +45,21 @@
               <div v-if="userExists">
                 <h2>Welcome, {{ userObject.first_name }}!</h2>
               </div>
-              <h2>Advanced AI Note Creation</h2>
+              <h2>FlashNote - Advanced AI Note Creation</h2>
 
               <p>
-                Welcome to FlashNote! Easily create concise notes from your
+                Easily create concise notes from your
                 lecture slides.
               </p>
+              <div class="space"></div>
+              <h3>
+                Choose your preferred note format:
+              </h3>
+              <div class="space"></div>
               <div class="flashnote-tabs">
-                <button @click="setTab('long')">Long</button>
-                <button @click="setTab('medium')">Medium</button>
-                <button @click="setTab('short')">Short</button>
+                <button @click="setTab('long')">Detailed</button>
+                <button @click="setTab('medium')">Concise</button>
+                <button @click="setTab('short')">Bullet-Points</button>
                 <button @click="setTab('flashcards')">Flashcards</button>
               </div>
               <div
@@ -110,13 +115,15 @@
                       />
                     </div>
                   </div>
-                  <button
-                    id="startButton"
-                    class="flashnote-clear-button"
-                    @click="startVoiceInput"
-                  >
-                    Start Voice Input
-                  </button>
+                  <!--
+<button
+  id="startButton"
+  class="flashnote-clear-button"
+  @click="startVoiceInput"
+>
+  Start Voice Input
+</button>
+-->
                   <button
                     class="flashnote-create-note"
                     @click="createNote"
@@ -444,7 +451,6 @@ export default {
         });
 
         this.outputText = FormatNoteText(response.data);
-        // this.outputText = response.data;
         if (this.selectedTab === "flashcards") {
           this.flashCardObjects = FormatFlashcards(this.outputText);
           this.outputText = "";
@@ -458,7 +464,19 @@ export default {
         }
       } catch (error) {
         console.error("Error creating note:", error);
-        this.outputText = "An error occurred while generating the note.";
+        if (
+          (error.response && error.response.status === 431) ||
+          (error.response && error.response.status === 500)
+        ) {
+          Swal.fire({
+            icon: "error",
+            title: "Input Size Too Big",
+            text: "The input size is too big. Please reduce the size of your input and try again.",
+            confirmButtonText: "OK",
+          });
+        } else {
+          this.outputText = "An error occurred while generating the note.";
+        }
       } finally {
         this.isLoading = false;
       }
@@ -491,7 +509,12 @@ export default {
       this.outputText = "";
     },
     async clearInput() {
-      this.inputText = "";
+      this.inputText = ""; // Clear the input text
+      this.selectedFile = null; // Clear the selected file
+      const fileInput = document.getElementById("inpfile");
+      if (fileInput) {
+        fileInput.value = ""; // Reset the file input value
+      }
     },
 
     async saveNote() {
