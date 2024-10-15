@@ -446,7 +446,12 @@ export default {
       this.outputText = "";
     },
     async clearInput() {
-      this.inputText = "";
+      this.inputText = ""; // Clear the input text
+      this.selectedFile = null; // Clear the selected file
+      const fileInput = document.getElementById("inpfile");
+      if (fileInput) {
+        fileInput.value = ""; // Reset the file input value
+      }
     },
 
     async saveNote() {
