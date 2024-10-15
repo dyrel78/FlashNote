@@ -110,13 +110,15 @@
                       />
                     </div>
                   </div>
-                  <button
-                    id="startButton"
-                    class="flashnote-clear-button"
-                    @click="startVoiceInput"
-                  >
-                    Start Voice Input
-                  </button>
+                  <!--
+<button
+  id="startButton"
+  class="flashnote-clear-button"
+  @click="startVoiceInput"
+>
+  Start Voice Input
+</button>
+-->
                   <button
                     class="flashnote-create-note"
                     @click="createNote"
@@ -386,7 +388,6 @@ export default {
         });
 
         this.outputText = FormatNoteText(response.data);
-        // this.outputText = response.data;
         if (this.selectedTab === "flashcards") {
           this.flashCardObjects = FormatFlashcards(this.outputText);
           this.outputText = "";
@@ -400,7 +401,19 @@ export default {
         }
       } catch (error) {
         console.error("Error creating note:", error);
-        this.outputText = "You have too many words in your input";
+        if (
+          (error.response && error.response.status === 431) ||
+          (error.response && error.response.status === 500)
+        ) {
+          Swal.fire({
+            icon: "error",
+            title: "Input Size Too Big",
+            text: "The input size is too big. Please reduce the size of your input and try again.",
+            confirmButtonText: "OK",
+          });
+        } else {
+          this.outputText = "An error occurred while generating the note.";
+        }
       } finally {
         this.isLoading = false;
       }
@@ -433,7 +446,12 @@ export default {
       this.outputText = "";
     },
     async clearInput() {
-      this.inputText = "";
+      this.inputText = ""; // Clear the input text
+      this.selectedFile = null; // Clear the selected file
+      const fileInput = document.getElementById("inpfile");
+      if (fileInput) {
+        fileInput.value = ""; // Reset the file input value
+      }
     },
 
     async saveNote() {
@@ -498,26 +516,25 @@ export default {
               // Skip flashcards with invalid questions
               continue;
             }
-    console.log(flashCard.question);
-    console.log(flashCard.answer);
+            console.log(flashCard.question);
+            console.log(flashCard.answer);
             let formatedNoteName = flashCard.question;
-      
-              // formatedNoteName = formatedNoteName.substring(
-              //   "<strong>Question:</strong>".length);
-              const questionRegex = /^<strong>Question:<\/strong>\s*/;
 
-             // Regex pattern to remove "<strong>Answer:</strong>" from the beginning of the string
-              const answerRegex = /^<strong>Answer:<\/strong>\s*/;
-                formatedNoteName = formatedNoteName.replace(questionRegex, "");
-                formatedNoteName = formatedNoteName.replace(answerRegex, "");
+            // formatedNoteName = formatedNoteName.substring(
+            //   "<strong>Question:</strong>".length);
+            const questionRegex = /^<strong>Question:<\/strong>\s*/;
 
-                let flashCardAnswer = flashCard.answer;
-                let flashCardQuestion = flashCard.question;
+            // Regex pattern to remove "<strong>Answer:</strong>" from the beginning of the string
+            const answerRegex = /^<strong>Answer:<\/strong>\s*/;
+            formatedNoteName = formatedNoteName.replace(questionRegex, "");
+            formatedNoteName = formatedNoteName.replace(answerRegex, "");
 
-                // Regex pattern to remove "<strong>Answer:</strong>" from the beginning of the string
-                flashCardAnswer = flashCardAnswer.replace(answerRegex, "");
-                flashCardQuestion = flashCardQuestion.replace(questionRegex, "");
+            let flashCardAnswer = flashCard.answer;
+            let flashCardQuestion = flashCard.question;
 
+            // Regex pattern to remove "<strong>Answer:</strong>" from the beginning of the string
+            flashCardAnswer = flashCardAnswer.replace(answerRegex, "");
+            flashCardQuestion = flashCardQuestion.replace(questionRegex, "");
 
             const newFlashcard = {
               // note_name: `${noteName}_${counter}`, // Append counter to note_name

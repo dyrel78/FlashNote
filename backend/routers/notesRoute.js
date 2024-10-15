@@ -210,4 +210,27 @@ router.get("/:userId/:flashcard_set_name", async (req, res) => {
 }
 );
 
+
+router.delete("/flashcards/set/:flashcard_set_name", async (req, res) => {
+  try {
+    const flashcardSetName = req.params.flashcard_set_name;
+
+    // Delete all flashcards with the given flashcard set name
+    const deletedFlashcards = await Note.deleteMany({
+      flashcard_set_name: flashcardSetName,
+      note_format: "flashcards"
+    });
+
+    if (deletedFlashcards.deletedCount === 0) {
+      return res.status(404).json({ error: "No flashcards found for the specified set" });
+    }
+
+    res.status(200).json({ message: "Flashcard set deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+
 export default router;
