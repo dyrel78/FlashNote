@@ -197,7 +197,7 @@ export default {
     },
     updateOutputText(event) {
       this.outputText = event.target.innerHTML;
-      this.outputText = this.quill.root.innerHTML;
+      // this.outputText = this.quill.root.innerHTML;
     },
 
     // Copy functionality
