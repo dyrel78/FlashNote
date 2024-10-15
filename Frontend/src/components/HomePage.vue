@@ -214,6 +214,8 @@ export default {
       recognition: null, // To hold the SpeechRecognition instance
       isListening: false,
       tempText: "",
+      isNewFolder: false,
+
     };
   },
 
@@ -322,20 +324,6 @@ export default {
       console.log(user);
     },
 
-    // Placeholder for adding a new folder to the database
-    addFolder() {
-      const newId = this.notes.length + 1;
-      const newNote = {
-        id: newId,
-        title: `New Folder ${newId}`,
-        date: new Date().toLocaleDateString(),
-      };
-
-      // Placeholder for database interaction - this would be an API call
-      console.log("Creating new folder in the database:", newNote);
-
-      this.notes.push(newNote);
-    },
 
     // Set the active tab for generating different types of notes
     setTab(tab) {
@@ -441,6 +429,7 @@ export default {
     async handleFolderChange() {
       // Toggle the visibility of the new folder input based on selection
       this.isNewFolder = this.selectedFolder === "new";
+
     },
     async clearOutput() {
       this.outputText = "";
@@ -464,6 +453,9 @@ export default {
           folderName = this.newFolderName;
           if (!this.folders.includes(folderName)) {
             this.folders.push(folderName);
+            this.isNewFolder = false; // Reset the new folder input
+            this.selectedFolder = folderName; // Select the new folder
+            this.newFolderName = ""; // Clear the new folder name
           }
         }
 

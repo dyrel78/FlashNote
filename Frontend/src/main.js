@@ -10,7 +10,7 @@ import FolderPage from './components/FolderPage.vue';  // Import FolderPage comp
 import FCPage from './components/FC-page.vue';  
 import Flashcards from './components/Flashcards.vue' // Import Flashcards component
 import { createRouter, createWebHistory } from 'vue-router'
-
+import helpPage from './components/help.vue'
 // import "/css/flashnote-styles.css"
 // import "./assets/flashnote-styles.css"
 // import "./assets/noteable-styles.css"
@@ -22,6 +22,7 @@ const routes = [
     {path: '/', component: HomePage},
     { path: '/home', component: HomePage },
     { path: '/create-account', component: CreateAccount },
+    {path: '/help', component: helpPage},
     {path:'/sign-in', component: SignIn},
     {path : '/view-notes-preview', component: ViewNotesPreview},
     {

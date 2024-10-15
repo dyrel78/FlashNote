@@ -8,6 +8,9 @@
       <li v-else>
         <a href="/create-account">Create Account</a>
       </li>
+      <li>
+        <a href="/help">Help Page</a>
+      </li>
       <li v-if="userExists">
         <a @click="handleSignInOut">Sign Out</a>
       </li>
