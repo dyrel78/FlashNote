@@ -45,16 +45,21 @@
               <div v-if="userExists">
                 <h2>Welcome, {{ userObject.first_name }}!</h2>
               </div>
-              <h2>Advanced AI Note Creation</h2>
+              <h2>FlashNote - Advanced AI Note Creation</h2>
 
               <p>
-                Welcome to FlashNote! Easily create concise notes from your
+                Easily create concise notes from your
                 lecture slides.
               </p>
+              <div class="space"></div>
+              <h3>
+                Choose your preferred note format:
+              </h3>
+              <div class="space"></div>
               <div class="flashnote-tabs">
-                <button @click="setTab('long')">Long</button>
-                <button @click="setTab('medium')">Medium</button>
-                <button @click="setTab('short')">Short</button>
+                <button @click="setTab('long')">Detailed</button>
+                <button @click="setTab('medium')">Concise</button>
+                <button @click="setTab('short')">Bullet-Points</button>
                 <button @click="setTab('flashcards')">Flashcards</button>
               </div>
               <div
@@ -188,6 +193,9 @@ import Swal from "sweetalert2";
 import FlashnoteNavbar from "./Navbar.vue";
 import FormatNoteText from "../markdownScript.js";
 import FormatFlashcards from "../flashcardScript.js";
+import introJs from "intro.js";
+import "intro.js/introjs.css";
+
 export default {
   name: "HomePage",
   components: {
@@ -225,8 +233,63 @@ export default {
     this.created();
     this.fetchFolders();
     this.sideBarMethods();
+    // Check if user is logging in for the first time
+    if (this.userExists && !localStorage.getItem("tourCompleted")) {
+      // Show welcome alert using SweetAlert
+      Swal.fire({
+        title: "Welcome!",
+        text: "Thanks for signing in. Would you like to take a quick tour?",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonText: "Start Tour",
+        cancelButtonText: "Skip",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.startTour(); // Trigger the walkthrough after clicking OK
+        }
+        localStorage.setItem("tourCompleted", "true"); // Set flag in localStorage
+      });
+    }
   },
   methods: {
+    startTour() {
+      introJs()
+        .setOptions({
+          steps: [
+            {
+              intro:
+                "Welcome to FlashNote! Let's walk you through the features.",
+            },
+            {
+              element: ".flashnote-note-input",
+              intro: "Here you can input or upload your lecture notes.",
+              position: "right",
+            },
+            {
+              element: ".flashnote-tabs",
+              intro: "Choose the type of summary you want to generate here.",
+              position: "bottom",
+            },
+            {
+              element: ".flashnote-save-note",
+              intro: "Once done, you can save your generated notes.",
+              position: "left",
+            },
+            {
+              element: ".sidebar",
+              intro:
+                "This is where you can navigate between different folders and saved notes.",
+              position: "right",
+            },
+          ],
+          showStepNumbers: true,
+          exitOnOverlayClick: true,
+          showBullets: false,
+          disableInteraction: true,
+        })
+        .start();
+    },
+
     startVoiceInput() {
       const SpeechRecognition =
         window.SpeechRecognition ||

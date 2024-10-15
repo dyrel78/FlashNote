@@ -2,499 +2,8 @@
 
 
 body, html {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #fffdf7; /* Background color from your palette */
-}
-
-.flashnote-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-}
-
-.flashnote-navbar {
-    background-color: #6798c0; /* Navbar background color */
-    color: white;
-    padding: 1rem;
-}
-
-.flashnote-navbar ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: space-around;
-}
-
-.flashnote-navbar ul li {
-    display: inline;
-}
-
-.flashnote-navbar ul li a {
-    color: white;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-}
-
-.flashnote-main-content {
-    display: flex;
-    flex: 1;
-}
-
-.flashnote-left-column {
-    width: 20%;
-    background-color: #99d6eb; /* Left column background color */
-    padding: 1rem;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.flashnote-folders h2 {
-    font-size: 1.5rem;
-    color: #6798c0; /* Text color for folder heading */
-}
-
-.flashnote-add-folder {
-    background-color: #6798c0; /* Button background color (dark blue) */
-    color: white;
-    border: none;
-    padding: 0.5rem;
-    margin: 1rem 0;
-    cursor: pointer;
-    width: 100%;
-    border-radius: 4px;
-}
-
-.flashnote-folders ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.flashnote-folders ul li {
-    padding: 0.5rem 0;
-    display: flex;
-    justify-content: space-between;
-    color: black; /* Class text color set to black */
-}
-
-.flashnote-folders ul li a {
-    text-decoration: none;
-    color: black; /* Link color set to black */
-}
-
-.flashnote-right-column {
-    flex: 1;
-    background-color: white;
-    padding: 2rem;
-    border-left: 1px solid #fdd85d; /* Light border to separate the columns */
-}
-
-.flashnote-note-area {
-    display: flex;
-    flex-direction: column;
-}
-
-.flashnote-tabs {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 1rem;
-}
-
-.flashnote-tabs button {
-    flex: 1;
-    padding: 0.5rem;
-    background-color: #fdd85d; /* Tabs background color (yellow) */
-    border: 1px solid #fdc920; /* Border color */
-    cursor: pointer;
-    color: #333;
-    border-radius: 4px;
-}
-
-.flashnote-tabs button:hover {
-    background-color: #fdc920; /* Hover effect on tabs */
-    color: white;
-}
-
-.flashnote-content {
-    display: flex;
-    justify-content: space-between;
-}
-
-.flashnote-note-input, .flashnote-note-output {
-    width: 48%;
-    margin-bottom: 1rem;
-    border: 0.5px solid #9c9393; /* Border color */
-    padding: 1rem;
-    background-color: #f0f0f0; /* Very light grey background for input/output areas */
-    border-radius: 4px;
-}
-
-.flashnote-note-input textarea {
-    width: 100%;
-    height: 200px;
-    border: none;
-    padding: 1rem;
-    resize: none;
-    background-color: #f0f0f0; /* Very light grey background color for textarea */
-    color: #333; /* Text color */
-    border-radius: 4px;
-}
-
-.flashnote-upload-pdf, .flashnote-create-note, .flashnote-save-note {
-    padding: 0.5rem 1rem;
-    background-color: #6798c0; /* Button background color (dark blue) */
-    color: white;
-    border: none;
-    cursor: pointer;
-    margin-top: 0.5rem;
-    margin-right: 0.5rem;
-    border-radius: 4px;
-}
-
-.flashnote-save-note {
-    align-self: flex-end;
-}
-
-.flashnote-upload-pdf:hover, .flashnote-create-note:hover, .flashnote-save-note:hover {
-    background-color: #5a7ba5; /* Hover effect for buttons, slightly darker blue */
-}
-
-
-/* BROOKE'S CSS*/
-
-h1 {
-  color: #6798C0;
-  text-align: center;
-  margin-top: 20px;
-}
-
-/* Form Container */
-form {
-  background-color: #f8f8f8;
-  padding: 20px;
-  margin: 50px auto;
-  max-width: 400px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Form Input Styles */
-form div {
-  margin-bottom: 15px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #333;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-  font-size: 16px;
-  background-color: #fffdf7;
-}
-
-/* Button Styles */
-button[type="submit"] {
-  width: 100%;
-  padding: 10px;
-  background-color: #FDC921;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button[type="submit"]:hover {
-  background-color: #FDD85D;
-}
-
-
-/* SIGN OUT CSS */
-
-/* Container for the sign-out message and button */
-.signout-container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    width: 100%;
-    text-align: center;
-}
-
-/* Styling for the heading */
-.signout-heading {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-}
-
-/* Styling for the sign-out message */
-.signout-message {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 30px;
-}
-
-/* Styling for the button */
-.signout-button {
-    padding: 10px 20px;
-    background-color: #333;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-
-/* SIGN IN PAGE */
-.noteable-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-  }
-  
-  .noteable-navbar {
-    background-color: #333;
-    color: white;
-    padding: 1rem;
-  }
-  
-  .noteable-navbar ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: space-around;
-  }
-  
-  .noteable-navbar ul li {
-    display: inline;
-  }
-  
-  .noteable-navbar ul li a {
-    color: white;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-  }
-  
-  .noteable-main-content {
-    display: flex;
-    flex: 1;
-  }
-  
-  .noteable-left-column {
-    width: 20%;
-    background-color: #e8e8e8;
-    padding: 1rem;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .noteable-folders h2 {
-    font-size: 1.5rem;
-  }
-  
-  .noteable-add-folder {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 0.5rem;
-    margin: 1rem 0;
-    cursor: pointer;
-    width: 100%;
-  }
-  
-  .noteable-folders ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .noteable-folders ul li {
-    padding: 0.5rem 0;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .noteable-folders ul li a {
-    text-decoration: none;
-    color: #333;
-  }
-  
-  .noteable-right-column {
-    flex: 1;
-    background-color: white;
-    padding: 2rem;
-  }
-  
-  .noteable-note-area {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .noteable-tabs {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 1rem;
-  }
-  
-  .noteable-tabs button {
-    flex: 1;
-    padding: 0.5rem;
-    background-color: #f8f8f8;
-    border: 1px solid #ccc;
-    cursor: pointer;
-  }
-  
-  .noteable-note-input,
-  .noteable-note-output {
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    padding: 1rem;
-    background-color: #f8f8f8;
-  }
-  
-  .noteable-note-input textarea {
-    width: 100%;
-    height: 100px;
-    border: none;
-    padding: 1rem;
-    resize: none;
-  }
-  
-  .noteable-upload-pdf,
-  .noteable-create-note,
-  .noteable-save-note {
-    padding: 0.5rem 1rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    margin-top: 0.5rem;
-    margin-right: 0.5rem;
-  }
-  
-  .noteable-save-note {
-    align-self: flex-end;
-  }
-
-  /* 404 CSS */
-
-  .not-found {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    text-align: center;
-    background-color: #FFFDF7; /* Light background color */
-  }
-  
-  .not-found h1 {
-    font-size: 6rem;
-    margin: 0;
-    color: #FDC921; /* Primary Yellow */
-  }
-  
-  .not-found p {
-    font-size: 1.5rem;
-    margin: 20px 0;
-    color: #6798C0; /* Accent blue for text */
-  }
-  
-  .go-home-btn {
-    background-color: #99D6EA; /* Button background */
-    color: #FFFDF7; /* Button text color */
-    border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .go-home-btn:hover {
-    background-color: #6798C0; /* Darker button color on hover */
-  }
-
-
-  /* NOTE PAGE */
-  .note-page {
-    margin: 20px;
-  }
-  
-  pre {
-    background-color: #f8f8f8;
-    padding: 10px;
-    white-space: pre-wrap;
-  }
-
-
-  /* VIEW NOTES PAGE */
-  
-  /* Add styles for the button group container */
-.flashnote-button-group {
-  display: flex;
-  justify-content: flex-start; /* Align buttons to the left (or use flex-end for right alignment) */
-  gap: 20px; /* Space between buttons */
-  margin-top: 1rem;
-}
-
-/* Style the buttons */
-button.flashnote-save-note,
-button.flashnote-copy-button,
-button.flashnote-delete-note {
-  background-color: #6798c0; /* Button background color */
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
-  width: 100px; /* Make all buttons the same width */
-  text-align: center; /* Center the text in the buttons */
-}
-
-/* Optional hover effect */
-button.flashnote-save-note:hover,
-button.flashnote-copy-button:hover,
-button.flashnote-delete-note:hover {
-  background-color: #5a7ba5; /* Darker blue on hover */
-}
-
-.preformatted {
-  white-space: pre-wrap; /* Preserves line breaks and wraps text */
-  word-wrap: break-word; /* Breaks long words to avoid overflow */
-  max-width: 100%; /* Ensures it doesn’t exceed the container width */
-  overflow-x: auto; /* Adds horizontal scroll if content overflows */
-}
-
-button {
-  background-color: #6798c0; /* Button background color (dark blue) */
-  color: white;
-  border: none;
-  cursor: pointer;
-  margin-top: 1rem;
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
-}
-
-body,
-html {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   font-family: Arial, sans-serif;
   background-color: #fffdf7; /* Background color from your palette */
 }
@@ -541,6 +50,39 @@ html {
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
+.flashnote-folders h2 {
+  font-size: 1.5rem;
+  color: #6798c0; /* Text color for folder heading */
+}
+
+.flashnote-add-folder {
+  background-color: #6798c0; /* Button background color (dark blue) */
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  margin: 1rem 0;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.flashnote-folders ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.flashnote-folders ul li {
+  padding: 0.5rem 0;
+  display: flex;
+  justify-content: space-between;
+  color: black; /* Class text color set to black */
+}
+
+.flashnote-folders ul li a {
+  text-decoration: none;
+  color: black; /* Link color set to black */
+}
+
 .flashnote-right-column {
   flex: 1;
   background-color: white;
@@ -553,199 +95,693 @@ html {
   flex-direction: column;
 }
 
-/* Updated .flashnote-note-output to make it scrollable */
-.flashnote-note-output {
+.space {
+  margin-bottom: 1rem; /* 100px converted to rem (assuming a base font size of 16px) */
+}
+
+.flashnote-tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+}
+
+.flashnote-tabs button {
+  flex: 1;
+  padding: 0.5rem;
+  background-color: #fdd85d; /* Tabs background color (yellow) */
+  border: 1px solid #fdc920; /* Border color */
+  cursor: pointer;
+  color: #333;
+  border-radius: 4px;
+  margin: 0 0.02rem; /* Add horizontal space between buttons */
+}
+
+.flashnote-tabs button:hover {
+  background-color: #fdc920; /* Hover effect on tabs */
+  color: white;
+}
+
+.flashnote-tabs button:focus {
+  background-color: #fdc920;
+  color: white;
+  outline: 1px solid black; /* Add a black outline when focused */
+}
+
+.flashnote-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flashnote-note-input, .flashnote-note-output {
+  height:70vh;
+  width: 48%;
   margin-bottom: 1rem;
   border: 0.5px solid #9c9393; /* Border color */
   padding: 1rem;
   background-color: #f0f0f0; /* Very light grey background for input/output areas */
   border-radius: 4px;
-  max-height: 300px; /* Maximum height for the scroll box */
-  overflow-y: scroll; /* Enables vertical scrolling */
-  overflow-x: hidden; /* Ensures no horizontal scroll */
 }
 
-/* Optional: Customize the scrollbar */
-.flashnote-note-output::-webkit-scrollbar {
-  width: 8px;
+.flashnote-note-input textarea {
+  width: 100%;
+  height: 50vh;
+  border: none;
+  padding: 1rem;
+  resize: none;
+  background-color: #f0f0f0; /* Very light grey background color for textarea */
+  color: #333; /* Text color */
+  border-radius: 4px;
 }
 
-.flashnote-note-output::-webkit-scrollbar-track {
-  background: #f1f1f1;
+/* When browser width is resized to be smaller than 1500px */
+@media (max-width: 1500px) {
+.flashnote-note-input textarea {
+    height: 55vh; /* Changes the height when the browser is resized below 500px */
+}
 }
 
-.flashnote-note-output::-webkit-scrollbar-thumb {
-  background-color: #6798c0; /* Blue scrollbar */
-  border-radius: 10px;
-  border: 2px solid #f1f1f1;
+/**
+.outputText {
+flex: 1; 
+display: flex;
+flex-direction: column; 
 }
 
-.flashnote-save-note {
+.preformatted {
+flex: 0 0 80%; 
+white-space: pre-wrap; 
+word-wrap: break-word; 
+overflow-y: auto; 
+background-color: #f8f8f8;
+padding: 10px;
+border-radius: 4px;
+margin-bottom: 1rem;
+}*/
+
+.flashnote-upload-pdf, .flashnote-create-note, .flashnote-save-note {
   padding: 0.5rem 1rem;
   background-color: #6798c0; /* Button background color (dark blue) */
   color: white;
   border: none;
   cursor: pointer;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
+  margin-right: 0.5rem;
   border-radius: 4px;
 }
 
-.flashnote-save-note:hover {
+.flashnote-save-note {
+  align-self: flex-end;
+}
+
+.flashnote-upload-pdf:hover, .flashnote-create-note:hover, .flashnote-save-note:hover {
   background-color: #5a7ba5; /* Hover effect for buttons, slightly darker blue */
+}
+
+
+/* BROOKE'S CSS*/
+
+h1 {
+color: #6798C0;
+text-align: center;
+margin-top: 20px;
+}
+
+/* Form Container */
+form {
+background-color: #f8f8f8;
+padding: 20px;
+margin: 50px auto;
+max-width: 400px;
+border-radius: 10px;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Input Styles */
+form div {
+margin-bottom: 15px;
+}
+
+label {
+display: block;
+margin-bottom: 5px;
+font-weight: bold;
+color: #333;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+width: 100%;
+padding: 10px;
+border: 1px solid #ccc;
+border-radius: 5px;
+box-sizing: border-box;
+font-size: 16px;
+background-color: #fffdf7;
+}
+
+/* Button Styles */
+button[type="submit"] {
+width: 100%;
+padding: 10px;
+background-color: #FDC921;
+border: none;
+border-radius: 5px;
+color: white;
+font-size: 16px;
+font-weight: bold;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+background-color: #FDD85D;
+}
+
+
+/* SIGN OUT CSS */
+
+/* Container for the sign-out message and button */
+.signout-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Styling for the heading */
+.signout-heading {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+/* Styling for the sign-out message */
+.signout-message {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+/* Styling for the button */
+.signout-button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+
+/* SIGN IN PAGE */
+.noteable-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.noteable-navbar {
+  background-color: #333;
+  color: white;
+  padding: 1rem;
+}
+
+.noteable-navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+.noteable-navbar ul li {
+  display: inline;
+}
+
+.noteable-navbar ul li a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+}
+
+.noteable-main-content {
+  display: flex;
+  flex: 1;
+}
+
+.noteable-left-column {
+  width: 20%;
+  background-color: #e8e8e8;
+  padding: 1rem;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.noteable-folders h2 {
+  font-size: 1.5rem;
+}
+
+.noteable-add-folder {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  margin: 1rem 0;
+  cursor: pointer;
+  width: 100%;
+}
+
+.noteable-folders ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.noteable-folders ul li {
+  padding: 0.5rem 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.noteable-folders ul li a {
+  text-decoration: none;
+  color: #333;
+}
+
+.noteable-right-column {
+  flex: 1;
+  background-color: white;
+  padding: 2rem;
+}
+
+.noteable-note-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.noteable-tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+}
+
+.noteable-tabs button {
+  flex: 1;
+  padding: 0.5rem;
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.noteable-note-input,
+.noteable-note-output {
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  background-color: #f8f8f8;
+}
+
+.noteable-note-input textarea {
+  width: 100%;
+  height: 100px;
+  border: none;
+  padding: 1rem;
+  resize: none;
+}
+
+.noteable-upload-pdf,
+.noteable-create-note,
+.noteable-save-note {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.noteable-save-note {
+  align-self: flex-end;
+}
+
+/* 404 CSS */
+
+.not-found {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  background-color: #FFFDF7; /* Light background color */
+}
+
+.not-found h1 {
+  font-size: 6rem;
+  margin: 0;
+  color: #FDC921; /* Primary Yellow */
+}
+
+.not-found p {
+  font-size: 1.5rem;
+  margin: 20px 0;
+  color: #6798C0; /* Accent blue for text */
+}
+
+.go-home-btn {
+  background-color: #99D6EA; /* Button background */
+  color: #FFFDF7; /* Button text color */
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.go-home-btn:hover {
+  background-color: #6798C0; /* Darker button color on hover */
+}
+
+
+/* NOTE PAGE */
+.note-page {
+  margin: 20px;
+}
+
+pre {
+  background-color: #f8f8f8;
+  padding: 10px;
+  white-space: pre-wrap;
+}
+
+
+/* VIEW NOTES PAGE */
+
+/* Add styles for the button group container */
+.flashnote-button-group {
+display: flex;
+justify-content: flex-start; /* Align buttons to the left (or use flex-end for right alignment) */
+gap: 20px; /* Space between buttons */
+margin-top: 1rem;
+}
+
+/* Style the buttons */
+button.flashnote-save-note,
+button.flashnote-copy-button,
+button.flashnote-delete-note {
+background-color: #6798c0; /* Button background color */
+color: white;
+border: none;
+cursor: pointer;
+border-radius: 4px;
+padding: 0.5rem 1rem;
+width: 100px; /* Make all buttons the same width */
+text-align: center; /* Center the text in the buttons */
+}
+
+/* Optional hover effect */
+button.flashnote-save-note:hover,
+button.flashnote-copy-button:hover,
+button.flashnote-delete-note:hover {
+background-color: #5a7ba5; /* Darker blue on hover */
+}
+
+.preformatted {
+white-space: pre-wrap; /* Preserves line breaks and wraps text */
+word-wrap: break-word; /* Breaks long words to avoid overflow */
+max-width: 100%; /* Ensures it doesn’t exceed the container width */
+overflow-x: auto; /* Adds horizontal scroll if content overflows */
+}
+
+button {
+background-color: #6798c0; /* Button background color (dark blue) */
+color: white;
+border: none;
+cursor: pointer;
+margin-top: 1rem;
+border-radius: 4px;
+padding: 0.5rem 1rem;
+}
+
+body,
+html {
+margin: 0px;
+padding: 0px;
+font-family: Arial, sans-serif;
+background-color: #fffdf7; /* Background color from your palette */
+}
+
+.flashnote-container {
+display: flex;
+flex-direction: column;
+height: 100vh;
+}
+
+.flashnote-navbar {
+background-color: #6798c0; /* Navbar background color */
+color: white;
+padding: 1rem;
+}
+
+.flashnote-navbar ul {
+list-style-type: none;
+margin: 0;
+padding: 0;
+display: flex;
+justify-content: space-around;
+}
+
+.flashnote-navbar ul li {
+display: inline;
+}
+
+.flashnote-navbar ul li a {
+color: white;
+text-decoration: none;
+padding: 0.5rem 1rem;
+}
+
+.flashnote-main-content {
+display: flex;
+flex: 1;
+}
+
+.flashnote-left-column {
+width: 20%;
+background-color: #99d6eb; /* Left column background color */
+padding: 1rem;
+box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.flashnote-right-column {
+flex: 1;
+background-color: white;
+padding: 2rem;
+border-left: 1px solid #fdd85d; /* Light border to separate the columns */
+}
+
+.flashnote-note-area {
+display: flex;
+flex-direction: column;
+}
+
+/* Updated .flashnote-note-output to make it scrollable */
+.flashnote-note-output {
+margin-bottom: 1rem;
+border: 0.5px solid #9c9393; /* Border color */
+padding: 1rem;
+background-color: #f0f0f0; /* Very light grey background for input/output areas */
+border-radius: 4px;
+overflow-y: scroll; /* Enables vertical scrolling */
+overflow-x: hidden; /* Ensures no horizontal scroll */
+}
+
+/* Optional: Customize the scrollbar */
+.flashnote-note-output::-webkit-scrollbar {
+width: 8px;
+}
+
+.flashnote-note-output::-webkit-scrollbar-track {
+background: #f1f1f1;
+}
+
+.flashnote-note-output::-webkit-scrollbar-thumb {
+background-color: #6798c0; /* Blue scrollbar */
+border-radius: 10px;
+border: 2px solid #f1f1f1;
+}
+
+.flashnote-save-note {
+padding: 0.5rem 1rem;
+background-color: #6798c0; /* Button background color (dark blue) */
+color: white;
+border: none;
+cursor: pointer;
+margin-top: 1rem;
+border-radius: 4px;
+}
+
+.flashnote-save-note:hover {
+background-color: #5a7ba5; /* Hover effect for buttons, slightly darker blue */
 }
 
 /* <!-- Dyrels addition --> */
 .flashnote-content {
-  display: flex;
-  flex-direction: column; /* Stack child divs vertically */
-  justify-content: center; /* Center vertically */
-  align-items: center; /* Center horizontally */
-  height: 100%; /* Ensure it takes up full height of the container */
+display: flex;
+flex-direction: column; /* Stack child divs vertically */
+justify-content: center; /* Center vertically */
+align-items: center; /* Center horizontally */
+height: 100%; /* Ensure it takes up full height of the container */
 }
 
 .flashnote-note-output,
 .flashnote-save-note {
-  width: 100%; /* Adjust this as necessary for the desired width */
-  max-width: 600px; /* Optional: Limit max width of note output */
-  margin-bottom: 1rem; /* Adds space between stacked elements */
+width: 48%; /* Adjust this as necessary for the desired width */
+margin-bottom: 1rem; /* Adds space between stacked elements */
 }
 
 /* SIDEBAR CSS*/
 * {
-  margin:0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+margin:0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .sidebar {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100vh;
-  width: 80px;
-  background: #12171e;
-  padding: .4rem .8rem;
-  transition: all 0.5s ease;
+position: absolute;
+left: 0;
+top: 0;
+height: 100vh;
+width: 80px;
+background: #12171e;
+padding: .4rem .8rem;
+transition: all 0.5s ease;
 }
 
 .sidebar.active ~.main-content { 
-  left: 250px;               
-  width: calc(100% - 250px);
+left: 250px;               
+width: calc(100% - 250px);
 }
 
 .sidebar.active {
-  width: 250px;
+width: 250px;
 }
 
 
 
 .sidebar #btn {
-  position: absolute;
-  color: #fff;
-  top: .4rem;
-  left: 50%;
-  font-size: 1.2rem;
-  line-height: 50px;
-  transform: translateX(-50%);
-  cursor: pointer;
+position: absolute;
+color: #fff;
+top: .4rem;
+left: 50%;
+font-size: 1.2rem;
+line-height: 50px;
+transform: translateX(-50%);
+cursor: pointer;
 }
 
 .sidebar.active #btn {
-  left: 90%;
+left: 90%;
 }
 
 .sidebar .top .logo {
-  color: #fff;
-  display: flex;
-  height: 50px;
-  width: 100%;
-  align-items: center;
-  pointer-events: none;
-  opacity: 0;
+color: #fff;
+display: flex;
+height: 50px;
+width: 100%;
+align-items: center;
+pointer-events: none;
+opacity: 0;
 }
 
 .sidebar.active .top .logo {
-  opacity: 1;
+opacity: 1;
 }
 
 .top .logo i {
-  font-size: 2rem;
-  margin-right: 5px;                                 
+font-size: 2rem;
+margin-right: 5px;                                 
 }
 
 .sidebar ul li {
-  position: relative;
-  list-style-type: none;
-  height: 50px;
-  width: 90%;
-  margin: 0.8rem;
-  line-height: 50px;
+position: relative;
+list-style-type: none;
+height: 50px;
+width: 90%;
+margin: 0.8rem;
+line-height: 50px;
 }
 
 .sidebar ul li a {
-  color: #fff;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  border-radius: 0.8rem;
+color: #fff;
+display: flex;
+align-items: center;
+text-decoration: none;
+border-radius: 0.8rem;
 }
 
 .sidebar ul li a:hover {
-  background-color: #fff;
-  color: #12171e;
+background-color: #fff;
+color: #12171e;
 }
 
 .sidebar ul li a i{
-  min-width: 50px;
-  text-align: center;
-  height: 50px;
-  border-radius: 12px;
-  line-height: 50px;
+min-width: 50px;
+text-align: center;
+height: 50px;
+border-radius: 12px;
+line-height: 50px;
 }
 
 .sidebar .nav-item{
-  opacity: 0;
+opacity: 0;
 }
 
 .sidebar.active .nav-item{
-  opacity: 1;
+opacity: 1;
 }  
 
 .sidebar ul li .tooltip{
-  position: absolute;
-  left: 125px;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0.5rem 0.8rem rgba(0, 0, 0, 0.2);
-  border-radius: .6rem;
-  padding: .4rem 1.2rem;
-  line-height: 1.8rem;
-  z-index: 20;
-  opacity: 0;
+position: absolute;
+left: 125px;
+top: 50%;
+transform: translate(-50%, -50%);
+box-shadow: 0 0.5rem 0.8rem rgba(0, 0, 0, 0.2);
+border-radius: .6rem;
+padding: .4rem 1.2rem;
+line-height: 1.8rem;
+z-index: 20;
+opacity: 0;
 }
 
 .sidebar ul li:hover .tooltip{
-  opacity: 1;
+opacity: 1;
 }
 
 .sidebar.active ul li .tooltip{
-  display: none;
+display: none;
 }
 
 .main-content{
-  position : relative;
-  background-color: eee;
-  min-height: 100vh;
-  top: 0;
-  left: 80px;
-  transition: all 0.5s ease;
-  width: calc(100% - 80px);
+position : relative;
+background-color: eee;
+min-height: 100vh;
+top: 0;
+left: 80px;
+transition: all 0.5s ease;
+width: calc(100% - 80px);
 
 }
 
 #swal2-input{
-  width:90%;
-  
-  }
+width:90%;
 
+}
+
+  
