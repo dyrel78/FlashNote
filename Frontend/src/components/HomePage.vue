@@ -469,10 +469,10 @@ export default {
         this.isLoading = true;
         this.outputText = "";
         const endpointMap = {
-          short: "http://localhost:8080/api/llm/short",
-          medium: "http://localhost:8080/api/llm/medium",
-          long: "http://localhost:8080/api/llm/long",
-          flashcards: "http://localhost:8080/api/llm/flashcards",
+          short: "http://3.217.34.111:8080/api/llm/short",
+          medium: "http://3.217.34.111:8080/api/llm/medium",
+          long: "http://3.217.34.111:8080/api/llm/long",
+          flashcards: "http://3.217.34.111:8080/api/llm/flashcards",
         };
         const endpoint = endpointMap[this.selectedTab];
         const response = await axios.get(endpoint, {
@@ -517,7 +517,7 @@ export default {
 
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/notes/folders/${user._id}`
+          `http://3.217.34.111:8080/api/notes/folders/${user._id}`
         );
         this.folders = response.data;
       } catch (error) {
@@ -642,7 +642,7 @@ export default {
             };
 
             const response = await axios.post(
-              "http://localhost:8080/api/notes/",
+              "http://3.217.34.111:8080/api/notes/",
               newFlashcard
             );
             console.log("Flashcard saved successfully:", response.data);
@@ -666,7 +666,7 @@ export default {
           };
 
           const response = await axios.post(
-            "http://localhost:8080/api/notes/",
+            "http://3.217.34.111:8080/api/notes/",
             newNote
           );
           console.log("Note saved successfully:", response.data);
@@ -704,7 +704,7 @@ export default {
         const formData = new FormData();
         formData.append("pdfFile", this.selectedFile);
         axios
-          .post("http://localhost:8080/api/pdf/extract_text", formData, {
+          .post("http://3.217.34.111:8080/api/pdf/extract_text", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },

@@ -274,7 +274,7 @@ export default {
     async getFolders() {
       try {
         const response = await axios.get(
-          "//localhost:8080/api/notes/folders/" + this.userObject._id
+          "//3.217.34.111:8080/api/notes/folders/" + this.userObject._id
         );
         this.folders = response.data;
         console.log("Folders retrieved successfully:", this.folders);
@@ -286,7 +286,7 @@ export default {
     async getAllNotes() {
       try {
         const response2 = await axios.get(
-          "//localhost:8080/api/notes/user/" + this.userObject._id
+          "//3.217.34.111:8080/api/notes/user/" + this.userObject._id
         );
         this.notes = response2.data;
         console.log("Notes retrieved successfully:", this.notes);
@@ -301,7 +301,7 @@ export default {
         const idToFetch = noteId || this.id;
         if (idToFetch) {
           const response = await axios.get(
-            `//localhost:8080/api/notes/${idToFetch}`
+            `//3.217.34.111:8080/api/notes/${idToFetch}`
           );
           this.note = response.data;
           if (this.note.note_format === "flashcards") {
@@ -328,7 +328,7 @@ export default {
     async updateNote() {
       try {
         const response = await axios.put(
-          `http://localhost:8080/api/notes/${this.id}`,
+          `http://3.217.34.111:8080/api/notes/${this.id}`,
           {
             note_name: this.note.note_name,
             note_format: this.note.note_format,
@@ -362,7 +362,7 @@ export default {
 
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/notes/folders/${user._id}`
+          `http://3.217.34.111:8080/api/notes/folders/${user._id}`
         );
         this.folders = response.data;
       } catch (error) {
@@ -374,7 +374,7 @@ export default {
     async deleteNote() {
       try {
         const response = await axios.delete(
-          `http://localhost:8080/api/notes/${this.id}`
+          `http://3.217.34.111:8080/api/notes/${this.id}`
         );
         console.log("Note deleted successfully:", response.data);
         Swal.fire({

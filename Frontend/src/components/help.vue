@@ -137,7 +137,7 @@ export default {
       if (!this.userExists) return;
       try {
         const user = this.userObject;
-        const response = await axios.get(`http://localhost:8080/api/notes/folders/${user._id}`);
+        const response = await axios.get(`http://3.217.34.111:8080/api/notes/folders/${user._id}`);
         this.folders = response.data;
       } catch (error) {
         console.error("Error fetching folders:", error);

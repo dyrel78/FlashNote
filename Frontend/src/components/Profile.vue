@@ -96,7 +96,7 @@ export default {
    async updateProfile() {
       // send  data to backend to update the profile.
       try {
-        const response = await axios.put(`http://localhost:8080/api/users/username/${this.username}`, {
+        const response = await axios.put(`http://3.217.34.111:8080/api/users/username/${this.username}`, {
           first_name: this.firstName,
           last_name: this.lastName,
           email: this.email,
