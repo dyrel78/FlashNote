@@ -47,14 +47,9 @@
               </div>
               <h2>FlashNote - Advanced AI Note Creation</h2>
 
-              <p>
-                Easily create concise notes from your
-                lecture slides.
-              </p>
+              <p>Easily create concise notes from your lecture slides.</p>
               <div class="space"></div>
-              <h3>
-                Choose your preferred note format:
-              </h3>
+              <h3>Choose your preferred note format:</h3>
               <div class="space"></div>
               <div class="flashnote-tabs">
                 <button @click="setTab('long')">Detailed</button>
@@ -223,7 +218,6 @@ export default {
       isListening: false,
       tempText: "",
       isNewFolder: false,
-
     };
   },
 
@@ -387,7 +381,6 @@ export default {
       console.log(user);
     },
 
-
     // Set the active tab for generating different types of notes
     setTab(tab) {
       this.selectedTab = tab;
@@ -452,19 +445,13 @@ export default {
         }
       } catch (error) {
         console.error("Error creating note:", error);
-        if (
-          (error.response && error.response.status === 431) ||
-          (error.response && error.response.status === 500)
-        ) {
-          Swal.fire({
-            icon: "error",
-            title: "Input Size Too Big",
-            text: "The input size is too big. Please reduce the size of your input and try again.",
-            confirmButtonText: "OK",
-          });
-        } else {
-          this.outputText = "An error occurred while generating the note.";
-        }
+        this.outputText = "Error creating note. Please try again.";
+        Swal.fire({
+          icon: "error",
+          title: "Input Size Too Big",
+          text: "The input size is too big. Please reduce the size of your input and try again.",
+          confirmButtonText: "OK",
+        });
       } finally {
         this.isLoading = false;
       }
@@ -492,7 +479,6 @@ export default {
     async handleFolderChange() {
       // Toggle the visibility of the new folder input based on selection
       this.isNewFolder = this.selectedFolder === "new";
-
     },
     async clearOutput() {
       this.outputText = "";

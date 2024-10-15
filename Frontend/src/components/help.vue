@@ -78,6 +78,9 @@
 
 <script>
 export default {
-  name: "helpPage" ,
+  name: "helpPage",
 };
 </script>
+<style>
+@import url(../assets/flashnote-styles.css);
+</style>
