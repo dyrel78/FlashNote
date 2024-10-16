@@ -12,7 +12,7 @@
 
 <div align="center">
   <a href="https://github.com/dyrel78/Best-README">
-    <img src="Frontend/old_html_files/Flashnote1.png" alt="Logo" width="80" height="80">
+    <img src="Frontend/old_html_files/flashnote-logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Flashnote</h3>
@@ -140,11 +140,64 @@ Before starting, ensure you have the following installed:
 
 ### License
 
-
-
-### contact
+### Contact
 Leon - [chele691@student.otago.ac.nz](mailto:chele691@student.otago.ac.nz)
 Dyrel - [lumdy690@student.otago.ac.nz](mailto:lumdy690@student.otago.ac.nz)
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+## How to Use
+
+### 1. Create Account
+- Navigate to 'Create Account' in the navbar
+- Enter your details and select create account
+
+### 2. Log In
+- Enter your newly created account details
+- Click 'Ok' on the pop-up alert
+
+### 3. Conciseness Level
+- Choose level of conciseness from buttons above input section (detailed, concise, bullet-points, flashcards)
+
+### 4a. Paste Text
+- Click on large grey text input box on left side of screen
+- Cmd + V OR Right Click -> Paste to paste text
+
+#### OR
+
+### 4b. Upload PDF
+- Click 'Choose File' 
+- Select and open desired file (must be PDF format)
+- Click 'Upload PDF' to convert file to text and add to content input section
+
+### 6. Select Folder
+- Click 'Select a Folder' then 'Create a New Folder'
+- Enter folder name
+
+### 7. Create Note
+- Select 'Create Note' to generate your AI note summary according to your selected style
+- Your generated note will appear to the right in the output box
+
+### 8. Save Note
+- Click 'Save' 
+- Name your generated note and click 
+- Click 'Ok' on the pop-up alert
+
+### 9. View Notes or Flashcards
+- Click icon at the top of the black side bar to see your saved folders
+- Select the folder of notes you want to see
+- Click on the name of the note or flashcard set 
+- Navigate through flashcards by clicking or using space bar to flip and arrow keys to move left and right
+
+### 10. Edit Notes
+- Make any desired changes to your summarised notes using the provided toolbar
+- Select 'Save' to save your changes
+- Click 'Ok' on the pop-up alert
+
+
+
 
 
 
