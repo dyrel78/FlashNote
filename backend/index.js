@@ -45,6 +45,7 @@ app.use(bodyParser.json());
 
 mongoose
   .connect(process.env.DB_CONNECTION_STRING, {
+
   })
   .then(() => {
     console.log("Connected to MongoDB");

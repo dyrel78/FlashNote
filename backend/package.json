@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "node --experimental-vm-modules ./node_modules/.bin/jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles --forceExit",
     "start:server": "nodemon index.js --ignore '../client/'",
     "start:client": "npm run serve --prefix '../Frontend/'",
     "build:client": "npm run build --prefix '../Frontend/'",
