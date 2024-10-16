@@ -1,22 +1,22 @@
-// import request from "supertest";
-// import app from "../index.js";
+import request from "supertest";
+import app from "../index.js";
 
 test('adds 1 + 3 to equal 3', () => {
 	expect(3).toBe(3);
 })
-// describe('Get Users', () => {
-//     it('Should have a successful connection to the users table', async () => {
-//       const res = await request(app)
-//         .get('/api/users/')  
-//       // console.log(res);
-//       // 200 code means success for get
-//       expect(res.statusCode).toEqual(200);
+describe('Get Users', () => {
+    it('Should have a successful connection to the users table', async () => {
+      const res = await request(app)
+        .get('/api/users/')  
+      // console.log(res);
+      // 200 code means success for get
+      expect(res.statusCode).toEqual(200);
 
-//       expect(1).toEqual(1);
-//     });
+      expect(1).toEqual(1);
+    });
   
-//     // Additional tests...
-//   });
+    // Additional tests...
+  });
 
 //   describe('Get Notes', () => {
 //     it('Should have a successful connection to the notes table', async () => {
