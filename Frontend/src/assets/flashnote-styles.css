@@ -159,6 +159,7 @@ body, html {
 @media (max-width: 1500px) {
 .flashnote-note-input textarea {
     height: 55vh; /* Changes the height when the browser is resized below 500px */
+    /* CHANGE THIS to like 45 */
 }
 }
 
