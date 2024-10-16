@@ -200,8 +200,8 @@ Dyrel - [lumdy690@student.otago.ac.nz](mailto:lumdy690@student.otago.ac.nz)
 - Confirm you would like to delete note
 - Click 'Ok' on the pop-up alert
 
-
-
+### Help Feature
+- Navigate to help page from navbar if you require further help or utilise tour feature on first log in
 
 
 
