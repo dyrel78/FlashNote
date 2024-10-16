@@ -149,3 +149,85 @@ export default {
 <style>
 @import url(../assets/flashnote-styles.css);
 </style>
+
+
+<style scoped>
+.help-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px;
+  color: #333;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  text-align: center;
+  color: #6798c0;
+  font-size: 32px;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 1px;
+  margin-bottom: 25px;
+  font-weight: 700;
+}
+
+h2 {
+  color: #fdd85d;
+  font-size: 26px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 22px;
+  color: #444;
+  text-align: center; /* Center the h3 */
+  margin: 30px 0 15px; /* Ensure there's space above and below */
+  font-weight: 500;
+}
+
+p {
+  font-size: 17px;
+  line-height: 1.75;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+ol {
+  list-style-type: none; /* Removes the numbers */
+  padding-left: 0; /* Optional: remove padding if you want the list to align with the rest of the text */
+}
+
+li {
+  margin-bottom: 20px;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+li::marker {
+  color: #6798c0;
+}
+
+li::before {
+  content: "";
+  color: #6798c0;
+  font-size: 18px;
+  margin-right: 0px;
+}
+
+.introduction, .steps {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  border: 1px solid #ddd;
+}
+
+li:hover {
+  background-color: #f0f8ff;
+  transition: background-color 0.3s ease;
+}
+
+</style>
