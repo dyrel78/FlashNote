@@ -135,7 +135,6 @@ Before starting, ensure you have the following installed:
     ```bash
     http://localhost:8080/
 
-
 ### License
 
 ### Contact
@@ -194,7 +193,12 @@ Dyrel - [lumdy690@student.otago.ac.nz](mailto:lumdy690@student.otago.ac.nz)
 - Select 'Save' to save your changes
 - Click 'Ok' on the pop-up alert
 
-
+### 11. Delete Notes
+- Navigate to the folder the note you want to delete is in
+- Check the box or click 'Select All'
+- Click 'Delete Selected'
+- Confirm you would like to delete note
+- Click 'Ok' on the pop-up alert
 
 
 
