@@ -7,7 +7,7 @@ body, html {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background-color: #fffdf7; /* Background color from your palette */
+  background-color: #fff; /* Background color from your palette */
 }
 
 .flashnote-container {
@@ -772,7 +772,7 @@ display: none;
 
 .main-content{
 position : relative;
-background-color: eee;
+background-color: #fff;
 min-height: 100vh;
 top: 0;
 left: 80px;
