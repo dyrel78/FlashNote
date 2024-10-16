@@ -48,6 +48,21 @@
                   width: calc(100% - 40rem);
                   "
                   class = "editor-container">
+                  <div v-if="note.note_format === 'flashcards'">
+                        <h3>Question</h3>
+                        <div  id="flashnote-question-editor">
+                          <div v-html="outputTextQuestion"></div>
+                        </div>
+
+                        <h3>Answer</h3>
+                        <div id="flashnote-answer-editor">
+                          <div  v-html="outputTextQuestion"></div>
+                        </div>
+                      </div>
+
+
+                    <div v-else>
+                      <!-- <h3>Note Content</h3> -->
                     <div style="
                         white-space: normal;
                         word-wrap: break-word;
@@ -55,6 +70,9 @@
                         overflow-x: auto;
                       " id="editor">
                       </div>
+                      </div>  
+
+
                     </div>
 
                   <div class="flashnote-button-group">
@@ -130,13 +148,16 @@ export default {
       }
     },
     immediate: false // Update immediately if outputText is already available
-  }
+  },  
   },
   data() {
     return {
       notes: null,
       folders: [],
       outputText: "", // Assume this is passed from the previous page or loaded dynamically
+      outputTextQuestion: "",
+      outputTextAnswer: "",
+      note: {},
       userExists: false,
       userObject: {},
     };
@@ -160,6 +181,7 @@ export default {
 
   methods: {
     initQuillEditor() {
+     
     this.quill = new Quill("#editor", {
       theme: "snow",
       modules: {
@@ -185,11 +207,12 @@ export default {
     this.setQuillContent();
 
     // Listen for changes in Quill editor
-    this.quill.on("text-change", () => {
-      // Update outputText with Quill editor's content
-      this.outputText = this.quill.root.innerHTML;
-    });
-  },
+    // this.quill.on("text-change", () => {
+    //   // Update outputText with Quill editor's content
+    //   this.outputText = this.quill.root.innerHTML;
+    // });
+  }
+  ,
     // setQuillContent() {
     //   // if (this.quill && this.outputText) {
     //   //   this.quill.setText(''); // Clear existing content
@@ -215,6 +238,7 @@ export default {
     //   this.quill.clipboard.dangerouslyPasteHTML(0, this.outputText);
 
     // }
+
   },
 
 
@@ -305,7 +329,9 @@ export default {
           );
           this.note = response.data;
           if (this.note.note_format === "flashcards") {
-            this.outputText = this.note.question + "\n" + this.note.answer;
+            // this.outputText = this.note.question + "\n" + this.note.answer;
+            this.outputTextQuestion = this.note.question;
+            this.outputTextAnswer = this.note.answer;
           } else {
             this.outputText = this.note.note_content;
           }
@@ -326,6 +352,8 @@ export default {
       this.fetchNote(noteID);
     },
     async updateNote() {
+     this.outputText = this.quill.root.innerHTML;
+
       try {
         const response = await axios.put(
           `http://localhost:8080/api/notes/${this.id}`,
