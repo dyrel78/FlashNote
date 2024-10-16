@@ -117,7 +117,6 @@ Before starting, ensure you have the following installed:
    npm install
    npm run start
 
-
 ### Docker Installation
 
 1. **Clone the repository:**
@@ -127,7 +126,6 @@ Before starting, ensure you have the following installed:
 2. **Checkout the Docker Branch**
     ```bash
     git checkout Docker
-
 
 3. **build the frontend**
     ```bash
