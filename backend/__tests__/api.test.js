@@ -1,6 +1,6 @@
 // api.test.js
 import request from 'supertest';
-import { expect, jest } from '@jest/globals';
+import { describe, expect, jest } from '@jest/globals';
 import app from '../index.js';  // Make sure to include the .js extension
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
@@ -42,40 +42,6 @@ describe('Get Users', () => {
 });
 
 
-// import request from "supertest";
-// import app from "../index.js";
-
-// test('adds 1 + 3 to equal 3', () => {
-// 	expect(3).toBe(3);
-// })
-// describe('Get Users', () => {
-//     it('Should have a successful connection to the users table', async () => {
-//       const res = await request(app)
-//         .get('/api/users/')  
-//       // console.log(res);
-//       // 200 code means success for get
-//       expect(res.statusCode).toEqual(200);
-
-//       expect(1).toEqual(1);
-//     });
-  
-//     // Additional tests...
-//   });
-
-//   describe('Get Notes', () => {
-//     it('Should have a successful connection to the notes table', async () => {
-//       const res = await request(app)
-//         .get('/api/notes/')  
-//       // console.log(res);
-//       // 200 code means success for get
-//       expect(res.statusCode).toEqual(200);
-
-//       expect(1).toEqual(1);
-//     });
-  
-//     // Additional tests...
-//   }
-//   );
 
   describe('User API', () => {
   
@@ -153,21 +119,7 @@ describe('Get Users', () => {
         
       });
 
-      it('Should delete the user i just made', async () => {
-        const newUser = {
-          first_name: 'John',
-          last_name: 'Doe',
-          email: 'johnJest@example.com',
-          password: 'password123',
-          username: 'testJohnJest',
-        };
-        const res = await request(app)
 
-          .delete('/api/users/username/testJohnJest')
-          ;
-          expect(res.statusCode).toEqual(200);
-          expect(res.body).toHaveProperty('message', 'User deleted successfully');
-      });
 
   
       it('Should return 400 for duplicate username', async () => {
@@ -187,6 +139,39 @@ describe('Get Users', () => {
       });
     });
   });
+
+
+  describe('POST /api/notes/', () => {
+
+    it('Should return a successful response and a list of notes', async () => {
+
+      const userObject = {
+        _id:'66fe1c58206949954203b719',
+        first_name: 'Dyrel',
+        last_name: 'Lumiwes',
+        email: 'dyrellumiwes@gmail.com',
+        password: '$2a$10$MAPDBMrsg2x.UHpbjIZx/upk15NL1KtfpkIlXP957/.KiRlRH2RuW',
+        username: 'dyrellumiwes',
+
+      };
+      const newNote = {
+        folder: 'folder',
+        note_content: 'note_content',
+        note_format: 'note_format',
+        note_name: 'note_name',
+        user: userObject,
+        flashcard_set_name: 'flashcard_set_name',
+        question: 'question',
+        answer: 'answer',
+        status: 'status',
+      };
+      const res = await request(app)
+        .post('/api/notes/')
+        .send(newNote);
+      expect(res.statusCode).toEqual(201);
+      expect(res.body).toHaveProperty('message', 'Note created successfully');
+    });
+  });
   
   // Test suite for notes routes (if there is a notes API)
   describe('Notes API', () => {
@@ -198,5 +183,30 @@ describe('Get Users', () => {
         expect(res.statusCode).toEqual(200);
         expect(Array.isArray(res.body)).toBeTruthy(); // Check if the response is an array
       });
-    });
+    },
+
+  );
+  }
+
+ 
+
+);
+
+describe('DELETE /api/users/username/:username', () => {
+  it('Should delete the user i just made', async () => {
+    const newUser = {
+      first_name: 'John',
+      last_name: 'Doe',
+      email: 'johnJest@example.com',
+      password: 'password123',
+      username: 'testJohnJest',
+    };
+    const res = await request(app)
+
+      .delete('/api/users/username/testJohnJest')
+      ;
+      expect(res.statusCode).toEqual(200);
+      expect(res.body).toHaveProperty('message', 'User deleted successfully');
   });
+
+});
