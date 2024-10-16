@@ -17,11 +17,18 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '20'  # Specify the Node.js version
+        
+    - name: Create .env file
+      run: |
+        touch ./backend/.env
+        echo "DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }}" >> ./backend/.env
+        echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> ./backend/.env
 
 
     - name: Backend dependencies
       run: npm install  # Install project dependencies
       working-directory: ./backend
+    
 
     - name: Call the backend tests
       run: npm test
