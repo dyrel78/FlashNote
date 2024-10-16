@@ -207,11 +207,12 @@ export default {
     this.setQuillContent();
 
     // Listen for changes in Quill editor
-    this.quill.on("text-change", () => {
-      // Update outputText with Quill editor's content
-      this.outputText = this.quill.root.innerHTML;
-    });
-  },
+    // this.quill.on("text-change", () => {
+    //   // Update outputText with Quill editor's content
+    //   this.outputText = this.quill.root.innerHTML;
+    // });
+  }
+  ,
     // setQuillContent() {
     //   // if (this.quill && this.outputText) {
     //   //   this.quill.setText(''); // Clear existing content
@@ -351,6 +352,8 @@ export default {
       this.fetchNote(noteID);
     },
     async updateNote() {
+     this.outputText = this.quill.root.innerHTML;
+
       try {
         const response = await axios.put(
           `http://localhost:8080/api/notes/${this.id}`,
