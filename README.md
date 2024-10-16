@@ -1,4 +1,4 @@
-[![Overall Build](https://github.com/dyrel78/FlashNote/actions/workflows/build.yml/badge.svg)](https://github.com/dyrel78/FlashNote/actions/workflows/build.yml)
+
 
 [![Backend Build and Test](https://github.com/dyrel78/FlashNote/actions/workflows/backend-build.yml/badge.svg?branch=main)](https://github.com/dyrel78/FlashNote/actions/workflows/backend-build.yml)
 
@@ -79,6 +79,7 @@ Other technologies:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+
 ## Getting Started
 
 
@@ -102,7 +103,7 @@ Before starting, ensure you have the following installed:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/dyrel78/Best-README.git
+   git clone https://github.com/dyrel78/FlashNote.git
 
 2. **build the frontend**
     ```bash
@@ -117,12 +118,34 @@ Before starting, ensure you have the following installed:
    npm run start
 
 
+### Docker Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/dyrel78/FlashNote.git
+
+2. **Checkout the Docker Branch**
+    ```bash
+    git checkout Docker
+
+
+3. **build the frontend**
+    ```bash
+    git compose up
+
+4. **start the application**
+    ```bash
+    http://localhost:8080/
+
+
 ### License
 
 
 
 ### contact
 Leon - [chele691@student.otago.ac.nz](mailto:chele691@student.otago.ac.nz)
+Dyrel - [lumdy690@student.otago.ac.nz](mailto:lumdy690@student.otago.ac.nz)
+
 
 
 
