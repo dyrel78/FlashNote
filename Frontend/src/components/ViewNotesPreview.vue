@@ -56,7 +56,7 @@
 
                         <h3>Answer</h3>
                         <div id="flashnote-answer-editor">
-                          <div  v-html="outputTextQuestion"></div>
+                          <div  v-html="outputTextAnswer"></div>
                         </div>
                       </div>
 
@@ -426,7 +426,7 @@ export default {
 };
 </script>
 
-<style>
+<style >
 @import url(../assets/flashnote-styles.css);
 @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
 
@@ -436,4 +436,57 @@ export default {
   /* padding: 12px 0; */
   font-size: 18px;
 }
+/* Container for Flashcard Editor */
+.editor-container {
+  width: 100%;
+  max-width: 800px; /* Limit container width */
+  margin: 0 auto; /* Center the container */
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Slight shadow for elevation */
+}
+
+/* Flashcard Question and Answer Containers */
+#flashnote-question-editor, #flashnote-answer-editor {
+  background-color: #f9f9f9; /* Light background */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 10px; /* Rounded corners */
+  padding: 15px; /* Space inside */
+  margin-bottom: 20px; /* Spacing between question and answer */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Flashcard Text Styling */
+#flashnote-question-editor div, #flashnote-answer-editor div {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  color: #333; /* Darker text color */
+}
+
+/* Flashcard Headings */
+
+
+/* Hover effect for interactive feel */
+#flashnote-question-editor:hover, #flashnote-answer-editor:hover {
+  background-color: #f0f8ff; /* Slight blue background on hover */
+  border-color: #1a73e8; /* Blue border on hover */
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .editor-container {
+    padding: 10px;
+  }
+
+  #flashnote-question-editor, #flashnote-answer-editor {
+    padding: 10px;
+    font-size: 14px;
+  }
+/* 
+  h3 {
+    font-size: 18px;
+  } */
+}
+
 </style>
