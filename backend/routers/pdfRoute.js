@@ -16,6 +16,7 @@ router.post("/extract_text", async (req, res) => {
       res.send(result.text);
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).send("Error processing PDF");
     });
 });

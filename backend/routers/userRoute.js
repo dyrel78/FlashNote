@@ -46,8 +46,9 @@ console.log(email + " " + password);
 });
 // Get user by username
 router.get("/username/:username", async (req, res) => {
+  const usernameVar = req.params.username;
   try {
-    const user = await User.findOne({ username: req.params.username });
+    const user = await User.findOne({ usernameVar });
     if (user) {
       res.json(user);
     } else {
@@ -76,9 +77,7 @@ router.post("/register", async (req, res) => {
     const saltRounds = 10;
     
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    console.log("Create Account, plaintext:" +password);
-    console.log("Hashed password "+hashedPassword);
-    console.log("Registration - Hash prefix:", hashedPassword.substring(0, 7));
+
 
     // Create the new user
     const newUser = new User({
