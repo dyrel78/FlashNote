@@ -496,8 +496,9 @@ margin-top: 1rem;
 }
 .output-button-container {
   display: flex;
-  justify-content: space-between; /* Evenly spaces buttons */
-  gap: 10px; /* Adds space between buttons */
+  justify-content: center;
+
+  gap: 20px; /* Adds space between buttons */
   padding: 10px;
   width: 60%;
   margin: 0 auto; /* Centers the buttons */
@@ -660,6 +661,10 @@ width: 48%; /* Adjust this as necessary for the desired width */
 margin-bottom: 1rem; /* Adds space between stacked elements */
 }
 
+.loading-spinner i {
+margin-left: -100px; /* Center the spinner horizontally */
+  font-size: 50px;
+}
 /* SIDEBAR CSS*/
 * {
 margin:0;
