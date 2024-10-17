@@ -50,12 +50,16 @@
                   class = "editor-container">
                   <div v-if="note.note_format === 'flashcards'">
                         <h3>Question</h3>
-                        <div contentEditable="true" id="flashnote-question-editor">
-                          <div class ="question-box" v-html="outputTextQuestion"></div>
+                        <div 
+                        contentEditable="true" id="flashnote-question-editor"  ref="questionEditor">
+                          <div class ="question-box" v-html="outputTextQuestion">
+                          </div>
                         </div>
 
                         <h3>Answer</h3>
-                        <div  contentEditable="true" id="flashnote-answer-editor">
+                        
+                        <div 
+                        contentEditable="true" id="flashnote-answer-editor"  ref="answerEditor">
                           <div class="answer-box" v-html="outputTextAnswer"></div>
                         </div>
                       </div>
@@ -83,11 +87,19 @@
 
                     <!--Save Button-->
                     <button
-                      v-if="userExists"
+                      v-if="userExists && note.note_format !== 'flashcards'"
                       class="flashnote-save-note"
                       @click="updateNote"
                     >
                       Save
+                    </button>
+
+                    <button
+                      v-if="userExists && note.note_format === 'flashcards'"
+                      class="flashnote-save-note"
+                      @click="updateFlashcard"
+                    >
+                      Update
                     </button>
 
                     <!--Delete Button-->
@@ -149,6 +161,7 @@ export default {
     },
     immediate: false // Update immediately if outputText is already available
   },  
+
 
 
   },
@@ -304,8 +317,10 @@ export default {
             `//localhost:8080/api/notes/${idToFetch}`
           );
           this.note = response.data;
+          console.log("Note retrieved USING FETCH NOTE:", this.note);
           if (this.note.note_format === "flashcards") {
             // this.outputText = this.note.question + "\n" + this.note.answer;
+
             this.outputTextQuestion = this.note.question;
             this.outputTextAnswer = this.note.answer;
           } else {
@@ -330,41 +345,7 @@ export default {
     async updateNote() {
      this.outputText = this.quill.root.innerHTML;
 
-    if(this.note.note_format === "flashcards"){
-      let question = document.querySelector("#flashnote-question-editor");
-      console.log("Question", question);
-      this.note.question = 
-      this.note.answer = this.outputTextAnswer;
-      try{
-        const response = await axios.put(
-          `http://localhost:8080/api/notes/${this.id}`,
-          {
-            note_name: this.note.note_name,
-            note_format: this.note.note_format,
-            folder: this.note.folder,
-            user: this.note.user,
-            _id: this.note._id,
-            question: this.outputTextQuestion,
-            answer: this.outputTextAnswer,
-          }
-        );
-        console.log("Note Updates successfully:", response.data);
-        this.fetchNote(this.id);
-        Swal.fire({
-          title: "Note Updated",
-          text: "Your note has been updated successfully.",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-        // this.fetchNote(this.id);
-      } catch (error) {
-        console.error("Error saving note:", error);
-        alert("An error occurred while saving the note.");
-
     
-      }
-
-    } else {
       try {
         // console.log("Note content:");
         const response = await axios.put(
@@ -391,8 +372,51 @@ export default {
         console.error("Error saving note:", error);
         alert("An error occurred while saving the note.");
       }
-    }
+    
   },
+  async updateFlashcard() {
+     
+     try{
+       let q = this.$refs.questionEditor.innerHTML; // or .innerHTML if you need HTML
+       this.outputTextQuestion = q;
+     let a = this.$refs.answerEditor.innerHTML; 
+      this.outputTextAnswer = a;
+     console.log("Question:", q);
+     console.log("Answer:", a);
+       const response = await axios.put(
+         `http://localhost:8080/api/notes/${this.id}`,
+         {
+           note_name: this.note.note_name,
+           note_format: this.note.note_format,
+           folder: this.note.folder,
+           user: this.note.user,
+           flashcard_set_name: this.note.flashcard_set_name,
+            note_content: this.outputText,
+           _id: this.note._id,
+           question: this.outputTextQuestion,
+           answer: this.outputTextAnswer,
+         }
+       );
+
+       console.log("Note Updates successfully USING UPDATE FLASHCARD:", response.data);
+       this.fetchNote(this.id);
+       Swal.fire({
+         title: "Note Updated",
+         text: "Your note has been updated successfully.",
+         icon: "success",
+         confirmButtonText: "OK",
+       });
+      //  this.fetchNote(this.id);
+     } catch (error) {
+       console.error("Error saving note:", error);
+       alert("An error occurred while saving the note.");
+
+   
+     }
+
+
+   },
+
     async fetchFolders() {
       const user = JSON.parse(sessionStorage.getItem("user"));
       if (!user) {
