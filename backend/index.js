@@ -53,7 +53,7 @@ mongoose
     // Create the server with increased header size
     const server = http.createServer(
       {
-        maxHeaderSize: 64000, // Increase header size limit to 16KB (adjust as needed)
+        maxHeaderSize: 128000, // Increase header size limit to 16KB (adjust as needed)
       },
       app
     );
