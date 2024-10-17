@@ -149,7 +149,7 @@ export default {
       if (this.userObject) {
         try {
           const response = await axios.get(
-            `http://localhost:8080/api/notes/folders/${this.userObject._id}`
+            `http://3.217.34.111:8080/api/notes/folders/${this.userObject._id}`
           );
           this.folders = response.data;
           this.userExists = true;
