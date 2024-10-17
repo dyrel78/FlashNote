@@ -32,6 +32,8 @@ export default {
       if (this.userExists) {
         sessionStorage.removeItem('user');
         this.$emit('update:userExists', false);
+        this.$emit('update:userObject', {});
+        window.location.href = '/home';
       } else {
         window.location.href = '/sign-in';
       }

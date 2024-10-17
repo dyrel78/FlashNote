@@ -1,6 +1,5 @@
 import express from "express";
 import bodyParser from "body-parser";
-
 import session from "express-session";
 import "dotenv/config";
 import path from "path";
@@ -10,10 +9,14 @@ import usersRoute from "./routers/userRoute.js";
 import notesRoute from "./routers/notesRoute.js";
 import llmRoutes from "./routers/llmRoutes.js";
 import pdfRoutes from "./routers/pdfRoute.js";
+import cors from "cors";
+import http from "http"; // Importing http module to create the server
+
 const app = express();
 const port = process.env.PORT || 8080;
-import cors from "cors";
+// import cors from "cors";
 // app.use(cors());
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -54,6 +57,8 @@ app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 app.use(express.static(path.join(__dirname, 'frontend','dist')));
 
+// app.use(cors());
+// app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
 app.use(
   session({
@@ -62,7 +67,6 @@ app.use(
     saveUninitialized: true,
   })
 );
-// app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/users", usersRoute);
@@ -81,21 +85,32 @@ app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
 
   }
+});
   // res.sendFile("/usr/src/frontend/dist/index.html");
 
-});
-//Middleware to parse JSON bodies
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
+// });
+
+// Middleware to parse JSON bodies
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// Connect to MongoDB
 mongoose
-  .connect(process.env.DB_CONNECTION_STRING, {
-
-  })
+  .connect(process.env.DB_CONNECTION_STRING)
   .then(() => {
     console.log("Connected to MongoDB");
 
-    app.listen(port, () => {
+    // Create the server with increased header size
+    const server = http.createServer(
+      {
+        maxHeaderSize: 128000, // Increase header size limit to 16KB (adjust as needed)
+      },
+      app
+    );
+
+    server.listen(port, () => {
       console.log(`Server is running on port ${port}`);
       console.log(`Click here to open the app: http://localhost:${port}`);
       console.log(`Click here to open the app: http://3.217.34.111:${port}`)

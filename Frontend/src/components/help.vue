@@ -2,7 +2,7 @@
   <body id="app">
     <!-- Sidebar -->
     <div class="container">
-      <div class="sidebar">
+      <div style= "position:fixed" class="sidebar">
         <div class="top">
           <div class="logo">
             <i class="bx bx-edit"></i>

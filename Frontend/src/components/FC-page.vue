@@ -65,7 +65,7 @@
           <!-- Right pane: Content area -->
           <div class="right-content-pane">
             <h2>Flashcard</h2>
-            <button @click="toggleNotesListPane">{{ isNotesListVisible ? 'Hide Notes List' : 'Show Notes List' }}</button> 
+            <button @click="toggleNotesListPane">{{ isNotesListVisible ? 'Hide Flashcard List' : 'Show Flashcard List' }}</button> 
 
             <div class="flashcard-page-body">
        <div class="flashcard-container" id="cardContainer" v-if="flashcards.length > 0">
@@ -146,6 +146,7 @@ export default {
     this.checkUserInSession();
     this.fetchFlashcards();
     this.fetchFolders();
+    this.created();
     this.sideBarMethods();
     this.checkMediaQuery();
     window.addEventListener('resize', this.checkMediaQuery);
@@ -158,27 +159,6 @@ window.removeEventListener('keydown', this.handleKeyDown);
 
 },
   methods: {
-    // async fetchFlashcards() {
-    //   try {
-    //     const user = JSON.parse(sessionStorage.getItem("user"));
-    //     const userId = user._id;
-    //     console.log(this.flashcard_set_name)
-    //     console.log(userId)
-    //     const response = await axios.get(
-    //       `http://3.217.34.111:8080/api/notes/${userId}/${this.flashcard_set_name}`
-    //     );
-    //     // console.log(response.data)
-    //     // These lines below are bnew
-    //     this.flashcards = response.data.map(flashcard => ({
-    //     ...flashcard,
-    //     question: flashcard.note_name,
-    //     answer: flashcard.note_content
-    //   }));          console.log(this.flashcards);
-    //     // return onlyNotes
-    //   } catch (error) {
-    //     console.error("Error fetching notes:", error);
-    //   }
-    // },
     handleKeyDown(event) {
       switch(event.key) {
         case 'ArrowLeft':
@@ -305,21 +285,23 @@ this.isNotesListVisible = !mediaQuery.matches;
       this.flippedCards.push(cardNumber);
     }
   },
-    // nextCard() {
-    //   this.currentCard = this.currentCard < this.totalCards ? this.currentCard + 1 : 1;
-    //   this.updateCardDisplay();
-    // },
-    // previousCard() {
-    //   this.currentCard = this.currentCard > 1 ? this.currentCard - 1 : this.totalCards;
-    //   this.updateCardDisplay();
-    // },
-    // flipCard(cardNumber) {
-    //   if (this.flippedCards.includes(cardNumber)) {
-    //     this.flippedCards = this.flippedCards.filter((num) => num !== cardNumber);
-    //   } else {
-    //     this.flippedCards.push(cardNumber);
-    //   }
-    // },
+  async created() {
+      if (sessionStorage.getItem("user")) {
+        console.log(
+          "TESTING CREATEDUser exists in session storage:",
+          this.user
+        );
+        this.userExists = true;
+        this.userObject = JSON.parse(sessionStorage.getItem("user"));
+      } else {
+        console.log(
+          "TESTING CREATEDUser does not exist in session storage:",
+          this.user
+        );
+        this.userExists = false;
+      }
+    },
+
     
   },
 };
@@ -496,6 +478,7 @@ max-width: 0;
     flex-grow: 1;
     overflow-y: auto;
     padding: 20px;
+    min-width: 400px;
 }
         /* .notes-list {
             list-style-type: none;
@@ -524,7 +507,7 @@ These are new
   .flashcard-thefront, .flashcard-theback {
 
     font-size: 16px;
-    width: 150%;
+    width: 100%;
   }
 .two-pane-container {
   flex-direction: column;
@@ -542,7 +525,7 @@ These are new
 
 .right-content-pane {
   width: 100%; /* Full width to allow proper centering of content */
-  max-width: 600px; /* Limit maximum width for readability */
+  max-width: 800px; /* Limit maximum width for readability */
   padding: 0 20px; /* Add some padding on smaller screens */
   box-sizing: border-box; /* Ensure padding is included in width calculation */
 }
@@ -560,7 +543,7 @@ These are new
 }
 
 .flashcard-thecard{
-  width:150%;
+  width:10rem;
 }
 
 /* Ensure the flashcard container is centered and responsive */
@@ -585,8 +568,8 @@ These are new
   display: flex;
   justify-content: center;
   align-items: center;
-  /* height: 60vh; */
-    height: 100vh;
+  height: 70vh;
+    /* height: 100vh; */
 
   flex-direction: column;
   margin: 0;
@@ -595,7 +578,7 @@ These are new
 .flashcard-container {
   position: relative;
   width: 70%; /* Increased width */
-  height: 70%; /* Increased height */
+  height: 90%; /* Increased height */
   /* max-width: 900px; */
   /* max-height: 650px; */
   max-width: 700px;

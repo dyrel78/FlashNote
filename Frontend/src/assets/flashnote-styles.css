@@ -136,11 +136,12 @@ body, html {
 
 .flashnote-note-input, .flashnote-note-output {
   height:70vh;
+  /*   height:70vh;*/
   width: 48%;
   margin-bottom: 1rem;
   border: 0.5px solid #9c9393; /* Border color */
   padding: 1rem;
-  background-color: #f0f0f0; /* Very light grey background for input/output areas */
+  background-color: #f0f0f0f0; /* Very light grey background for input/output areas */
   border-radius: 4px;
 }
 
@@ -150,7 +151,8 @@ body, html {
   border: none;
   padding: 1rem;
   resize: none;
-  background-color: #f0f0f0; /* Very light grey background color for textarea */
+  /*border: 0.5px solid #9c9393; /* Border color */
+  background-color: rgba(250, 250, 252, 0.863); /* Very light grey background color for textarea */
   color: #333; /* Text color */
   border-radius: 4px;
 }
@@ -158,18 +160,16 @@ body, html {
 /* When browser width is resized to be smaller than 1500px */
 @media (max-width: 1500px) {
 .flashnote-note-input textarea {
-    height: 55vh; /* Changes the height when the browser is resized below 500px */
+    height: 42vh; /* Changes the height when the browser is resized below 500px */
     /* CHANGE THIS to like 45 */
 }
 }
 
-/**
-.outputText {
-flex: 1; 
-display: flex;
-flex-direction: column; 
-}
 
+/**.outputText {
+ height: 50vh;
+}
+/**
 .preformatted {
 flex: 0 0 80%; 
 white-space: pre-wrap; 
@@ -181,7 +181,7 @@ border-radius: 4px;
 margin-bottom: 1rem;
 }*/
 
-.flashnote-upload-pdf, .flashnote-create-note, .flashnote-save-note {
+.flashnote-upload-pdf, .flashnote-create-note {
   padding: 0.5rem 1rem;
   background-color: #6798c0; /* Button background color (dark blue) */
   color: white;
@@ -192,11 +192,11 @@ margin-bottom: 1rem;
   border-radius: 4px;
 }
 
-.flashnote-save-note {
+/* .flashnote-save-note {
   align-self: flex-end;
-}
+} */
 
-.flashnote-upload-pdf:hover, .flashnote-create-note:hover, .flashnote-save-note:hover {
+.flashnote-upload-pdf:hover, .flashnote-clear-button:hover .flashnote-create-note:hover, .flashnote-save-note:hover {
   background-color: #5a7ba5; /* Hover effect for buttons, slightly darker blue */
 }
 
@@ -480,6 +480,7 @@ pre {
   background-color: #f8f8f8;
   padding: 10px;
   white-space: pre-wrap;
+  min-height: 43vh;
 }
 
 
@@ -492,11 +493,21 @@ justify-content: flex-start; /* Align buttons to the left (or use flex-end for r
 gap: 20px; /* Space between buttons */
 margin-top: 1rem;
 }
+.output-button-container {
+  display: flex;
+  justify-content: center;
+
+  gap: 20px; /* Adds space between buttons */
+  padding: 10px;
+  width: 60%;
+  margin: 0 auto; /* Centers the buttons */
+}
 
 /* Style the buttons */
 button.flashnote-save-note,
 button.flashnote-copy-button,
-button.flashnote-delete-note {
+button.flashnote-delete-note,
+button.flashnote-clear-button {
 background-color: #6798c0; /* Button background color */
 color: white;
 border: none;
@@ -510,6 +521,8 @@ text-align: center; /* Center the text in the buttons */
 /* Optional hover effect */
 button.flashnote-save-note:hover,
 button.flashnote-copy-button:hover,
+.flashnote-clear-button:hover,
+.flashnote-create-note:hover,
 button.flashnote-delete-note:hover {
 background-color: #5a7ba5; /* Darker blue on hover */
 }
@@ -642,12 +655,15 @@ align-items: center; /* Center horizontally */
 height: 100%; /* Ensure it takes up full height of the container */
 }
 
-.flashnote-note-output,
-.flashnote-save-note {
+.flashnote-note-output {
 width: 48%; /* Adjust this as necessary for the desired width */
 margin-bottom: 1rem; /* Adds space between stacked elements */
 }
 
+.loading-spinner i {
+margin-left: -100px; /* Center the spinner horizontally */
+  font-size: 50px;
+}
 /* SIDEBAR CSS*/
 * {
 margin:0;
