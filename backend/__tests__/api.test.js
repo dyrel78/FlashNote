@@ -1,6 +1,6 @@
 // api.test.js
 import request from 'supertest';
-import { describe, expect, jest } from '@jest/globals';
+import { describe, expect } from '@jest/globals';
 import app from '../index.js';  // Make sure to include the .js extension
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
@@ -194,13 +194,7 @@ describe('Get Users', () => {
 
 describe('DELETE /api/users/username/:username', () => {
   it('Should delete the user i just made', async () => {
-    const newUser = {
-      first_name: 'John',
-      last_name: 'Doe',
-      email: 'johnJest@example.com',
-      password: 'password123',
-      username: 'testJohnJest',
-    };
+
     const res = await request(app)
 
       .delete('/api/users/username/testJohnJest')

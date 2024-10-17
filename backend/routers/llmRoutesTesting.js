@@ -1,7 +1,5 @@
 import express from "express";
-import mongoose from "mongoose";
-import Note from "../models/note.js";
-import User from "../models/user.js";
+
 import { Mistral } from "@mistralai/mistralai";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 let mistralApiKey = process.env.MISTRAL_API_KEY;
@@ -42,7 +40,6 @@ router.get("/mistral", async (req, res) => {
 
 router.get("/test", async (req, res) => {
   try {
-    const genAI = new GoogleGenerativeAI(geminiApiKey);
     // const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const prompt = "In under 20 words, describe New Zealand.";
 

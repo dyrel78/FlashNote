@@ -1,7 +1,5 @@
 import express from "express";
-import mongoose from "mongoose";
-import Note from "../models/note.js";
-import User from "../models/user.js";
+
 import { Mistral}  from '@mistralai/mistralai';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 let mistralApiKey = process.env.MISTRAL_API_KEY;

@@ -1,7 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-import { MongoClient } from "mongodb";
-import multer from "multer";
+
 import session from "express-session";
 import "dotenv/config";
 import path from "path";
