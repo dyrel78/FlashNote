@@ -3,7 +3,7 @@
     <div id="app">
       <!-- Sidebar -->
       <div class="container">
-        <div class="sidebar">
+        <div style = "position: fixed" class="sidebar">
           <div class="top">
             <div class="logo">
               <i class="bx bx-edit"></i>
@@ -50,13 +50,13 @@
                   class = "editor-container">
                   <div v-if="note.note_format === 'flashcards'">
                         <h3>Question</h3>
-                        <div  id="flashnote-question-editor">
-                          <div v-html="outputTextQuestion"></div>
+                        <div contentEditable="true" id="flashnote-question-editor">
+                          <div class ="question-box" v-html="outputTextQuestion"></div>
                         </div>
 
                         <h3>Answer</h3>
-                        <div id="flashnote-answer-editor">
-                          <div  v-html="outputTextAnswer"></div>
+                        <div  contentEditable="true" id="flashnote-answer-editor">
+                          <div class="answer-box" v-html="outputTextAnswer"></div>
                         </div>
                       </div>
 
@@ -149,6 +149,8 @@ export default {
     },
     immediate: false // Update immediately if outputText is already available
   },  
+
+
   },
   data() {
     return {
@@ -206,38 +208,12 @@ export default {
     // Set the initial Quill content if outputText is already available
     this.setQuillContent();
 
-    // Listen for changes in Quill editor
-    // this.quill.on("text-change", () => {
-    //   // Update outputText with Quill editor's content
-    //   this.outputText = this.quill.root.innerHTML;
-    // });
+  
   }
   ,
-    // setQuillContent() {
-    //   // if (this.quill && this.outputText) {
-    //   //   this.quill.setText(''); // Clear existing content
-    //   //   this.quill.clipboard.dangerouslyPasteHTML(0, this.outputText);
-    //   // }
 
-    //   if (this.quill && this.outputText) {
-    //     this.quill.setText(""); // Clear existing content
-    //     const lines = this.outputText.split("\n");
-    //     const delta = lines.reduce((delta, line, index) => {
-    //       if (index > 0) {
-    //         delta.insert("\n");
-    //       }
-    //       return delta.insert(line);
-    //     }, new Delta());
-    //     this.quill.updateContents(delta);
-    //   }
-    // },
     setQuillContent() {
-    // if (this.quill && this.outputText) {
-    //   // this.quill.root.innerHTML = this.outputText; // Set content in Quill editor
-    //   this.quill.setContents([]); // Clear existing content
-    //   this.quill.clipboard.dangerouslyPasteHTML(0, this.outputText);
 
-    // }
 
   },
 
@@ -354,7 +330,43 @@ export default {
     async updateNote() {
      this.outputText = this.quill.root.innerHTML;
 
+    if(this.note.note_format === "flashcards"){
+      let question = document.querySelector("#flashnote-question-editor");
+      console.log("Question", question);
+      this.note.question = 
+      this.note.answer = this.outputTextAnswer;
+      try{
+        const response = await axios.put(
+          `http://localhost:8080/api/notes/${this.id}`,
+          {
+            note_name: this.note.note_name,
+            note_format: this.note.note_format,
+            folder: this.note.folder,
+            user: this.note.user,
+            _id: this.note._id,
+            question: this.outputTextQuestion,
+            answer: this.outputTextAnswer,
+          }
+        );
+        console.log("Note Updates successfully:", response.data);
+        this.fetchNote(this.id);
+        Swal.fire({
+          title: "Note Updated",
+          text: "Your note has been updated successfully.",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+        // this.fetchNote(this.id);
+      } catch (error) {
+        console.error("Error saving note:", error);
+        alert("An error occurred while saving the note.");
+
+    
+      }
+
+    } else {
       try {
+        // console.log("Note content:");
         const response = await axios.put(
           `http://localhost:8080/api/notes/${this.id}`,
           {
@@ -379,7 +391,8 @@ export default {
         console.error("Error saving note:", error);
         alert("An error occurred while saving the note.");
       }
-    },
+    }
+  },
     async fetchFolders() {
       const user = JSON.parse(sessionStorage.getItem("user"));
       if (!user) {
@@ -439,6 +452,7 @@ export default {
 /* Container for Flashcard Editor */
 .editor-container {
   width: 100%;
+  min-width: 400px;
   max-width: 800px; /* Limit container width */
   margin: 0 auto; /* Center the container */
   padding: 20px;

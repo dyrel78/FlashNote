@@ -2,7 +2,7 @@
   <body id="app">
     <!-- Sidebar -->
     <div class="container">
-      <div class="sidebar">
+      <div style= "position:fixed" class="sidebar">
         <div class="top">
           <div class="logo">
             <i class="bx bx-edit"></i>
@@ -140,14 +140,18 @@
                     <pre class="preformatted">
                         <!-- {{ outputText }} -->
                         <p v-html="outputText"></p>
-                      </pre>
-
-                    <div v-if="isLoading" class="loading-spinner">
+                        <div  v-if="isLoading" class="loading-spinner">
                       <i class="bx bx-loader-alt bx-spin"></i>
                     </div>
+                      </pre>
+
+                    <!-- <div v-if="isLoading" class="loading-spinner">
+                      <i class="bx bx-loader-alt bx-spin"></i>
+                    </div> -->
+                  
                   </div>
                   <!-- Placeholder for AI generated notes preview -->
-                  <div  class="output-button-container">
+                  <div   class="output-button-container">
                   <button
                     class="flashnote-clear-button"
                     v-if="userExists"
@@ -159,15 +163,16 @@
                     Copy
                   </button>
 
-                      <button
+               
+
+                </div>
+                <button
                     v-if="userExists"
                     class="flashnote-save-note"
                     @click="saveNote"
                   >
                     Save
                   </button>
-
-                </div>
                 </div>
               </div>
 
@@ -733,4 +738,7 @@ export default {
 <style>
 @import url(../assets/flashnote-styles.css);
 @import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
+
+
+  
 </style>
