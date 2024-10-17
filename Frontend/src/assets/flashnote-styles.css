@@ -135,7 +135,8 @@ body, html {
 }
 
 .flashnote-note-input, .flashnote-note-output {
-  height:70vh;
+  height:65vh;
+  /*   height:70vh;*/
   width: 48%;
   margin-bottom: 1rem;
   border: 0.5px solid #9c9393; /* Border color */
@@ -146,7 +147,7 @@ body, html {
 
 .flashnote-note-input textarea {
   width: 100%;
-  height: 50vh;
+  height: 45vh;
   border: none;
   padding: 1rem;
   resize: none;
@@ -158,7 +159,7 @@ body, html {
 /* When browser width is resized to be smaller than 1500px */
 @media (max-width: 1500px) {
 .flashnote-note-input textarea {
-    height: 45vh; /* Changes the height when the browser is resized below 500px */
+    height: 42vh; /* Changes the height when the browser is resized below 500px */
     /* CHANGE THIS to like 45 */
 }
 }
@@ -196,7 +197,7 @@ margin-bottom: 1rem;
   align-self: flex-end;
 } */
 
-.flashnote-upload-pdf:hover, .flashnote-create-note:hover, .flashnote-save-note:hover {
+.flashnote-upload-pdf:hover, .flashnote-clear-button:hover .flashnote-create-note:hover, .flashnote-save-note:hover {
   background-color: #5a7ba5; /* Hover effect for buttons, slightly darker blue */
 }
 
@@ -480,6 +481,7 @@ pre {
   background-color: #f8f8f8;
   padding: 10px;
   white-space: pre-wrap;
+  min-height: 43vh;
 }
 
 
@@ -519,6 +521,8 @@ text-align: center; /* Center the text in the buttons */
 /* Optional hover effect */
 button.flashnote-save-note:hover,
 button.flashnote-copy-button:hover,
+.flashnote-clear-button:hover,
+.flashnote-create-note:hover,
 button.flashnote-delete-note:hover {
 background-color: #5a7ba5; /* Darker blue on hover */
 }

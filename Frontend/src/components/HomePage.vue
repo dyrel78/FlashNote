@@ -70,6 +70,7 @@
               >
                 <div class="flashnote-note-input">
                   <textarea
+                  class="flashnote-input-textarea"
                     v-model="inputText"
                     placeholder="Paste text"
                   ></textarea>
