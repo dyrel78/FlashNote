@@ -140,7 +140,7 @@
                     <pre class="preformatted">
                         <!-- {{ outputText }} -->
                         <p v-html="outputText"></p>
-                        <div  v-if="isLoading"class="loading-spinner">
+                        <div  v-if="isLoading" class="loading-spinner">
                       <i class="bx bx-loader-alt bx-spin"></i>
                     </div>
                       </pre>
