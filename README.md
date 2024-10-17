@@ -15,7 +15,7 @@
     <img src="Frontend/old_html_files/flashnote-logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Flashnote</h3>
+  <h1 align="center">Flashnote</h1>
 
   <p align="center">
 FlashNote is an AI-powered study tool designed to help students create various types of notes, from concise summaries to detailed paragraphs and flashcards. With FlashNote, users can easily copy and paste lecture slides or upload PDFs directly into the platform. By selecting the desired note format, FlashNote’s advanced AI generates the perfect study material in just a few clicks. Users can then make any adjustments as needed or save the note for future reference.
@@ -201,7 +201,7 @@ Dyrel - [lumdy690@student.otago.ac.nz](mailto:lumdy690@student.otago.ac.nz)
 - Click 'Ok' on the pop-up alert
 
 ### Help Feature
-- Navigate to help page from navbar if you require further help or utilise tour feature on first log in
+Navigate to help page from navbar if you require further help or utilise tour feature on first log in
 
 
 
