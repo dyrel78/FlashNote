@@ -158,7 +158,7 @@ body, html {
 /* When browser width is resized to be smaller than 1500px */
 @media (max-width: 1500px) {
 .flashnote-note-input textarea {
-    height: 55vh; /* Changes the height when the browser is resized below 500px */
+    height: 45vh; /* Changes the height when the browser is resized below 500px */
     /* CHANGE THIS to like 45 */
 }
 }
@@ -181,7 +181,7 @@ border-radius: 4px;
 margin-bottom: 1rem;
 }*/
 
-.flashnote-upload-pdf, .flashnote-create-note, .flashnote-save-note {
+.flashnote-upload-pdf, .flashnote-create-note {
   padding: 0.5rem 1rem;
   background-color: #6798c0; /* Button background color (dark blue) */
   color: white;
@@ -192,9 +192,9 @@ margin-bottom: 1rem;
   border-radius: 4px;
 }
 
-.flashnote-save-note {
+/* .flashnote-save-note {
   align-self: flex-end;
-}
+} */
 
 .flashnote-upload-pdf:hover, .flashnote-create-note:hover, .flashnote-save-note:hover {
   background-color: #5a7ba5; /* Hover effect for buttons, slightly darker blue */
@@ -492,11 +492,20 @@ justify-content: flex-start; /* Align buttons to the left (or use flex-end for r
 gap: 20px; /* Space between buttons */
 margin-top: 1rem;
 }
+.output-button-container {
+  display: flex;
+  justify-content: space-between; /* Evenly spaces buttons */
+  gap: 10px; /* Adds space between buttons */
+  padding: 10px;
+  width: 60%;
+  margin: 0 auto; /* Centers the buttons */
+}
 
 /* Style the buttons */
 button.flashnote-save-note,
 button.flashnote-copy-button,
-button.flashnote-delete-note {
+button.flashnote-delete-note,
+button.flashnote-clear-button {
 background-color: #6798c0; /* Button background color */
 color: white;
 border: none;
@@ -642,8 +651,7 @@ align-items: center; /* Center horizontally */
 height: 100%; /* Ensure it takes up full height of the container */
 }
 
-.flashnote-note-output,
-.flashnote-save-note {
+.flashnote-note-output {
 width: 48%; /* Adjust this as necessary for the desired width */
 margin-bottom: 1rem; /* Adds space between stacked elements */
 }

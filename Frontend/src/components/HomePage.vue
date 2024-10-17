@@ -146,7 +146,7 @@
                     </div>
                   </div>
                   <!-- Placeholder for AI generated notes preview -->
-
+                  <div  class="output-button-container">
                   <button
                     class="flashnote-clear-button"
                     v-if="userExists"
@@ -157,16 +157,20 @@
                   <button class="flashnote-copy-button" @click="copyText">
                     Copy
                   </button>
+
+                      <button
+                    v-if="userExists"
+                    class="flashnote-save-note"
+                    @click="saveNote"
+                  >
+                    Save
+                  </button>
+
+                </div>
                 </div>
               </div>
 
-              <button
-                v-if="userExists"
-                class="flashnote-save-note"
-                @click="saveNote"
-              >
-                Save
-              </button>
+
             </div>
           </div>
         </div>

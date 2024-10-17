@@ -65,7 +65,7 @@
           <!-- Right pane: Content area -->
           <div class="right-content-pane">
             <h2>Flashcard</h2>
-            <button @click="toggleNotesListPane">{{ isNotesListVisible ? 'Hide Notes List' : 'Show Notes List' }}</button> 
+            <button @click="toggleNotesListPane">{{ isNotesListVisible ? 'Hide Flashcard List' : 'Show Flashcard List' }}</button> 
 
             <div class="flashcard-page-body">
        <div class="flashcard-container" id="cardContainer" v-if="flashcards.length > 0">
@@ -585,8 +585,8 @@ These are new
   display: flex;
   justify-content: center;
   align-items: center;
-  /* height: 60vh; */
-    height: 100vh;
+  height: 70vh;
+    /* height: 100vh; */
 
   flex-direction: column;
   margin: 0;
@@ -595,7 +595,7 @@ These are new
 .flashcard-container {
   position: relative;
   width: 70%; /* Increased width */
-  height: 70%; /* Increased height */
+  height: 90%; /* Increased height */
   /* max-width: 900px; */
   /* max-height: 650px; */
   max-width: 700px;
