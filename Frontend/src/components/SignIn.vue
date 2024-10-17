@@ -37,7 +37,7 @@
       </div>
       <!-- Login Button -->
       <div class="form-group">
-        <button type="submit">Log in</button><br /><br />
+        <button type="submit">Sign in</button><br /><br />
       </div>
     </form>
     <!-- link to Create Account Page -->
