@@ -111,15 +111,15 @@
                       />
                     </div>
                   </div>
-                  <!--
-<button
-  id="startButton"
-  class="flashnote-clear-button"
-  @click="startVoiceInput"
->
-  Start Voice Input
-</button>
--->
+                      <!--
+                      <button
+                        id="startButton"
+                        class="flashnote-clear-button"
+                        @click="startVoiceInput"
+                        >
+                        Start Voice Input
+                        </button>
+                      -->
                   <button
                     class="flashnote-create-note"
                     @click="createNote"

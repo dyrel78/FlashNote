@@ -135,23 +135,24 @@ body, html {
 }
 
 .flashnote-note-input, .flashnote-note-output {
-  height:65vh;
+  height:70vh;
   /*   height:70vh;*/
   width: 48%;
   margin-bottom: 1rem;
   border: 0.5px solid #9c9393; /* Border color */
   padding: 1rem;
-  background-color: #f0f0f0; /* Very light grey background for input/output areas */
+  background-color: #f0f0f0f0; /* Very light grey background for input/output areas */
   border-radius: 4px;
 }
 
 .flashnote-note-input textarea {
   width: 100%;
-  height: 45vh;
+  height: 50vh;
   border: none;
   padding: 1rem;
   resize: none;
-  background-color: #f0f0f0; /* Very light grey background color for textarea */
+  /*border: 0.5px solid #9c9393; /* Border color */
+  background-color: rgba(250, 250, 252, 0.863); /* Very light grey background color for textarea */
   color: #333; /* Text color */
   border-radius: 4px;
 }
@@ -164,13 +165,11 @@ body, html {
 }
 }
 
-/**
-.outputText {
-flex: 1; 
-display: flex;
-flex-direction: column; 
-}
 
+.outputText {
+ height: 50vh;
+}
+/**
 .preformatted {
 flex: 0 0 80%; 
 white-space: pre-wrap; 
