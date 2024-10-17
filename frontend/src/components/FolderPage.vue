@@ -23,12 +23,8 @@
     </div>
 
     <div class="flashnote-container main-content">
-      <FlashnoteNavbar
-        :userExists="userExists"
-        :userObject="userObject"
-        @update:userExists="userExists = $event"
-        @update:userObject="userObject = $event"
-      />
+      <FlashnoteNavbar :userExists="userExists" :userObject="userObject" @update:userExists="userExists = $event"
+        @update:userObject="userObject = $event" />
       <div class="content">
         <h1>{{ folderName }}</h1>
 
@@ -41,31 +37,20 @@
                 <button @click="toggleSelectAll" class="action-btn">
                   {{ allSelected ? "Deselect All" : "Select All" }}
                 </button>
-                <button
-                  @click="deleteSelected"
-                  class="action-btn delete-btn"
-                  :disabled="!hasSelection"
-                >
+                <button @click="deleteSelected" class="action-btn delete-btn" :disabled="!hasSelection">
                   Delete Selected
                 </button>
               </div>
               <ul class="notes-list">
                 <li v-for="note in notes" :key="note._id">
                   <div class="note-item">
-                    <input
-                      type="checkbox"
-                      :value="note._id"
-                      v-model="selectedNotes"
-                    />
-                    <button
-                      class="note-btn"
-                      @click="
-                        $router.push({
-                          name: 'ViewNotesPreview',
-                          params: { id: note._id },
-                        })
-                      "
-                    >
+                    <input type="checkbox" :value="note._id" v-model="selectedNotes" />
+                    <button class="note-btn" @click="
+                      $router.push({
+                        name: 'ViewNotesPreview',
+                        params: { id: note._id },
+                      })
+                      ">
                       {{ note.note_name }}
                     </button>
                   </div>
@@ -78,18 +63,15 @@
           </div>
 
           <div class="right-content-pane">
-            <h2>Flashcard Sets</h2>
+            <h2 style="padding-bottom: 10px" >Flashcard Sets</h2>
             <div v-if="flashcardNotes.length > 0">
               <!-- Mass action controls for flashcards -->
               <div style="padding-bottom: 10px" class="mass-action-controls">
                 <button @click="toggleSelectAllFlashcards" class="action-btn">
                   {{ allSelectedFlashcards ? "Deselect All" : "Select All" }}
                 </button>
-                <button
-                  @click="deleteSelectedFlashcards"
-                  class="action-btn delete-btn"
-                  :disabled="!hasSelectionFlashcards"
-                >
+                <button @click="deleteSelectedFlashcards" class="action-btn delete-btn"
+                  :disabled="!hasSelectionFlashcards">
                   Delete Selected
                 </button>
               </div>
@@ -99,20 +81,13 @@
                 <li v-for="note in flashcardNotes" :key="note._id">
                   <div class="note-item">
                     <!-- Checkbox for selecting flashcards -->
-                    <input
-                      type="checkbox"
-                      :value="note._id"
-                      v-model="selectedFlashcards"
-                    />
-                    <button
-                      class="note-btn"
-                      @click="
-                        $router.push({
-                          name: 'FCPage',
-                          params: { id: note.flashcard_set_name },
-                        })
-                      "
-                    >
+                    <input type="checkbox" :value="note._id" v-model="selectedFlashcards" />
+                    <button class="note-btn" @click="
+                      $router.push({
+                        name: 'FCPage',
+                        params: { id: note.flashcard_set_name },
+                      })
+                      ">
                       {{ note.flashcard_set_name }}
                     </button>
                   </div>
@@ -423,19 +398,24 @@ export default {
 }
 
 .note-btn {
-  background-color: #6798c0; /* Your button background color */
+  background-color: #6798c0;
+  /* Your button background color */
   color: white;
   border: none;
   cursor: pointer;
-  padding: 10px 20px; /* Consistent padding */
-  border-radius: 5px; /* Make the shape consistent with other buttons */
-  font-size: 16px;
-  transition: background-color 0.3s ease; /* Smooth transition */
+  padding: 10px 20px;
+  /* Consistent padding */
+  border-radius: 5px;
+  /* Make the shape consistent with other buttons */
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+  /* Smooth transition */
 }
 
 /* Hover effect to make the button interactive */
 .note-btn:hover {
-  background-color: #5a7ba5; /* Slightly darker color for hover */
+  background-color: #5a7ba5;
+  /* Slightly darker color for hover */
 }
 
 /* Ensure the button takes up the correct width if needed */
@@ -450,27 +430,13 @@ export default {
   flex-grow: 1;
   padding: 20px;
   background-color: #fff;
-  height: 100vh; /* Ensures content area is full height */
-  overflow-y: auto; /* Allows scrolling if content exceeds view height */
+  height: 100vh;
+  /* Ensures content area is full height */
+  overflow-y: auto;
+  /* Allows scrolling if content exceeds view height */
 }
 
 /* Notes list styles */
-.notes-list {
-  list-style-type: none;
-  padding: 0;
-}
-
-.notes-list li {
-  padding: 10px;
-  background-color: #f9f9f9;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.notes-list li:hover {
-  background-color: #ddd;
-}
 
 h1 {
   margin-bottom: 20px;
@@ -486,19 +452,23 @@ p {
   display: flex;
   flex-direction: column;
 }
+
 .two-pane-container {
   display: flex;
   flex-grow: 1;
   overflow: 100%;
 }
+
 .notes-list-pane,
 .right-content-pane {
-  flex: 1; /* Both panes will take up equal space */
+  flex: 1;
+  /* Both panes will take up equal space */
   padding: 20px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  margin: 0 10px; /* Add some space between the two panes */
+  margin: 0 10px;
+  /* Add some space between the two panes */
 }
 
 .notes-list-pane {
@@ -506,9 +476,28 @@ p {
   overflow-y: auto;
   border-right: 1px solid #ccc;
 }
+
 .right-content-pane {
   overflow-y: auto;
 }
+.notes-list {
+  list-style-type: none;
+  padding: 0;
+
+}
+
+.notes-list li {
+  padding: 10px;
+  background-color: #f9f9f9;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.notes-list li:hover {
+  background-color: #ddd;
+}
+
 
 /*Make sure the content inside both panes is well spaced */
 .notes-list li,
@@ -518,10 +507,16 @@ p {
   margin-bottom: 10px;
   border-radius: 5px;
   transition: background-color 0.3s ease;
+  width:100%;
 }
 
 .notes-list li:hover,
 .flashcard-list li:hover {
   background-color: #e0e0e0;
 }
+
+
+
 </style>
+
+
