@@ -1,105 +1,108 @@
 <template>
-  <div class="container">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="top">
-        <div class="logo">
-          <i class="bx bx-edit"></i>
-          <span v-if="userExists">All Notes</span>
-          <span v-else>Sign in to view notes</span>
+  <body id="app">
+    <div class="container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="top">
+          <div class="logo">
+            <i class="bx bx-edit"></i>
+            <span v-if="userExists">All Notes</span>
+            <span v-else>Sign in to view notes</span>
+          </div>
+          <i class="bx bx-menu" id="btn"></i>
         </div>
-        <i class="bx bx-menu" id="btn"></i>
+
+        <!-- Dynamic folder list -->
+        <ul v-if="userExists">
+          <li v-for="folder in folders" :key="folder">
+            <router-link :to="{ name: 'FolderPage', params: { id: folder } }">
+              <i class="bx bx-folder"></i>
+              <span class="nav-item">{{ folder }}</span>
+            </router-link>
+            <span class="tooltip">{{ folder }}</span>
+          </li>
+        </ul>
       </div>
-
-      <!-- Dynamic folder list -->
-      <ul v-if="userExists">
-        <li v-for="folder in folders" :key="folder">
-          <router-link :to="{ name: 'FolderPage', params: { id: folder } }">
-            <i class="bx bx-folder"></i>
-            <span class="nav-item">{{ folder }}</span>
-          </router-link>
-          <span class="tooltip">{{ folder }}</span>
-        </li>
-      </ul>
-    </div>
-
-    <div class="profile-container">
-      <!-- Navbar -->
-      <FlashnoteNavbar
-        :userExists="userExists"
-        :userObject="userObject"
-        @update:userExists="userExists = $event"
-        @update:userObject="userObject = $event"
-      />
-      <h1>My Profile</h1>
-      <br />
-
-      <!-- Profile Picture Section -->
-      <div class="profile-picture-section">
-        <div class="profile-picture">
-          <img :src="profilePicture" alt="Profile Picture" />
-        </div>
-        <label for="profile-picture">Profile Picture:</label>
-        <input
-          type="file"
-          id="profile-picture"
-          accept="image/*"
-          @change="onFileChange"
+      <div class="flashnote-container main-content">
+        <!-- Navbar -->
+        <FlashnoteNavbar
+          :userExists="userExists"
+          :userObject="userObject"
+          @update:userExists="userExists = $event"
+          @update:userObject="userObject = $event"
         />
+        <div class="profile-container">
+          <h1>My Profile</h1>
+          <br />
+
+          <!-- Profile Picture Section -->
+          <div class="profile-picture-section">
+            <div class="profile-picture">
+              <img :src="profilePicture" alt="Profile Picture" />
+            </div>
+            <label for="profile-picture">Profile Picture:</label>
+            <input
+              type="file"
+              id="profile-picture"
+              accept="image/*"
+              @change="onFileChange"
+            />
+          </div>
+
+          <!-- Profile Information Form -->
+          <form @submit.prevent="updateProfile">
+            <div class="form-group">
+              <label for="username">Username:</label>
+              <input
+                type="text"
+                id="username"
+                v-model="username"
+                :placeholder="username"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="first-name">First Name:</label>
+              <input
+                type="text"
+                id="first-name"
+                v-model="firstName"
+                :placeholder="firstName"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="last-name">Last Name:</label>
+              <input
+                type="text"
+                id="last-name"
+                v-model="lastName"
+                :placeholder="lastName"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input
+                type="email"
+                id="email"
+                v-model="this.email"
+                :placeholder="this.email"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <button type="submit">Update Profile</button>
+            </div>
+          </form>
+        </div>
       </div>
-
-      <!-- Profile Information Form -->
-      <form @submit.prevent="updateProfile">
-        <div class="form-group">
-          <label for="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            v-model="username"
-            :placeholder="username"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="first-name">First Name:</label>
-          <input
-            type="text"
-            id="first-name"
-            v-model="firstName"
-            :placeholder="firstName"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="last-name">Last Name:</label>
-          <input
-            type="text"
-            id="last-name"
-            v-model="lastName"
-            :placeholder="lastName"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            v-model="this.email"
-            :placeholder="this.email"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <button type="submit">Update Profile</button>
-        </div>
-      </form>
     </div>
-  </div>
+  </body>
 </template>
 
 <script>
@@ -145,7 +148,9 @@ export default {
     async fetchFolders() {
       if (this.userObject) {
         try {
-          const response = await axios.get(`http://localhost:8080/api/notes/folders/${this.userObject._id}`);
+          const response = await axios.get(
+            `http://localhost:8080/api/notes/folders/${this.userObject._id}`
+          );
           this.folders = response.data;
           this.userExists = true;
         } catch (error) {

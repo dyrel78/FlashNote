@@ -521,6 +521,11 @@ These are new
 } */
  
 @media screen and (max-width: 1000px) {
+  .flashcard-thefront, .flashcard-theback {
+
+    font-size: 16px;
+    width: 150%;
+  }
 .two-pane-container {
   flex-direction: column;
   align-items: center; /* Center children horizontally */
@@ -553,15 +558,18 @@ These are new
   flex-direction: column;
   align-items: center;
 }
+
 .flashcard-thecard{
-  width:100%;
+  width:150%;
 }
 
 /* Ensure the flashcard container is centered and responsive */
 .flashcard-container {
-  width: 100%;
-  max-width: 100%; /* Adjust this value as needed */
+  width: 150%;
+  /* max-width: 100%; */
+   /* Adjust this value as needed */
 }
+
 }
 
 
@@ -577,7 +585,9 @@ These are new
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  /* height: 60vh; */
+    height: 100vh;
+
   flex-direction: column;
   margin: 0;
 }

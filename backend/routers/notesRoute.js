@@ -1,7 +1,5 @@
 import express from "express";
-import mongoose from "mongoose";
 import Note from "../models/note.js";
-import User from "../models/user.js";
 const router = express.Router();
 
 // Create a new flashcard
