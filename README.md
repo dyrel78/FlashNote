@@ -126,20 +126,6 @@ INFO301 Staff have been provided with the API keys for Gemini and MongoDB inside
    npm install
    npm run start
 
-### Docker Installation
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/dyrel78/FlashNote.git
-
-2. **Checkout the Docker Branch**
-    ```bash
-    git checkout Docker
-
-3. **build the frontend**
-    ```bash
-    git compose up
-
 4. **start the application**
     ```bash
     http://localhost:8080/
