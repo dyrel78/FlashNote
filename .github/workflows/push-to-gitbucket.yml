@@ -16,6 +16,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Enables tracking of remote branches ensuring all branches are pushed to GitBucket
+      - name: Track remote branches
+        run: |
+          for branch in $(git branch -r | grep -v '\->'); do
+            local_branch=${branch#origin/}
+            git branch --track "$local_branch" "$branch" || true
+          done
+
+
       - name: Push to GitBucket
         env:
           # Set the GitBucket URL, username and password as secrets in your repository settings

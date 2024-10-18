@@ -35,19 +35,7 @@
           <h1>My Profile</h1>
           <br />
 
-          <!-- Profile Picture Section -->
-          <div class="profile-picture-section">
-            <div class="profile-picture">
-              <img :src="profilePicture" alt="Profile Picture" />
-            </div>
-            <label for="profile-picture">Profile Picture:</label>
-            <input
-              type="file"
-              id="profile-picture"
-              accept="image/*"
-              @change="onFileChange"
-            />
-          </div>
+
 
           <!-- Profile Information Form -->
           <form @submit.prevent="updateProfile">

@@ -1,20 +1,3 @@
-1. **Project Overview**
-
-    Purpose: Describe the general purpose of the project, such as creating a note-taking application with flashcards and different summarization options.
-    Tech Stack:  Node.js, Express, MongoDB, Vue.js, Gemini API
-    Main Features: Highlight the key functionalities such as note creation, different summarization styles (short, medium, long), flashcard generation, and integration with Google AI.
-
-2. **Prerequisites**
-    Dependencies: List the libraries and tools needed, e.g., express, mongoose, @google/generative-ai, etc.
-    Installation: Include a step-by-step guide on how to install the dependencies using npm:
-        ```bash
-        npm install
-    Environment Variables: Explain the environment variables needed for API keys (MongoDB and Gemini) and provide a .env file example:
-    DB_CONNECTION_STRING=your_mongoDB_key
-    GEMINI_API_KEY=your_gemini_key
-
-3. **API Endpoints**
-    Our API endpoints can be found in backend/routers/. There are multiple different api end points from retrieving/adding information to database, pdf parsing, LLM calling, and authentication such as 
 
 # API Documentation
 

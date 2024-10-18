@@ -69,7 +69,7 @@ router.get("/short", async (req, res) => {
 router.get("/medium", async (req, res) => {
     try {
         let inputText = req.query.inputText + " ";
-        let prompt = `${inputText} + "Generate notes on key points, 5 bullet points, less than 40 words per bullet point."`; 
+        let prompt = `${inputText} + "Generate notes on key points, 5 bullet points per heading, less than 40 words per bullet point."`; 
         const result = await model.generateContent(prompt);
         //  result.response.text();
         console.log(result.response.text());
