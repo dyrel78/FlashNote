@@ -1,0 +1,45 @@
+services:
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+       frontend:
+         condition: service_healthy
+
+    # environment:
+    #   - PORT=8080
+    #   - DB_CONNECTION_STRING=mongodb+srv://admin:igWy4W1pewP0isnH@cluster0.fip3e.mongodb.net/INFO301?retryWrites=true&w=majority&appName=Cluster0
+    #   - MONGO_URI= mongodb+srv://admin:igWy4W1pewP0isnH@cluster0.fip3e.mongodb.net/INFO301
+    #   - GEMINI_API_KEY = 'AIzaSyBL5Gs9Lb_Ey5YORKVTke55VmFG1xvI5w4'
+  
+
+
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+      - frontend_build:/usr/src/app/frontend/dist
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+
+    volumes:
+      - ./frontend:/usr/src/frontend
+      - /usr/src/frontend/node_modules
+      - frontend_build:/usr/src/frontend/dist
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  frontend_build:
