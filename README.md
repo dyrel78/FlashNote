@@ -126,8 +126,9 @@ INFO301 Staff have been provided with the API keys for Gemini and MongoDB inside
    npm install
    npm run start
 
-4. **start the fronend**
+4. **start the frontend**
     ```bash
+    cd Frontend
     npm run serve
 
 5. **start the application**
