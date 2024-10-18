@@ -116,7 +116,7 @@ INFO301 Staff have been provided with the API keys for Gemini and MongoDB inside
 
 2. **build the frontend**
     ```bash
-   cd frontend
+   cd Frontend
    npm install
    npm run build
 
