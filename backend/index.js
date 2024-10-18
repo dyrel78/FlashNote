@@ -19,7 +19,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.use(cors());
-app.use(express.static(path.join(__dirname, "../Frontend/dist")));
+app.use(express.static(path.join(__dirname, "Frontend/dist")));
 
 app.use(
   session({
@@ -37,7 +37,7 @@ app.use("/api/llm", llmRoutes);
 app.use("/api/pdf", pdfRoutes);
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../Frontend/dist", "index.html"));
+  res.sendFile(path.join(__dirname, "Frontend/dist", "index.html"));
 });
 
 // Middleware to parse JSON bodies
