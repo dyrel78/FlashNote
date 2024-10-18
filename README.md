@@ -120,15 +120,19 @@ INFO301 Staff have been provided with the API keys for Gemini and MongoDB inside
    npm install
    npm run build
 
-3. **start the application**
+3. **build the backend**
     ```bash
    cd backend 
    npm install
    npm run start
 
-4. **start the application**
+4. **start the fronend**
     ```bash
-    http://localhost:8080/
+    npm run serve
+
+5. **start the application**
+    ```bash
+    http://localhost:8081/
 
 ### License
 
