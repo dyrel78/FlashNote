@@ -24,7 +24,7 @@ const allowedOrigins = [
   'http://3.217.34.111:8082',  // In case you're using the other frontend port
   'http://localhost:8081',      // For local development
   'http://ec2-3-217-34-111.compute-1.amazonaws.com:8080',
-  'http://3.217.34.111:8080',
+  'http://localhost:8080',
   'http://3.217.34.111',
   'http://www.flashnote.click',
   'http://www.flashnote.click:8080',
