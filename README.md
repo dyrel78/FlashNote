@@ -23,7 +23,7 @@ FlashNote is an AI-powered study tool designed to help students create various t
     <a href="https://github.com/dyrel78/FlashNote/DevDocs.md"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="http://www.flashnote.click:8080/">View Demo</a>
+    <a href="http://www.flashnote.click:8080/">View Demo (If not on University of Otago Wifi)</a>
     ·
     <a href="
     <a href="https://github.com/dyrel78/Best-README">Request Feature</a>
@@ -98,6 +98,15 @@ Before starting, ensure you have the following installed:
 - **MongoDB** (MongoDB API key )
 - **Gemini**  (Gemini API key)
 - **Docker** (optional for containerized deployment)
+  
+## .env file
+Inside your /backend and /Frontend folders, create a .env file with the following variables:
+```
+DB_CONNECTION_STRING = your_mongo_uri
+MONGO_URI=your_mongo_uri
+GEMINI_API_KEY=your_gemini_api_key
+```
+INFO301 Staff have been provided with the API keys for Gemini and MongoDB inside our Taiga submission
 
 ### Installation
 
