@@ -1,7 +1,7 @@
 FROM node:22
 
 
-WORKDIR /usr/src/Frontend
+WORKDIR /usr/src/frontend
 
 COPY package*.json ./
 RUN npm install

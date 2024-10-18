@@ -21,19 +21,19 @@ services:
     volumes:
       - ./backend:/usr/src/app
       - /usr/src/app/node_modules
-      - frontend_build:/usr/src/app/Frontend/dist
+      - frontend_build:/usr/src/app/frontend/dist
 
   frontend:
     build:
-      context: ./Frontend
+      context: ./frontend
       dockerfile: Dockerfile
     ports:
       - "8081:8081"
 
     volumes:
-      - ./Frontend:/usr/src/Frontend
-      - /usr/src/Frontend/node_modules
-      - frontend_build:/usr/src/Frontend/dist
+      - ./frontend:/usr/src/frontend
+      - /usr/src/frontend/node_modules
+      - frontend_build:/usr/src/frontend/dist
 
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000"]
